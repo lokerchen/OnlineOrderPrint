@@ -10,11 +10,21 @@ using System.Windows.Forms;
 
 namespace OnlineOrderPrint
 {
-    public partial class Form1 : Form
+    public partial class FrmExit : Form
     {
-        public Form1()
+        public FrmExit()
         {
             InitializeComponent();
+        }
+
+        private void btnOK_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
