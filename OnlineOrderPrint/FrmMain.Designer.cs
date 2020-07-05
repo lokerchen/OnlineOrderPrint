@@ -44,20 +44,21 @@
             this.btnMini = new System.Windows.Forms.Button();
             this.timerOrder = new System.Windows.Forms.Timer(this.components);
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvOrder)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnRetrieveOrder
             // 
-            this.btnRetrieveOrder.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.btnRetrieveOrder.Font = new System.Drawing.Font("微软雅黑", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnRetrieveOrder.BackColor = System.Drawing.Color.Gold;
+            this.btnRetrieveOrder.Font = new System.Drawing.Font("微软雅黑", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnRetrieveOrder.ForeColor = System.Drawing.Color.White;
             this.btnRetrieveOrder.Location = new System.Drawing.Point(6, 6);
             this.btnRetrieveOrder.Name = "btnRetrieveOrder";
-            this.btnRetrieveOrder.Size = new System.Drawing.Size(328, 165);
+            this.btnRetrieveOrder.Size = new System.Drawing.Size(212, 75);
             this.btnRetrieveOrder.TabIndex = 0;
-            this.btnRetrieveOrder.Text = "Retrieve Orders";
+            this.btnRetrieveOrder.Text = "Check Order";
             this.btnRetrieveOrder.UseVisualStyleBackColor = false;
             this.btnRetrieveOrder.Click += new System.EventHandler(this.btnRetrieveOrder_Click);
             // 
@@ -68,7 +69,7 @@
             this.dgvOrder.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("微软雅黑", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -79,11 +80,11 @@
             this.Column1,
             this.Column2,
             this.Column3});
-            this.dgvOrder.Location = new System.Drawing.Point(12, 201);
+            this.dgvOrder.Location = new System.Drawing.Point(12, 157);
             this.dgvOrder.Name = "dgvOrder";
             this.dgvOrder.RowTemplate.Height = 27;
             this.dgvOrder.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvOrder.Size = new System.Drawing.Size(682, 307);
+            this.dgvOrder.Size = new System.Drawing.Size(819, 307);
             this.dgvOrder.TabIndex = 1;
             // 
             // Column1
@@ -92,7 +93,7 @@
             this.Column1.DefaultCellStyle = dataGridViewCellStyle2;
             this.Column1.HeaderText = "Order";
             this.Column1.Name = "Column1";
-            this.Column1.Width = 110;
+            this.Column1.Width = 97;
             // 
             // Column2
             // 
@@ -100,7 +101,7 @@
             this.Column2.DefaultCellStyle = dataGridViewCellStyle3;
             this.Column2.HeaderText = "OrderTime";
             this.Column2.Name = "Column2";
-            this.Column2.Width = 166;
+            this.Column2.Width = 143;
             // 
             // Column3
             // 
@@ -108,7 +109,7 @@
             this.Column3.DefaultCellStyle = dataGridViewCellStyle4;
             this.Column3.HeaderText = "Type";
             this.Column3.Name = "Column3";
-            this.Column3.Width = 99;
+            this.Column3.Width = 87;
             // 
             // panel1
             // 
@@ -116,32 +117,32 @@
             this.panel1.Controls.Add(this.btnExit);
             this.panel1.Controls.Add(this.btnMini);
             this.panel1.Controls.Add(this.btnRetrieveOrder);
-            this.panel1.Location = new System.Drawing.Point(12, 12);
+            this.panel1.Location = new System.Drawing.Point(12, 57);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(682, 183);
+            this.panel1.Size = new System.Drawing.Size(819, 94);
             this.panel1.TabIndex = 2;
             // 
             // btnSysConf
             // 
-            this.btnSysConf.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.btnSysConf.Font = new System.Drawing.Font("微软雅黑", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnSysConf.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+            this.btnSysConf.Font = new System.Drawing.Font("微软雅黑", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnSysConf.ForeColor = System.Drawing.Color.White;
-            this.btnSysConf.Location = new System.Drawing.Point(361, 94);
+            this.btnSysConf.Location = new System.Drawing.Point(262, 7);
             this.btnSysConf.Name = "btnSysConf";
-            this.btnSysConf.Size = new System.Drawing.Size(317, 77);
+            this.btnSysConf.Size = new System.Drawing.Size(182, 75);
             this.btnSysConf.TabIndex = 3;
-            this.btnSysConf.Text = "System Config";
+            this.btnSysConf.Text = "Settings";
             this.btnSysConf.UseVisualStyleBackColor = false;
             this.btnSysConf.Click += new System.EventHandler(this.btnSysConf_Click);
             // 
             // btnExit
             // 
             this.btnExit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.btnExit.Font = new System.Drawing.Font("微软雅黑", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnExit.Font = new System.Drawing.Font("微软雅黑", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnExit.ForeColor = System.Drawing.Color.White;
-            this.btnExit.Location = new System.Drawing.Point(542, 6);
+            this.btnExit.Location = new System.Drawing.Point(671, 8);
             this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(136, 82);
+            this.btnExit.Size = new System.Drawing.Size(136, 75);
             this.btnExit.TabIndex = 2;
             this.btnExit.Text = "Exit";
             this.btnExit.UseVisualStyleBackColor = false;
@@ -150,11 +151,11 @@
             // btnMini
             // 
             this.btnMini.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.btnMini.Font = new System.Drawing.Font("微软雅黑", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnMini.Font = new System.Drawing.Font("微软雅黑", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnMini.ForeColor = System.Drawing.Color.White;
-            this.btnMini.Location = new System.Drawing.Point(361, 6);
+            this.btnMini.Location = new System.Drawing.Point(484, 7);
             this.btnMini.Name = "btnMini";
-            this.btnMini.Size = new System.Drawing.Size(141, 82);
+            this.btnMini.Size = new System.Drawing.Size(141, 75);
             this.btnMini.TabIndex = 1;
             this.btnMini.Text = "Mini";
             this.btnMini.UseVisualStyleBackColor = false;
@@ -168,17 +169,28 @@
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(697, 18);
+            this.richTextBox1.Location = new System.Drawing.Point(12, 470);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(420, 485);
+            this.richTextBox1.Size = new System.Drawing.Size(769, 220);
             this.richTextBox1.TabIndex = 3;
             this.richTextBox1.Text = "";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("微软雅黑", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label1.Location = new System.Drawing.Point(13, 13);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(474, 35);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Dolbyn Computers Online Ordering";
             // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1129, 515);
+            this.ClientSize = new System.Drawing.Size(843, 703);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.dgvOrder);
@@ -191,6 +203,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvOrder)).EndInit();
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -207,6 +220,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.Label label1;
     }
 }
 
