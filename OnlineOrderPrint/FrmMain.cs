@@ -432,18 +432,47 @@ namespace OnlineOrderPrint
         {
             StringBuilder sb = new StringBuilder();
 
-            sb.Append(sCode + GetSpace(6 - sCode.Length) + sQty + GetSpace(4 - sQty.Length));
-            if (sName.Length > 22)
+            sb.Append(Environment.NewLine);
+            sb.Append(sCode + GetSpace(HtmlTextPath.PRT_CODE - sCode.Length) + sQty + GetSpace(HtmlTextPath.PRT_QTY - sQty.Length));
+            if (sName.Length > HtmlTextPath.PRT_MENUITEM_NUM)
             {
-                sb.Append(sName.Substring(0, 21));
-                sb.Append(GetSpace(2) + sPrice);
+                sb.Append(sName.Substring(0, HtmlTextPath.PRT_MENUITEM_NUM - 1));
+                sb.Append(GetSpace(HtmlTextPath.PRT_WORD_LOWER_NUM - sb.Length - sPrice.Length + 1 + HtmlTextPath.PRT_OFFSET) + sPrice);
                 sb.Append(Environment.NewLine);
-                sb.Append(GetSpace(11) + sName.Substring(21, sName.Length - 21));
-                sb.Append(Environment.NewLine);
+                sb.Append(GetSpace(HtmlTextPath.PRT_CODE + HtmlTextPath.PRT_QTY + 3) + sName.Substring(HtmlTextPath.PRT_MENUITEM_NUM - 1));
+                //string[] s = sName.Split(' ');
+                //StringBuilder sbTmp = new StringBuilder();
+                //int i = 0;
+                //bool isAddPrice = false;
+
+                //foreach (string s1 in s)
+                //{
+                //    if (i == 0)
+                //    {
+                //        sbTmp.Append(s1);
+                //    }
+                //    else
+                //    {
+                //        if ((sbTmp.Length + s1.Length) < HtmlTextPath.PRT_MENUITEM_NUM)
+                //        {
+                //            sbTmp.Append(" " + s1);
+                //        }
+                //        else
+                //        {
+                //            sb.Append(sbTmp);
+                //            sb.Append(GetSpace(HtmlTextPath.PRT_WORD_LOWER_NUM - sb.Length - sPrice.Length + 1) + sPrice);
+                //            sbTmp.Append(Environment.NewLine);
+                //            sbTmp.Append(s1);
+                //        }
+                //    }
+                //    i++;
+
+                //    sb.Append(sbTmp.ToString());
+                //}
             }
             else
             {
-                sb.Append(sName + GetSpace(22 - sName.Length));
+                sb.Append(sName + GetSpace(HtmlTextPath.PRT_MENUITEM_NUM - sName.Length));
                 sb.Append(sPrice);
             }
 
@@ -803,7 +832,8 @@ namespace OnlineOrderPrint
                         player.Play();
                     }
 
-                    PrtOrder(HtmlBody.Replace("脳", "×").Replace("拢", "£"));
+                    //PrtOrder(HtmlBody.Replace("脳", "×").Replace("拢", "£"));
+                    PrtOrderWithTemplate(HtmlBody);
 
                     //打印完成后插入数据
                     if (!SqlHelper.InsertId(@"INSERT INTO Mail_ID(mailID, orderID, orderType, orderTime) VALUES('"
@@ -853,5 +883,229 @@ namespace OnlineOrderPrint
                 }
             }
         }
+
+        private void PrtOrderWithTemplate(string htmlText)
+        {
+            if (string.IsNullOrWhiteSpace(GetPrtStr(htmlText)))
+            {
+                return;
+            }
+
+            PrtTemplate prtTemplate = GetPrtStrWithTemplate(htmlText);
+            List<string> lst = new List<string>();
+            lst = PrtReplaceTemplate(prtTemplate);
+            Print(lst);
+        }
+
+        private PrtTemplate GetPrtStrWithTemplate(string htmlText)
+        {
+            #region 字符串方式
+            StringBuilder sb = new StringBuilder();
+
+            PrtTemplate prtTemplate = new PrtTemplate();
+
+            try
+            {
+                HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
+                doc.LoadHtml(htmlText);
+
+                HtmlNode node;
+                node = doc.DocumentNode.SelectSingleNode(HtmlTextPath.HEAD_ORDER_ID);
+                //sb.Append(GetSpace((39 - node.InnerText.Length) / 2) + node.InnerText.Replace("&nbsp;", "").Trim());
+                orderId = node.InnerText.Replace("&nbsp;", "").Trim().Substring(node.InnerText.Replace("&nbsp;", "").Trim().IndexOf("#"));
+                prtTemplate.OrderId = orderId;
+
+                node = doc.DocumentNode.SelectSingleNode(HtmlTextPath.HEAD_ORDER_TYPE);
+                //sb.Append(GetSpace((39 - node.InnerText.Length) / 2) + node.InnerText.Replace("&nbsp;", "").Trim().ToUpper());
+                orderType = node.InnerText.Replace("&nbsp;", "").Trim().Substring(0, node.InnerText.Replace("&nbsp;", "").Trim().IndexOf("ORDER")).ToUpper();
+                prtTemplate.OrderType = orderType;
+
+                node = doc.DocumentNode.SelectSingleNode(HtmlTextPath.BODY_NAME);
+                prtTemplate.Name = node.InnerText.Replace("&nbsp;", "").Trim();
+
+                node = doc.DocumentNode.SelectSingleNode(HtmlTextPath.BODY_PHONE);
+                prtTemplate.Phone = node.InnerText.Replace("&nbsp;", "");
+
+                node = doc.DocumentNode.SelectSingleNode(HtmlTextPath.BODY_ORDER_TIME);
+                sb.Append(node.InnerText.Replace("&nbsp;", "").Trim());
+                orderDate = node.InnerText.Replace("&nbsp;", "").Trim().Substring(node.InnerText.Replace("&nbsp;", "").Trim().IndexOf(":") + 1);
+                prtTemplate.OrderTime = orderDate;
+
+                prtTemplate.OrderItem = "Code" + GetSpace(2) + "Qty" + GetSpace(2) + "Name" + GetSpace(HtmlTextPath.PRT_MENUITEM_NUM + HtmlTextPath.PRT_OFFSET) + "Price" + "\n";
+                
+                HtmlNodeCollection nodeCollection = doc.DocumentNode.SelectSingleNode("/html[1]/body[1]/div[1]/center[1]/table[1]/tbody[1]").ChildNodes;
+
+                foreach (var n in nodeCollection)
+                {
+                    string[] sTmp = n.InnerText.Trim().Replace("\r\n", "*").Split('*');
+
+                    sTmp = sTmp.Where(s => !string.IsNullOrEmpty(s)).ToArray();
+
+                    if (sTmp.Length >= 4) //菜品类
+                    {
+                        prtTemplate.OrderItem += GetTab(sTmp[0].Trim(), sTmp[1].Trim().Replace("&nbsp;", ""), sTmp[2].Trim(), sTmp[3].Trim());
+                    }
+                    else
+                    {
+                        //if (n.InnerText.Replace("\r\n", "").Trim().IndexOf("-") >= 0)
+                        //{
+                        //    prtTemplate.OrderItem += GetSpace(37 - n.InnerText.Replace("\r\n", "").Trim().Length) + n.InnerText.Replace("\r\n", "").Trim().Replace("-", GetSpace(2) + "-");
+                        //}
+                        //else
+                        //{
+                            //Item/SubTotal
+                        if (n.InnerText.Replace("\r\n", "").Trim().Contains("Items"))
+                        {
+                            string[] s = n.InnerText.Replace("\r\n", "").Trim().Split(' ');
+                            if (s.Length >= 2)
+                            {
+                                prtTemplate.ItemCount = s[0].Trim();
+                                prtTemplate.SubTotal = s[s.Length - 1].Trim();
+                            }
+                        }
+                        else if (n.InnerText.Replace("\r\n", "").Trim().Contains("Off"))
+                        {
+                            prtTemplate.Discount = n.InnerText.Replace("\r\n", "").Trim();
+                        }
+                        else if (n.InnerText.Replace("\r\n", "").Trim().Contains("Card Fee"))
+                        {
+                            prtTemplate.CardFee = n.InnerText.Replace("\r\n", "").Trim();
+                        }
+
+                            //prtTemplate.OrderItem += GetSpace(39 - n.InnerText.Replace("\r\n", "").Trim().Length) + n.InnerText.Replace("\r\n", "").Trim();
+                        //}
+                        //prtTemplate.OrderItem += "\n";
+                    }
+                }
+
+                try
+                {
+                    HtmlNodeCollection hnc = doc.DocumentNode.SelectSingleNode("//html[1]/body[1]/div[1]/center[1]/table[1]/tfoot[1]").ChildNodes;
+
+                    foreach (var n in hnc.Where(s => s.InnerText.Replace("\r\n", "").Trim().Replace("&nbsp;", "").Length > 0))
+                    {
+                        if (n.InnerText.Replace("\r\n", "").Trim().Replace("&nbsp;", "").Substring(0, 4).ToUpper().Equals("FREE"))
+                        {
+                            //sb.Append(GetSpace((39 - n.InnerText.Replace("\r\n", "").Trim().Replace("&nbsp;", "").Length) / 2) + n.InnerText.Replace("\r\n", "").Trim().Replace("&nbsp;", ""));
+                            //sb.Append(Environment.NewLine);
+
+                            prtTemplate.FreeMenuItem = n.InnerText.Replace("\r\n", "").Trim().Replace("&nbsp;", "");
+                        }
+                        else
+                        {
+                            prtTemplate.Total = n.InnerText.Replace("\r\n", "").Trim().Replace("&nbsp;", "");
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    //throw;
+                }
+                
+                node = doc.DocumentNode.SelectSingleNode("//html[1]/body[1]/div[1]/p[4]");
+                //Payment Status:&nbsp;PAID by Paypal 
+                prtTemplate.PaymentStatus = node.InnerText.Replace("\r\n", "").Replace(@"&nbsp;", "").Trim();
+
+                node = doc.DocumentNode.SelectSingleNode("//html[1]/body[1]/div[1]/p[5]");
+                //Payment Status:&nbsp;PAID by Paypal 
+                sb.Append(node.InnerText.Replace(@"&nbsp;", ""));
+                //sb.Append(Environment.NewLine);
+                prtTemplate.Remarks = node.InnerText.Replace(@"&nbsp;", "").Trim();
+
+                node = doc.DocumentNode.SelectSingleNode("/html[1]/body[1]/div[1]/p[6]");
+                //Payment Status:&nbsp;PAID by Paypal 
+                sb.Append(node.InnerText.Replace(@"&nbsp;", ""));
+                prtTemplate.DeliveryTime = node.InnerText.Replace(@"&nbsp;", "").Trim();
+
+                node = doc.DocumentNode.SelectSingleNode("/html[1]/body[1]/div[1]/center[1]/table[1]/tbody[1]");
+                Console.WriteLine(node.InnerText.Replace(@"&nbsp;", ""));
+
+            }
+            catch (Exception ex)
+            {
+                richTextBox1.Text += Environment.NewLine + "Template ERROR:" + ex.InnerException;
+            }
+
+            return prtTemplate;
+
+            #endregion
+        }
+
+        private List<string> PrtReplaceTemplate(PrtTemplate template)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(MAIL_TEMPLATE))
+                {
+                    MAIL_TEMPLATE = MAIL_TEMPLATE.Replace("{OrderId}", template.OrderId);
+                    MAIL_TEMPLATE = MAIL_TEMPLATE.Replace("{OrderType}", template.OrderType);
+                    MAIL_TEMPLATE = MAIL_TEMPLATE.Replace("{Name}", template.Name);
+                    MAIL_TEMPLATE = MAIL_TEMPLATE.Replace("{Phone}", template.Phone);
+                    MAIL_TEMPLATE = MAIL_TEMPLATE.Replace("{Address}", template.Address);
+                    MAIL_TEMPLATE = MAIL_TEMPLATE.Replace("{City}", template.City);
+                    MAIL_TEMPLATE = MAIL_TEMPLATE.Replace("{Postcode}", template.Postcode);
+                    MAIL_TEMPLATE = MAIL_TEMPLATE.Replace("{OrderTime}", template.OrderTime);
+                    MAIL_TEMPLATE = MAIL_TEMPLATE.Replace("{OrderItem}", template.OrderItem);
+                    MAIL_TEMPLATE = MAIL_TEMPLATE.Replace("{ItemCount}", template.ItemCount);
+                    MAIL_TEMPLATE = MAIL_TEMPLATE.Replace("{SubTotal}", template.SubTotal);
+                    MAIL_TEMPLATE = MAIL_TEMPLATE.Replace("{Discount}", template.Discount);
+                    MAIL_TEMPLATE = MAIL_TEMPLATE.Replace("{DeliveryPrice}", template.DeliveryPrice);
+                    MAIL_TEMPLATE = MAIL_TEMPLATE.Replace("{ServiceCharge}", template.ServiceCharge);
+                    MAIL_TEMPLATE = MAIL_TEMPLATE.Replace("{CardFee}", template.CardFee);
+                    MAIL_TEMPLATE = MAIL_TEMPLATE.Replace("{Total}", template.Total);
+                    MAIL_TEMPLATE = MAIL_TEMPLATE.Replace("{FreeMenuItem}", template.FreeMenuItem);
+                    MAIL_TEMPLATE = MAIL_TEMPLATE.Replace("{Remarks}", template.Remarks);
+                    MAIL_TEMPLATE = MAIL_TEMPLATE.Replace("{PaymentStatus}", template.PaymentStatus);
+                    MAIL_TEMPLATE = MAIL_TEMPLATE.Replace("{DeliveryTime}", template.DeliveryTime);
+                    MAIL_TEMPLATE = MAIL_TEMPLATE.Replace("{PayType}", template.PayType);
+
+                    List<string> lst = MAIL_TEMPLATE.Split('\n').ToList();
+
+                    for (int i = 0; i < lst.Count; i++)
+                    {
+                        if (string.IsNullOrEmpty(lst[i])) lst.Remove(lst[i]);
+                        else if (lst[i].Equals("\r")) lst.Remove(lst[i]);
+                        else if (lst[i].Equals("\n")) lst.Remove(lst[i]);
+                        else if (lst[i].Equals("\r\n")) lst.Remove(lst[i]);
+                        else if (lst[i].Equals("\n\r")) lst.Remove(lst[i]);
+                    }
+
+                    return lst;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                richTextBox1.Text += Environment.NewLine + @"ReplaceTemplate ERROR:" + ex.InnerException;
+                return null;
+            }
+        }
+
+        #region 打印主体方法
+        /// <summary>
+        /// 打印主体方法
+        /// </summary>
+        /// <param name="lstStr">打印内容</param>
+        /// <param name="fontSize">字体大小</param>
+        /// <param name="strPrinterName">打印机名称</param>
+        public void Print(List<string> lstStr)
+        {
+            PrintDocument printDocument = new PrintDocument();
+
+            printDocument.PrintPage += (sender, e) =>
+            {
+                int fontheight = 0;
+                foreach (var item in lstStr)
+                {
+                    e.Graphics.DrawString(item, new Font(HtmlTextPath.PRT_FONT, HtmlTextPath.PRT_FONT_SIZE), Brushes.Black, new Point(0, fontheight));
+                    fontheight += new Font(HtmlTextPath.PRT_FONT, HtmlTextPath.PRT_FONT_SIZE).Height;
+                }
+            };
+            printDocument.Print();
+        }
+        #endregion
     }
 }

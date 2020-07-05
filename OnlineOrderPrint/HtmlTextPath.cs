@@ -28,5 +28,29 @@
 
         //Price
         public static string BODY_TABLE_PRICE = @"//html[1]/body[1]/div[1]/strong[1]/strong[1]/center[1]/table[1]/thead[1]/tr[1]/td[4]/strong[1]";
+
+        //打印字体大小
+        public static float PRT_FONT_SIZE = 11.0f;
+
+        //打印字体
+        public static string PRT_FONT = @"Arial";
+
+        //小写字母个数
+        public static int PRT_WORD_LOWER_NUM = 36;
+        //大写字母个数
+        public static int PRT_WORD_TOPPER_NUM = 26;
+        //数字个数
+        public static int PRT_NUM_NUM = 32;
+        //汉字个数
+        public static int PRT_HANZI_NUM = 16;
+        //MenuItem个数
+        public static int PRT_MENUITEM_NUM = 24; //36(PRT_WORD_LOWER_NUM) - 6(Code+2个空格) - 5(Qty+2个空格) - 5(Price） - 4(Name)
+        //Code
+        public static int PRT_CODE = 9;
+        //Qty
+        public static int PRT_QTY = 5;
+        //偏移量
+        public static int PRT_OFFSET = 6;
+
     }
 }
