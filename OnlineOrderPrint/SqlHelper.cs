@@ -75,6 +75,7 @@ namespace GetServerEmail
                             user.MinsInt = reader["MinsInt"].ToString();
                             user.MailServer = reader["MailServer"].ToString();
                             user.MailSender = reader["MailSender"].ToString();
+                            user.MailTemplate = reader["MailTemplate"].ToString();
                         }
                     }
                 }

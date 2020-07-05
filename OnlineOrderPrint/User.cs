@@ -13,5 +13,6 @@ namespace OnlineOrderPrint
         public string MinsInt;
         public string MailServer;
         public string MailSender;
+        public string MailTemplate;
     }
 }

@@ -34,6 +34,8 @@ namespace OnlineOrderPrint
         private string MAIL_SENDER = @"noreply@dolbynonline.co.uk";
         private static string MAIL_RECIVER = @"";
 
+        private string MAIL_TEMPLATE = @"";
+
         private static List<string> textList;       //打印内容行
 
         private int timer_Int = 60000; // 60 * 1000 = 1 Minute
@@ -335,7 +337,9 @@ namespace OnlineOrderPrint
                         if (string.IsNullOrEmpty(user.UsrName) ||
                             string.IsNullOrEmpty(user.UsrPwd) ||
                             string.IsNullOrEmpty(user.MailServer) ||
-                            string.IsNullOrEmpty(user.MinsInt))
+                            string.IsNullOrEmpty(user.MinsInt) ||
+                            string.IsNullOrEmpty(user.MailSender) ||
+                            string.IsNullOrEmpty(user.MailTemplate))
                         {
                             timerOrder.Enabled = false;
                             MessageBox.Show("Mail Server ERROR!");
@@ -355,6 +359,7 @@ namespace OnlineOrderPrint
                         MAIL_USER_PWD = user.UsrPwd;
                         MAIL_POP = user.MailServer;
                         MAIL_SENDER = user.MailSender;
+                        MAIL_TEMPLATE = user.MailTemplate;
 
                         timer_Int = Convert.ToInt32(user.MinsInt) * 60 * 1000;
 
