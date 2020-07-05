@@ -14,6 +14,8 @@ using System.Windows.Forms;
 using GetServerEmail;
 using HtmlAgilityPack;
 using jmail;
+using LumiSoft.Net.Mail;
+using LumiSoft.Net.POP3.Client;
 
 namespace OnlineOrderPrint
 {
@@ -28,7 +30,8 @@ namespace OnlineOrderPrint
         private string MAIL_POP = "pop.1and1.co.uk";
 
         //private static string MAIL_SENDER = @"noreply@milpoweb.co.uk";
-        private string MAIL_SENDER = @"noreply@internetakeaway.co.uk";
+        //private string MAIL_SENDER = @"noreply@internetakeaway.co.uk";
+        private string MAIL_SENDER = @"noreply@dolbynonline.co.uk";
         private static string MAIL_RECIVER = @"";
 
         private static List<string> textList;       //打印内容行
@@ -58,146 +61,8 @@ namespace OnlineOrderPrint
 
         private void ReciveMail()
         {
-            //string poptity, senders, sendmail, subject, HtmlBody, TextBody, date, size;
-            string sendmail, HtmlBody = "", date, reciver;
-
-            POP3Class popMail = new POP3Class();
-            jmail.Message mailMessage;
-
-            try
-            {
-                popMail.Connect(MAIL_USER_NAME, MAIL_USER_PWD, MAIL_POP);
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Can not connect email server");
-                if (File.Exists(Environment.CurrentDirectory + wavError))
-                {
-                    SoundPlayer player = new SoundPlayer(Environment.CurrentDirectory + wavError);
-                    player.Play();
-                }
-                //return "";
-                return;
-            }
-
-            if (0 < popMail.Count)
-            {
-                for (int i = popMail.Count; i <= popMail.Count; i--)
-                {
-                    
-                    if (!SqlHelper.QueryId(@"SELECT mailID FROM Mail_ID WHERE mailID='" + popMail.GetMessageUID(i) + "'"))
-                    {
-                        try
-                        {
-                            mailMessage = popMail.Messages[i];
-                        }
-                        catch (Exception)
-                        {
-                            popMail.Connect(MAIL_USER_NAME, MAIL_USER_PWD, MAIL_POP);
-                            mailMessage = popMail.Messages[i];
-                        }
-                    }
-                    else
-                    {
-                        return;
-                    }
-
-
-                    mailMessage.Charset = "utf-8";
-                    mailMessage.Silent = true;
-                    mailMessage.EnableCharsetTranslation = true;
-                    mailMessage.ContentTransferEncoding = "Base64";
-                    mailMessage.Encoding = "Base64";
-                    mailMessage.ISOEncodeHeaders = false;
-
-                    //邮件优先级：
-                    //poptity = mailMessage.Priority.ToString();
-                    //发件人
-                    //senders = mailMessage.FromName;
-                    //发件人地址
-                    sendmail = mailMessage.From.ToString();
-                    //主题
-                    //subject = mailMessage.Subject;
-                    //内容
-                    HtmlBody = mailMessage.HTMLBody;
-                    //TextBody = mailMessage.Body;
-                    //发送日期时间
-                    date = mailMessage.Date.ToString("d");
-                    if (Convert.ToDateTime(date) < Convert.ToDateTime(DateTime.Now.ToShortDateString()))
-                    {
-                        break;
-                    }
-                    //size = mailMessage.Size.ToString();
-                    ////收件人地址
-                    //reciver = mailMessage.RecipientsString.ToString();
-
-                    //删除邮件
-                    //popMail.DeleteSingleMessage(i);
-
-                    if (!sendmail.Equals(MAIL_SENDER))
-                    {
-                        continue;
-                    }
-
-                    //if (!reciver.Replace("\r\n", "").Equals(MAIL_RECIVER))
-                    //{
-                    //    continue;
-                    //}
-
-                    //Console.WriteLine("主题：" + subject + "<br>");
-                    //Console.WriteLine("发件人：" + senders + "<" + sendmail + "><br>");
-                    //Console.WriteLine("发送时间：" + date + "<br>");
-                    //Console.WriteLine("邮件大小：" + size + "<br>");
-                    //Console.WriteLine("邮件优先级：" + poptity + "<br>");
-                    //Console.WriteLine("TextBody：" + TextBody + "<br>");
-                    //Console.WriteLine("内容：<br>" + HtmlBody + "<hr>");
-
-                    //GetPrtStr(HtmlBody);
-
-                    //播放语音提示
-
-                    if (File.Exists(Environment.CurrentDirectory + wavNewMail))
-                    {
-                        SoundPlayer player = new SoundPlayer(Environment.CurrentDirectory + wavNewMail);
-                        player.Play();
-                    }
-                    
-                    PrtOrder(HtmlBody.Replace("脳", "×").Replace("拢", "£"));
-
-                    //打印完成后插入数据
-                    if (!SqlHelper.InsertId(@"INSERT INTO Mail_ID(mailID, orderID, orderType, orderTime) VALUES('"
-                                           + popMail.GetMessageUID(i) + "', '"
-                                           + orderId + "', '"
-                                           + orderType + "', '"
-                                           + orderDate + "')"))
-                    {
-                        MessageBox.Show("Insert Data Error!");
-                    }
-                    else
-                    {
-                        int index = this.dgvOrder.Rows.Add();
-                        dgvOrder.Rows[index].Cells[0].Value = orderId;
-                        dgvOrder.Rows[index].Cells[1].Value = orderDate;
-                        dgvOrder.Rows[index].Cells[2].Value = orderType;
-
-                        dgvOrder.Refresh();
-                    }
-                }
-
-                if (popMail != null)
-                {
-                    popMail.Disconnect();
-                    popMail = null;
-                }
-                //return HtmlBody.Replace("脳", "×").Replace("拢", "£");
-            }
-            else
-            {
-                popMail.Disconnect();
-                popMail = null;
-
-                //return "";
-            }
+            //JMailRecive();
+            LumiSoftMail();
         }
 
         private string GetPrtStr(string htmlText)
@@ -216,7 +81,7 @@ namespace OnlineOrderPrint
                 node = doc.DocumentNode.SelectSingleNode(HtmlTextPath.HEAD_ORDER_ID);
                 //Console.WriteLine(node.InnerText);
                 sb.Append(GetSpace((39 - node.InnerText.Length) / 2) + node.InnerText.Replace("&nbsp;", "").Trim());
-                orderId = node.InnerText.Replace("&nbsp;", "").Trim().Substring(node.InnerText.Replace("&nbsp;", "").Trim().IndexOf("#") + 1);
+                orderId = node.InnerText.Replace("&nbsp;", "").Trim().Substring(node.InnerText.Replace("&nbsp;", "").Trim().IndexOf("#"));
                 sb.Append(Environment.NewLine);
 
                 node = doc.DocumentNode.SelectSingleNode(HtmlTextPath.HEAD_ORDER_TYPE);
@@ -265,7 +130,7 @@ namespace OnlineOrderPrint
 
                 //}
 
-                sb.Append("Code" + GetSpace(2) + "Qty" + GetSpace(2) + "Name" + GetSpace(17) + "Price" + GetSpace(2));
+                sb.Append("Code" + GetSpace(2) + "Qty" + GetSpace(2) + "Name" + GetSpace(19) + "Price");
                 sb.Append(Environment.NewLine);
 
                 HtmlNodeCollection nodeCollection = doc.DocumentNode.SelectSingleNode("/html[1]/body[1]/div[1]/center[1]/table[1]/tbody[1]").ChildNodes;
@@ -301,8 +166,16 @@ namespace OnlineOrderPrint
 
                     foreach (var n in hnc.Where(s => s.InnerText.Replace("\r\n", "").Trim().Replace("&nbsp;", "").Length > 0))
                     {
-                        sb.Append(GetSpace(39 - n.InnerText.Replace("\r\n", "").Trim().Replace("&nbsp;", "").Length) + n.InnerText.Replace("\r\n", "").Trim().Replace("&nbsp;", ""));
-                        sb.Append(Environment.NewLine);
+                        if (n.InnerText.Replace("\r\n", "").Trim().Replace("&nbsp;", "").Substring(0, 4).ToUpper().Equals("FREE"))
+                        {
+                            sb.Append(GetSpace((39 - n.InnerText.Replace("\r\n", "").Trim().Replace("&nbsp;", "").Length) / 2) + n.InnerText.Replace("\r\n", "").Trim().Replace("&nbsp;", ""));
+                            sb.Append(Environment.NewLine);
+                        }
+                        else
+                        {
+                            sb.Append(GetSpace(39 - n.InnerText.Replace("\r\n", "").Trim().Replace("&nbsp;", "").Length) + n.InnerText.Replace("\r\n", "").Trim().Replace("&nbsp;", ""));
+                            sb.Append(Environment.NewLine);
+                        }
                     }
                 }
                 catch (Exception)
@@ -359,10 +232,10 @@ namespace OnlineOrderPrint
                 sb.Append(node.InnerText.Replace(@"&nbsp;", ""));
                 sb.Append(Environment.NewLine);
 
-                string str = @"Powered by Milpo Technologies";
+                string str = @"Powered by Dolbyn Technologies";
                 sb.Append(GetSpace((39 - str.Length) / 2) + str);
                 sb.Append(Environment.NewLine);
-                str = @"http://www.milpo.co.uk";
+                str = @"http://www.dolbyncomputers.com";
                 sb.Append(GetSpace((39 - str.Length) / 2) + str);
                 sb.Append(Environment.NewLine);
 
@@ -553,18 +426,18 @@ namespace OnlineOrderPrint
         {
             StringBuilder sb = new StringBuilder();
 
-            sb.Append(sCode + GetSpace(6 - sCode.Length) + sQty + GetSpace(5 - sQty.Length));
-            if (sName.Length > 21)
+            sb.Append(sCode + GetSpace(6 - sCode.Length) + sQty + GetSpace(4 - sQty.Length));
+            if (sName.Length > 22)
             {
-                sb.Append(sName.Substring(0, 20));
-                sb.Append(GetSpace(1) + sPrice);
+                sb.Append(sName.Substring(0, 21));
+                sb.Append(GetSpace(2) + sPrice);
                 sb.Append(Environment.NewLine);
-                sb.Append(GetSpace(11) + sName.Substring(20, sName.Length - 21));
+                sb.Append(GetSpace(11) + sName.Substring(21, sName.Length - 21));
                 sb.Append(Environment.NewLine);
             }
             else
             {
-                sb.Append(sName + GetSpace(21 - sName.Length));
+                sb.Append(sName + GetSpace(22 - sName.Length));
                 sb.Append(sPrice);
             }
 
@@ -664,10 +537,315 @@ namespace OnlineOrderPrint
         private void btnRetrieveOrder_Click(object sender, EventArgs e)
         {
             timerOrder.Enabled = false;
+            btnRetrieveOrder.Enabled = false;
 
             ReciveMail();
 
             timerOrder.Enabled = true;
+            btnRetrieveOrder.Enabled = true;
+        }
+
+        private void JMailRecive()
+        {
+            //string poptity, senders, sendmail, subject, HtmlBody, TextBody, date, size;
+            string sendmail, HtmlBody = "", date, reciver;
+
+            POP3Class popMail = new POP3Class();
+            jmail.Message mailMessage;
+
+            try
+            {
+                popMail.Connect(MAIL_USER_NAME, MAIL_USER_PWD, MAIL_POP);
+                popMail.Timeout = 45000;
+            }
+            catch (Exception ex)
+            {
+                //popMail = null;
+                //popMail.Disconnect();
+                Console.Out.WriteLine("ex:" + ex);
+                richTextBox1.Text += System.Environment.NewLine + "ex:" + ex;
+                //MessageBox.Show("Can not connect email server");
+                Console.Out.WriteLine("Can not connect email server" + DateTime.Now.ToString("o"));
+                richTextBox1.Text += System.Environment.NewLine + "Can not connect email server:" + DateTime.Now.ToString("o");
+                //if (File.Exists(Environment.CurrentDirectory + wavError))
+                //{
+                //    SoundPlayer player = new SoundPlayer(Environment.CurrentDirectory + wavError);
+                //    player.Play();
+                //}
+                //return "";
+
+                //popMail = null;
+
+                //popMail.Connect(MAIL_USER_NAME, MAIL_USER_PWD, MAIL_POP);
+
+                return;
+            }
+
+            Console.Out.WriteLine(DateTime.Now.ToString("o"));
+            richTextBox1.Text += System.Environment.NewLine + DateTime.Now.ToString("o");
+            if (0 < popMail.Count)
+            {
+                for (int i = popMail.Count; i <= popMail.Count; i--)
+                {
+
+                    if (!SqlHelper.QueryId(@"SELECT mailID FROM Mail_ID WHERE mailID='" + popMail.GetMessageUID(i) + "'"))
+                    {
+                        try
+                        {
+                            mailMessage = popMail.Messages[i];
+                        }
+                        catch (Exception)
+                        {
+                            popMail.Connect(MAIL_USER_NAME, MAIL_USER_PWD, MAIL_POP);
+                            mailMessage = popMail.Messages[i];
+                        }
+                    }
+                    else
+                    {
+                        return;
+                    }
+
+
+                    mailMessage.Charset = "utf-8";
+                    mailMessage.Silent = true;
+                    mailMessage.EnableCharsetTranslation = true;
+                    mailMessage.ContentTransferEncoding = "Base64";
+                    //mailMessage.Encoding = "Base64";
+                    mailMessage.Encoding = @"Base64";
+                    mailMessage.ISOEncodeHeaders = false;
+
+                    //邮件优先级：
+                    //poptity = mailMessage.Priority.ToString();
+                    //发件人
+                    //senders = mailMessage.FromName;
+                    //发件人地址
+                    sendmail = mailMessage.From.ToString();
+                    //主题
+                    //subject = mailMessage.Subject;
+                    //内容
+                    HtmlBody = mailMessage.HTMLBody;
+                    //TextBody = mailMessage.Body;
+                    //发送日期时间
+                    date = mailMessage.Date.ToString("d");
+                    if (Convert.ToDateTime(date) < Convert.ToDateTime(DateTime.Now.ToShortDateString()))
+                    {
+                        break;
+                    }
+                    //size = mailMessage.Size.ToString();
+                    ////收件人地址
+                    //reciver = mailMessage.RecipientsString.ToString();
+
+                    //删除邮件
+                    //popMail.DeleteSingleMessage(i);
+
+                    if (!sendmail.Equals(MAIL_SENDER))
+                    {
+                        continue;
+                    }
+
+                    //if (!reciver.Replace("\r\n", "").Equals(MAIL_RECIVER))
+                    //{
+                    //    continue;
+                    //}
+
+                    //Console.WriteLine("主题：" + subject + "<br>");
+                    //Console.WriteLine("发件人：" + senders + "<" + sendmail + "><br>");
+                    //Console.WriteLine("发送时间：" + date + "<br>");
+                    //Console.WriteLine("邮件大小：" + size + "<br>");
+                    //Console.WriteLine("邮件优先级：" + poptity + "<br>");
+                    //Console.WriteLine("TextBody：" + TextBody + "<br>");
+                    //Console.WriteLine("内容：<br>" + HtmlBody + "<hr>");
+
+                    //GetPrtStr(HtmlBody);
+
+                    //播放语音提示
+
+                    if (File.Exists(Environment.CurrentDirectory + wavNewMail))
+                    {
+                        SoundPlayer player = new SoundPlayer(Environment.CurrentDirectory + wavNewMail);
+                        player.Play();
+                    }
+
+                    PrtOrder(HtmlBody.Replace("脳", "×").Replace("拢", "£"));
+
+                    //打印完成后插入数据
+                    if (!SqlHelper.InsertId(@"INSERT INTO Mail_ID(mailID, orderID, orderType, orderTime) VALUES('"
+                                           + popMail.GetMessageUID(i) + "', '"
+                                           + orderId + "', '"
+                                           + orderType + "', '"
+                                           + orderDate + "')"))
+                    {
+                        MessageBox.Show("Insert Data Error!");
+                    }
+                    else
+                    {
+                        //int index = this.dgvOrder.Rows.Add();
+                        this.dgvOrder.Rows.Insert(0, dgvOrder.Rows);
+                        dgvOrder.Rows[0].Cells[0].Value = orderId;
+                        dgvOrder.Rows[0].Cells[1].Value = orderDate;
+                        dgvOrder.Rows[0].Cells[2].Value = orderType;
+
+                        dgvOrder.Refresh();
+                    }
+                }
+
+                if (popMail != null)
+                {
+                    //popMail = null;
+                    try
+                    {
+                        popMail.Disconnect();
+                    }
+                    catch (Exception)
+                    {
+                        Console.Out.WriteLine("Error if (popMail != null)");
+                        richTextBox1.Text += System.Environment.NewLine + @"Error if (popMail != null)";
+                    }
+                }
+                //return HtmlBody.Replace("脳", "×").Replace("拢", "£");
+            }
+            else
+            {
+                //popMail = null;
+                try
+                {
+                    popMail.Disconnect();
+                }
+                catch (Exception)
+                {
+                    Console.Out.WriteLine("Error else");
+                    richTextBox1.Text += System.Environment.NewLine + @"Error else";
+                }
+
+                //return "";
+            }
+        }
+
+        private void LumiSoftMail()
+        {
+            string sendmail, HtmlBody = "", date;
+
+            POP3_Client popMail = new POP3_Client();
+            
+            try
+            {
+                popMail.Connect(MAIL_POP, 110, false);
+                popMail.Login(MAIL_USER_NAME, MAIL_USER_PWD);
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine("ex:" + ex);
+                richTextBox1.Text += System.Environment.NewLine + "ex:" + ex;
+                Console.Out.WriteLine("Can not connect email server" + DateTime.Now.ToString("o"));
+                richTextBox1.Text += System.Environment.NewLine + "Can not connect email server:" + DateTime.Now.ToString("o");
+                return;
+            }
+
+            Console.Out.WriteLine(DateTime.Now.ToString("o"));
+            richTextBox1.Text += System.Environment.NewLine + DateTime.Now.ToString("o");
+            POP3_ClientMessageCollection messagesCollection = popMail.Messages;
+
+            POP3_ClientMessage message = null;
+
+            if (0 < messagesCollection.Count)
+            {
+                for (int i = messagesCollection.Count - 1; i < messagesCollection.Count; i--)
+                {
+
+                    if (!SqlHelper.QueryId(@"SELECT mailID FROM Mail_ID WHERE mailID='" + messagesCollection[i].UID + "'"))
+                    {
+                        try
+                        {
+                            message = popMail.Messages[i];
+                        }
+                        catch (Exception)
+                        {
+                            popMail.Connect(MAIL_POP, 587, true);
+                            popMail.Login(MAIL_USER_NAME, MAIL_USER_PWD);
+                        }
+                    }
+                    else
+                    {
+                        return;
+                    }
+
+                    Mail_Message mailMessage = null;
+                    if (message != null)
+                    {
+                        byte[] messBytes = message.MessageToByte();
+                        mailMessage = Mail_Message.ParseFromByte(messBytes);
+                    }
+                    
+                    sendmail = mailMessage.From[0].Address;
+                    HtmlBody = mailMessage.BodyHtmlText;
+                    date = mailMessage.Date.ToString("d");
+                    if (Convert.ToDateTime(date) < Convert.ToDateTime(DateTime.Now.ToShortDateString()))
+                    {
+                        break;
+                    }
+
+                    if (!sendmail.Equals(MAIL_SENDER))
+                    {
+                        continue;
+                    }
+
+                    //播放语音提示
+
+                    if (File.Exists(Environment.CurrentDirectory + wavNewMail))
+                    {
+                        SoundPlayer player = new SoundPlayer(Environment.CurrentDirectory + wavNewMail);
+                        player.Play();
+                    }
+
+                    PrtOrder(HtmlBody.Replace("脳", "×").Replace("拢", "£"));
+
+                    //打印完成后插入数据
+                    if (!SqlHelper.InsertId(@"INSERT INTO Mail_ID(mailID, orderID, orderType, orderTime) VALUES('"
+                                           + messagesCollection[i].UID + "', '"
+                                           + orderId + "', '"
+                                           + orderType + "', '"
+                                           + orderDate + "')"))
+                    {
+                        MessageBox.Show("Insert Data Error!");
+                    }
+                    else
+                    {
+                        //int index = this.dgvOrder.Rows.Add();
+                        this.dgvOrder.Rows.Insert(0, dgvOrder.Rows);
+                        dgvOrder.Rows[0].Cells[0].Value = orderId;
+                        dgvOrder.Rows[0].Cells[1].Value = orderDate;
+                        dgvOrder.Rows[0].Cells[2].Value = orderType;
+
+                        dgvOrder.Refresh();
+                    }
+                }
+
+                if (popMail != null)
+                {
+                    //popMail = null;
+                    try
+                    {
+                        popMail.Disconnect();
+                    }
+                    catch (Exception)
+                    {
+                        Console.Out.WriteLine("Error if (popMail != null)");
+                        richTextBox1.Text += System.Environment.NewLine + @"Error if (popMail != null)";
+                    }
+                }
+            }
+            else
+            {
+                try
+                {
+                    popMail.Disconnect();
+                }
+                catch (Exception)
+                {
+                    Console.Out.WriteLine("Error else");
+                    richTextBox1.Text += System.Environment.NewLine + @"Error else";
+                }
+            }
         }
     }
 }
