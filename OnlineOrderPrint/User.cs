@@ -12,5 +12,6 @@ namespace OnlineOrderPrint
         public string UsrPwd;
         public string MinsInt;
         public string MailServer;
+        public string MailSender;
     }
 }

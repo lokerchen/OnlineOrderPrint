@@ -33,6 +33,7 @@ namespace OnlineOrderPrint
                 txtUsrPwd.Text = user.UsrPwd;
                 txtMinsInt.Text = user.MinsInt;
                 txtMailServer.Text = user.MailServer;
+                txtReceiverMail.Text = user.MailSender;
             }
         }
 
@@ -45,11 +46,17 @@ namespace OnlineOrderPrint
                 {
                     SqlHelper.InsertId("INSERT INTO User VALUES('" + txtUsrName.Text + "','"
                                        + txtUsrPwd.Text + "','"
-                                       + txtMinsInt.Text + "')");
+                                       + txtMinsInt.Text + "','"
+                                       + txtMailServer.Text + "','"
+                                       + txtReceiverMail.Text + "')");
                 }
                 else
                 {
-                    SqlHelper.InsertId("UPDATE User SET UsrName='" + txtUsrName.Text + "', UsrPwd='" + txtUsrPwd.Text + "', MinsInt='" + txtMinsInt.Text + "'");
+                    SqlHelper.InsertId("UPDATE User SET UsrName='" + txtUsrName.Text 
+                                                    + "', UsrPwd='" + txtUsrPwd.Text 
+                                                    + "', MinsInt='" + txtMinsInt.Text 
+                                                    + "', MailServer='" + txtMailServer.Text
+                                                    + "', MailSender='" + txtReceiverMail.Text + "'");
                 }
 
                 MessageBox.Show("Save success!");
@@ -65,6 +72,12 @@ namespace OnlineOrderPrint
         {
             lblMailServer.Visible = false;
             txtMailServer.Visible = true;
+        }
+
+        private void lblReceiverMail_DoubleClick(object sender, EventArgs e)
+        {
+            lblReceiverMail.Visible = false;
+            txtReceiverMail.Visible = true;
         }
     }
 }

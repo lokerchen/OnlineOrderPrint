@@ -354,6 +354,7 @@ namespace OnlineOrderPrint
                         MAIL_USER_NAME = user.UsrName;
                         MAIL_USER_PWD = user.UsrPwd;
                         MAIL_POP = user.MailServer;
+                        MAIL_SENDER = user.MailSender;
 
                         timer_Int = Convert.ToInt32(user.MinsInt) * 60 * 1000;
 
