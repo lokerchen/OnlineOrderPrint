@@ -894,7 +894,7 @@ namespace OnlineOrderPrint
 
                     //PrtOrder(HtmlBody.Replace("脳", "×").Replace("拢", "£"));
                     //PrtOrderWithTemplate(HtmlBody);
-
+                    HtmlBody = HtmlBody.Replace("<body style=\"", "<body style=\"font-family:Arial; ");
                     GetPrtInfo(HtmlBody);
                     //存在订单时不打印
                     if (SqlHelper.QueryId(@"SELECT mailID FROM Mail_ID WHERE orderID='" + orderId + "'"))
@@ -903,9 +903,9 @@ namespace OnlineOrderPrint
                     }
 
                     
-                    HtmlBody = HtmlBody.Replace("h1", "h5").Replace("<p>", "").Replace("</p>", "<br />").Replace("<p style=\"width:94%;\">", "");
+                    HtmlBody = HtmlBody.Replace("h1", "h4").Replace("<p>", "").Replace("</p>", "<br />").Replace("<p style=\"width:94%;\">", "").Replace("<strong>", "").Replace("</strong>", "");
                     //HtmlBody = HtmlBody.Replace("h1", "h5");
-                    Print(HtmlBody);
+                    Print(HtmlBody.Replace("<h4>", "").Replace("</h4>", "").Replace("<b>", "").Replace("</b>", ""));
 
                     //打印完成后插入数据
                     if (!SqlHelper.InsertId(@"INSERT INTO Mail_ID(mailID, orderID, orderType, orderTime) VALUES('"
