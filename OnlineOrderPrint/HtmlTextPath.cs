@@ -21,7 +21,14 @@
         public static string BODY_PHONE = @"//html[1]/body[1]/div[1]/p[2]/strong[1]";
 
         //Order Time:&nbsp;05/04/2018 - 22:01 
-        public static string BODY_ORDER_TIME = @"//html[1]/body[1]/div[1]/p[3]/strong[1]";
+        public static string BODY_COLLECTION_ORDER_TIME = @"//html[1]/body[1]/div[1]/p[3]/strong[1]";
+
+        public static string BODY_DELIVER_ORDER_TIME = @"//html[1]/body[1]/div[1]/p[7]/strong[1]";
+
+        //Order Type
+        public static string ORDER_TYPE_DELIVERY = @"DELIVERY";
+
+        public static string ORDER_TYPE_COLLECTION = @"COLLECTION";
 
         //Code
         public static string BODY_TABLE_CODE = @"//html[1]/body[1]/div[1]/strong[1]/strong[1]/center[1]/table[1]/thead[1]/tr[1]/td[1]/strong[1]";

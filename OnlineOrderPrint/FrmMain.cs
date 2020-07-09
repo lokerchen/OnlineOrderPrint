@@ -103,7 +103,7 @@ namespace OnlineOrderPrint
                 sb.Append(node.InnerText.Replace("&nbsp;", ""));
                 sb.Append(Environment.NewLine);
 
-                node = doc.DocumentNode.SelectSingleNode(HtmlTextPath.BODY_ORDER_TIME);
+                node = doc.DocumentNode.SelectSingleNode(HtmlTextPath.BODY_COLLECTION_ORDER_TIME);
                 //Order Time:&nbsp;05/04/2018 - 22:01
                 //Console.WriteLine(node.InnerText);
                 sb.Append(node.InnerText.Replace("&nbsp;", "").Trim());
@@ -825,7 +825,7 @@ namespace OnlineOrderPrint
             }
             catch (Exception ex)
             {
-                //Console.Out.WriteLine("ex:" + ex);
+                Console.Out.WriteLine("ex:" + ex);
                 //richTextBox1.Text += System.Environment.NewLine + "ex:" + ex;
                 //Console.Out.WriteLine("Can not connect email server" + DateTime.Now.ToString("o"));
                 //richTextBox1.Text += System.Environment.NewLine + "Can not connect email server:" + DateTime.Now.ToString("o");
@@ -992,7 +992,7 @@ namespace OnlineOrderPrint
                 node = doc.DocumentNode.SelectSingleNode(HtmlTextPath.BODY_PHONE);
                 prtTemplate.Phone = node.InnerText.Replace("&nbsp;", "");
 
-                node = doc.DocumentNode.SelectSingleNode(HtmlTextPath.BODY_ORDER_TIME);
+                node = doc.DocumentNode.SelectSingleNode(HtmlTextPath.BODY_COLLECTION_ORDER_TIME);
                 sb.Append(node.InnerText.Replace("&nbsp;", "").Trim());
                 orderDate = node.InnerText.Replace("&nbsp;", "").Trim().Substring(node.InnerText.Replace("&nbsp;", "").Trim().IndexOf(":") + 1);
                 prtTemplate.OrderTime = orderDate;
@@ -1212,12 +1212,14 @@ namespace OnlineOrderPrint
 
                 node = doc.DocumentNode.SelectSingleNode(HtmlTextPath.HEAD_ORDER_TYPE);
                 orderType = node.InnerText.Replace("&nbsp;", "").Trim().Substring(0, node.InnerText.Replace("&nbsp;", "").Trim().IndexOf("ORDER")).ToUpper();
-                
-                node = doc.DocumentNode.SelectSingleNode(HtmlTextPath.BODY_ORDER_TIME);
+
+                node = orderType.Equals(HtmlTextPath.ORDER_TYPE_COLLECTION) ? doc.DocumentNode.SelectSingleNode(HtmlTextPath.BODY_COLLECTION_ORDER_TIME)
+                                                                            : doc.DocumentNode.SelectSingleNode(HtmlTextPath.BODY_DELIVER_ORDER_TIME);
                 orderDate = node.InnerText.Replace("&nbsp;", "").Trim().Substring(node.InnerText.Replace("&nbsp;", "").Trim().IndexOf(":") + 1);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.InnerException);
                 richTextBox1.Text += Environment.NewLine + DateTime.Now.ToString("o") + @"######GET PRT ERROR######";
                 richTextBox1.ScrollToCaret();
             }
