@@ -894,6 +894,13 @@ namespace OnlineOrderPrint
 
                     //PrtOrder(HtmlBody.Replace("脳", "×").Replace("拢", "£"));
                     //PrtOrderWithTemplate(HtmlBody);
+
+                    //存在订单时不打印
+                    if (SqlHelper.QueryId(@"SELECT mailID FROM Mail_ID WHERE orderID='" + orderId + "'"))
+                    {
+                        continue;
+                    }
+
                     GetPrtInfo(HtmlBody);
                     HtmlBody = HtmlBody.Replace("h1", "h5").Replace("<p>", "").Replace("</p>", "<br />").Replace("<p style=\"width:94%;\">", "");
                     //HtmlBody = HtmlBody.Replace("h1", "h5");
