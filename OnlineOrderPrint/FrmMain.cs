@@ -895,13 +895,14 @@ namespace OnlineOrderPrint
                     //PrtOrder(HtmlBody.Replace("脳", "×").Replace("拢", "£"));
                     //PrtOrderWithTemplate(HtmlBody);
 
+                    GetPrtInfo(HtmlBody);
                     //存在订单时不打印
                     if (SqlHelper.QueryId(@"SELECT mailID FROM Mail_ID WHERE orderID='" + orderId + "'"))
                     {
                         continue;
                     }
 
-                    GetPrtInfo(HtmlBody);
+                    
                     HtmlBody = HtmlBody.Replace("h1", "h5").Replace("<p>", "").Replace("</p>", "<br />").Replace("<p style=\"width:94%;\">", "");
                     //HtmlBody = HtmlBody.Replace("h1", "h5");
                     Print(HtmlBody);
@@ -1220,8 +1221,7 @@ namespace OnlineOrderPrint
                 node = doc.DocumentNode.SelectSingleNode(HtmlTextPath.HEAD_ORDER_TYPE);
                 orderType = node.InnerText.Replace("&nbsp;", "").Trim().Substring(0, node.InnerText.Replace("&nbsp;", "").Trim().IndexOf("ORDER")).ToUpper();
 
-                node = orderType.Equals(HtmlTextPath.ORDER_TYPE_COLLECTION) ? doc.DocumentNode.SelectSingleNode(HtmlTextPath.BODY_COLLECTION_ORDER_TIME)
-                                                                            : doc.DocumentNode.SelectSingleNode(HtmlTextPath.BODY_DELIVER_ORDER_TIME);
+                node = doc.DocumentNode.SelectSingleNode(orderType.Trim().Equals(HtmlTextPath.ORDER_TYPE_COLLECTION) ? HtmlTextPath.BODY_COLLECTION_ORDER_TIME : HtmlTextPath.BODY_DELIVER_ORDER_TIME);
                 orderDate = node.InnerText.Replace("&nbsp;", "").Trim().Substring(node.InnerText.Replace("&nbsp;", "").Trim().IndexOf(":") + 1);
             }
             catch (Exception ex)
