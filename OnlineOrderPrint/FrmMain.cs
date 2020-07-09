@@ -16,6 +16,7 @@ using HtmlAgilityPack;
 using jmail;
 using LumiSoft.Net.Mail;
 using LumiSoft.Net.POP3.Client;
+using Microsoft.Win32;
 
 namespace OnlineOrderPrint
 {
@@ -342,7 +343,7 @@ namespace OnlineOrderPrint
                             string.IsNullOrEmpty(user.MailTemplate))
                         {
                             timerOrder.Enabled = false;
-                            MessageBox.Show("Mail Server ERROR!");
+                            MessageBox.Show(@"Mail Server ERROR!", @"ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                             if (File.Exists(Environment.CurrentDirectory + wavError))
                             {
@@ -434,12 +435,50 @@ namespace OnlineOrderPrint
 
             sb.Append(Environment.NewLine);
             sb.Append(sCode + GetSpace(HtmlTextPath.PRT_CODE - sCode.Length) + sQty + GetSpace(HtmlTextPath.PRT_QTY - sQty.Length));
+
+            //sb.Append(GetSpace(1) + sPrice);
+
             if (sName.Length > HtmlTextPath.PRT_MENUITEM_NUM)
             {
-                sb.Append(sName.Substring(0, HtmlTextPath.PRT_MENUITEM_NUM - 1));
-                sb.Append(GetSpace(HtmlTextPath.PRT_WORD_LOWER_NUM - sb.Length - sPrice.Length + 1 + HtmlTextPath.PRT_OFFSET) + sPrice);
+                //sb.Append(sName.Substring(0, HtmlTextPath.PRT_MENUITEM_NUM - 1));
+                //sb.Append(GetSpace(HtmlTextPath.PRT_WORD_LOWER_NUM - sb.Length - sPrice.Length + 1 + HtmlTextPath.PRT_OFFSET) + sPrice);
+                //sb.Append(Environment.NewLine);
+                //sb.Append(GetSpace(HtmlTextPath.PRT_CODE + HtmlTextPath.PRT_QTY + 3) + sName.Substring(HtmlTextPath.PRT_MENUITEM_NUM - 1));
+
+                string[] s = sName.Split(' ');
+                StringBuilder sb1 = new StringBuilder();
+                StringBuilder sb2 = new StringBuilder();
+                bool isAdd = false;
+
+                foreach (string s1 in s.Where(s1 => !string.IsNullOrEmpty(s1)))
+                {
+                    if (isAdd)
+                    {
+                        sb2.Append(s1);
+                    }
+                    else
+                    {
+                        if ((sb1.Length + s1.Length) < HtmlTextPath.PRT_MENUITEM_NUM)
+                        {
+                            sb1.Append(s1 + " ");
+                        }
+                        else
+                        {
+                            isAdd = true;
+                            sb2.Append(s1);
+                        }
+                    }
+                }
+
+                //sb.Replace(" ", sb1.ToString(), (HtmlTextPath.PRT_CODE + HtmlTextPath.PRT_QTY), sb1.Length);
+                //sb.Append(Environment.NewLine);
+                //sb.Append(sb2);
+
+                sb.Append(sb1);
+                sb.Append(GetSpace(HtmlTextPath.PRT_WORD_LOWER_NUM - sb.Length + 5 - sPrice.Length) + sPrice);
                 sb.Append(Environment.NewLine);
-                sb.Append(GetSpace(HtmlTextPath.PRT_CODE + HtmlTextPath.PRT_QTY + 3) + sName.Substring(HtmlTextPath.PRT_MENUITEM_NUM - 1));
+                sb.Append(GetSpace(HtmlTextPath.PRT_CODE + HtmlTextPath.PRT_QTY + 4) + sb2.ToString());
+
                 //string[] s = sName.Split(' ');
                 //StringBuilder sbTmp = new StringBuilder();
                 //int i = 0;
@@ -447,27 +486,40 @@ namespace OnlineOrderPrint
 
                 //foreach (string s1 in s)
                 //{
+                //    if (string.IsNullOrEmpty(s1)) continue;
+
                 //    if (i == 0)
                 //    {
+                //        sb.Append(s1);
                 //        sbTmp.Append(s1);
                 //    }
                 //    else
                 //    {
-                //        if ((sbTmp.Length + s1.Length) < HtmlTextPath.PRT_MENUITEM_NUM)
+                //        if ((sbTmp.Length + s1.Length + 1) < HtmlTextPath.PRT_MENUITEM_NUM)
                 //        {
-                //            sbTmp.Append(" " + s1);
+                //            sb.Append(" " + s1);
+                //            sbTmp.Append(s1);
                 //        }
                 //        else
                 //        {
-                //            sb.Append(sbTmp);
-                //            sb.Append(GetSpace(HtmlTextPath.PRT_WORD_LOWER_NUM - sb.Length - sPrice.Length + 1) + sPrice);
-                //            sbTmp.Append(Environment.NewLine);
-                //            sbTmp.Append(s1);
+                //            //sb.Append(sbTmp);
+                //            if (!isAddPrice)
+                //            {
+                //                sb.Append(GetSpace(HtmlTextPath.PRT_WORD_LOWER_NUM - sb.Length + 2) + sPrice);
+                //                isAddPrice = true;
+                //                sb.Append(Environment.NewLine);
+                //                sb.Append(GetSpace(HtmlTextPath.PRT_CODE + HtmlTextPath.PRT_QTY + 4));
+                //            }
+                //            else
+                //            {
+                //                sb.Append(s1 + " ");
+                //                sbTmp.Append(s1 + " ");
+                //            }
                 //        }
                 //    }
                 //    i++;
 
-                //    sb.Append(sbTmp.ToString());
+                //    //sb.Append(sbTmp.ToString());
                 //}
             }
             else
@@ -547,7 +599,7 @@ namespace OnlineOrderPrint
             }
             catch (Exception ex)
             {
-                MessageBox.Show("打印失败." + ex.Message);
+                MessageBox.Show("打印失败." + ex.Message, @"ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -573,9 +625,11 @@ namespace OnlineOrderPrint
         {
             timerOrder.Enabled = false;
             btnRetrieveOrder.Enabled = false;
+            btnRetrieveOrder.BackColor = Color.DimGray;
 
             ReciveMail();
 
+            btnRetrieveOrder.BackColor = Color.Gold;
             timerOrder.Enabled = true;
             btnRetrieveOrder.Enabled = true;
         }
@@ -710,7 +764,7 @@ namespace OnlineOrderPrint
                                            + orderType + "', '"
                                            + orderDate + "')"))
                     {
-                        MessageBox.Show("Insert Data Error!");
+                        MessageBox.Show(@"WRITE Data Error!", @"ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     else
                     {
@@ -764,20 +818,25 @@ namespace OnlineOrderPrint
             
             try
             {
-                popMail.Connect(MAIL_POP, 110, false);
+                popMail.Timeout = HtmlTextPath.EMAIL_TIME_OUT;
+                popMail.Connect(MAIL_POP, HtmlTextPath.EMAIL_PORT, false);
+
                 popMail.Login(MAIL_USER_NAME, MAIL_USER_PWD);
             }
             catch (Exception ex)
             {
-                Console.Out.WriteLine("ex:" + ex);
-                richTextBox1.Text += System.Environment.NewLine + "ex:" + ex;
-                Console.Out.WriteLine("Can not connect email server" + DateTime.Now.ToString("o"));
-                richTextBox1.Text += System.Environment.NewLine + "Can not connect email server:" + DateTime.Now.ToString("o");
+                //Console.Out.WriteLine("ex:" + ex);
+                //richTextBox1.Text += System.Environment.NewLine + "ex:" + ex;
+                //Console.Out.WriteLine("Can not connect email server" + DateTime.Now.ToString("o"));
+                //richTextBox1.Text += System.Environment.NewLine + "Can not connect email server:" + DateTime.Now.ToString("o");
+                richTextBox1.Text += Environment.NewLine + DateTime.Now.ToString("o") + @"######Can not connect email server######";
+                richTextBox1.ScrollToCaret();
                 return;
             }
 
             Console.Out.WriteLine(DateTime.Now.ToString("o"));
-            richTextBox1.Text += System.Environment.NewLine + DateTime.Now.ToString("o");
+            richTextBox1.Text += Environment.NewLine + DateTime.Now.ToString("o");
+            richTextBox1.ScrollToCaret();
             POP3_ClientMessageCollection messagesCollection = popMail.Messages;
 
             POP3_ClientMessage message = null;
@@ -795,7 +854,8 @@ namespace OnlineOrderPrint
                         }
                         catch (Exception)
                         {
-                            popMail.Connect(MAIL_POP, 587, true);
+                            popMail.Timeout = HtmlTextPath.EMAIL_TIME_OUT;
+                            popMail.Connect(MAIL_POP, HtmlTextPath.EMAIL_PORT, true);
                             popMail.Login(MAIL_USER_NAME, MAIL_USER_PWD);
                         }
                     }
@@ -833,7 +893,11 @@ namespace OnlineOrderPrint
                     }
 
                     //PrtOrder(HtmlBody.Replace("脳", "×").Replace("拢", "£"));
-                    PrtOrderWithTemplate(HtmlBody);
+                    //PrtOrderWithTemplate(HtmlBody);
+                    GetPrtInfo(HtmlBody);
+                    HtmlBody = HtmlBody.Replace("h1", "h5").Replace("<p>", "").Replace("</p>", "<br />").Replace("<p style=\"width:94%;\">", "");
+                    //HtmlBody = HtmlBody.Replace("h1", "h5");
+                    Print(HtmlBody);
 
                     //打印完成后插入数据
                     if (!SqlHelper.InsertId(@"INSERT INTO Mail_ID(mailID, orderID, orderType, orderTime) VALUES('"
@@ -842,7 +906,7 @@ namespace OnlineOrderPrint
                                            + orderType + "', '"
                                            + orderDate + "')"))
                     {
-                        MessageBox.Show("Insert Data Error!");
+                        MessageBox.Show(@"WRITE Data Error!", @"ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     else
                     {
@@ -865,8 +929,9 @@ namespace OnlineOrderPrint
                     }
                     catch (Exception)
                     {
-                        Console.Out.WriteLine("Error if (popMail != null)");
-                        richTextBox1.Text += System.Environment.NewLine + @"Error if (popMail != null)";
+                        //Console.Out.WriteLine("Error if (popMail != null)");
+                        richTextBox1.Text += Environment.NewLine + @"Error POPMail != null";
+                        richTextBox1.ScrollToCaret();
                     }
                 }
             }
@@ -878,8 +943,9 @@ namespace OnlineOrderPrint
                 }
                 catch (Exception)
                 {
-                    Console.Out.WriteLine("Error else");
-                    richTextBox1.Text += System.Environment.NewLine + @"Error else";
+                    //Console.Out.WriteLine("Error else");
+                    richTextBox1.Text += Environment.NewLine + @"Error ELSE";
+                    richTextBox1.ScrollToCaret();
                 }
             }
         }
@@ -1107,5 +1173,54 @@ namespace OnlineOrderPrint
             printDocument.Print();
         }
         #endregion
+
+        private void Print(string str)
+        {
+            webBrowser1.DocumentText = str;
+            webBrowser1.DocumentCompleted += wb_DocumentCompleted;
+        }
+
+        private void wb_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+            string keyName = @"Software\Microsoft\Internet Explorer\PageSetup\";
+            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(keyName, true))
+            {
+                if (key != null)
+                {
+                    key.SetValue("footer", ""); //设置页脚为空
+                    key.SetValue("header", ""); //设置页眉为空
+                    //key.SetValue("Print_Background", true); //设置打印背景颜色
+                    key.SetValue("margin_bottom", 0); //设置下页边距为0
+                    key.SetValue("margin_left", 0); //设置左页边距为0
+                    key.SetValue("margin_right", 0); //设置右页边距为0
+                    key.SetValue("margin_top", 0); //设置上页边距为0
+                }
+                webBrowser1.Print();
+            }
+        }
+
+        private void GetPrtInfo(string htmlText)
+        {
+            try
+            {
+                HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
+                doc.LoadHtml(htmlText);
+
+                HtmlNode node;
+                node = doc.DocumentNode.SelectSingleNode(HtmlTextPath.HEAD_ORDER_ID);
+                orderId = node.InnerText.Replace("&nbsp;", "").Trim().Substring(node.InnerText.Replace("&nbsp;", "").Trim().IndexOf("#"));
+
+                node = doc.DocumentNode.SelectSingleNode(HtmlTextPath.HEAD_ORDER_TYPE);
+                orderType = node.InnerText.Replace("&nbsp;", "").Trim().Substring(0, node.InnerText.Replace("&nbsp;", "").Trim().IndexOf("ORDER")).ToUpper();
+                
+                node = doc.DocumentNode.SelectSingleNode(HtmlTextPath.BODY_ORDER_TIME);
+                orderDate = node.InnerText.Replace("&nbsp;", "").Trim().Substring(node.InnerText.Replace("&nbsp;", "").Trim().IndexOf(":") + 1);
+            }
+            catch (Exception)
+            {
+                richTextBox1.Text += Environment.NewLine + DateTime.Now.ToString("o") + @"######GET PRT ERROR######";
+                richTextBox1.ScrollToCaret();
+            }
+        }
     }
 }

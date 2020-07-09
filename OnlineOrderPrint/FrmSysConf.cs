@@ -59,11 +59,11 @@ namespace OnlineOrderPrint
                                                     + "', MailSender='" + txtReceiverMail.Text + "'");
                 }
 
-                MessageBox.Show("Save success!");
+                MessageBox.Show("Save success!", @"DONE", MessageBoxButtons.OK);
             }
             catch (Exception)
             {
-                MessageBox.Show("Save failure!");
+                MessageBox.Show("Save failure!", @"ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 throw;
             }
         }

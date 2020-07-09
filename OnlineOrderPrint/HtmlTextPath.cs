@@ -2,6 +2,12 @@
 {
     public static class HtmlTextPath
     {
+        //邮箱链接超时时长
+        public static int EMAIL_TIME_OUT = 20000;
+
+        //链接邮箱端口
+        public static int EMAIL_PORT = 110;
+
         //Order ID:#XXXXXX
         public static string HEAD_ORDER_ID = @"//html/body/div[1]/div[1]/strong[1]/h3[1]";
 
@@ -36,7 +42,7 @@
         public static string PRT_FONT = @"Arial";
 
         //小写字母个数
-        public static int PRT_WORD_LOWER_NUM = 36;
+        public static int PRT_WORD_LOWER_NUM = 40;
         //大写字母个数
         public static int PRT_WORD_TOPPER_NUM = 26;
         //数字个数
@@ -50,7 +56,7 @@
         //Qty
         public static int PRT_QTY = 5;
         //偏移量
-        public static int PRT_OFFSET = 6;
+        public static int PRT_OFFSET = 5;
 
     }
 }
