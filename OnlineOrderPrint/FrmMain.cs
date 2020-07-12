@@ -8,6 +8,7 @@ using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
 using System.Media;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -330,17 +331,16 @@ namespace OnlineOrderPrint
             #region Timer
             try
             {
+                //网络连接判断
+                if (!IsNetConnect()) return;
+
                 User user = SqlHelper.Query("SELECT * FROM User");
                 if (user != null)
                 {
                     try
                     {
-                        if (string.IsNullOrEmpty(user.UsrName) ||
-                            string.IsNullOrEmpty(user.UsrPwd) ||
-                            string.IsNullOrEmpty(user.MailServer) ||
-                            string.IsNullOrEmpty(user.MinsInt) ||
-                            string.IsNullOrEmpty(user.MailSender) ||
-                            string.IsNullOrEmpty(user.MailTemplate))
+                        if (string.IsNullOrEmpty(user.UsrName) || string.IsNullOrEmpty(user.UsrPwd) || string.IsNullOrEmpty(user.MailServer) || string.IsNullOrEmpty(user.MinsInt) ||
+                            string.IsNullOrEmpty(user.MailSender) || string.IsNullOrEmpty(user.MailTemplate))
                         {
                             timerOrder.Enabled = false;
                             MessageBox.Show(@"Mail Server ERROR!", @"ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -356,6 +356,7 @@ namespace OnlineOrderPrint
 
                             return;
                         }
+
                         MAIL_USER_NAME = user.UsrName;
                         MAIL_USER_PWD = user.UsrPwd;
                         MAIL_POP = user.MailServer;
@@ -814,6 +815,9 @@ namespace OnlineOrderPrint
         {
             string sendmail, HtmlBody = "", date;
 
+            //网络连接判断
+            if (!IsNetConnect()) return; 
+
             POP3_Client popMail = new POP3_Client();
             
             try
@@ -892,6 +896,13 @@ namespace OnlineOrderPrint
                         player.Play();
                     }
 
+                    //发送日期时间
+                    date = mailMessage.Date.ToString("d");
+                    if (Convert.ToDateTime(date) < Convert.ToDateTime(DateTime.Now.ToShortDateString()))
+                    {
+                        break;
+                    }
+
                     //PrtOrder(HtmlBody.Replace("脳", "×").Replace("拢", "£"));
                     //PrtOrderWithTemplate(HtmlBody);
                     HtmlBody = HtmlBody.Replace("<body style=\"", "<body style=\"font-family:Arial; ");
@@ -902,10 +913,11 @@ namespace OnlineOrderPrint
                         continue;
                     }
 
-                    
+                    if (orderId != "#00159") return;
+
                     HtmlBody = HtmlBody.Replace("h1", "h4").Replace("<p>", "").Replace("</p>", "<br />").Replace("<p style=\"width:94%;\">", "").Replace("<strong>", "").Replace("</strong>", "");
                     //HtmlBody = HtmlBody.Replace("h1", "h5");
-                    Print(HtmlBody.Replace("<h4>", "").Replace("</h4>", "").Replace("<b>", "").Replace("</b>", ""));
+                    Print(HtmlBody.Replace("<h4>", "").Replace("</h4>", "").Replace("<b>", "").Replace("</b>", "").Replace("border-top:hidden;", "").Replace("style=\"border-top:hidden;\"", ""));
 
                     //打印完成后插入数据
                     if (!SqlHelper.InsertId(@"INSERT INTO Mail_ID(mailID, orderID, orderType, orderTime) VALUES('"
@@ -1186,10 +1198,13 @@ namespace OnlineOrderPrint
         {
             webBrowser1.DocumentText = str;
             webBrowser1.DocumentCompleted += wb_DocumentCompleted;
+            //webBrowser1.Dispose();
         }
 
         private void wb_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
+            if (webBrowser1.ReadyState < WebBrowserReadyState.Complete) return;
+
             string keyName = @"Software\Microsoft\Internet Explorer\PageSetup\";
             using (RegistryKey key = Registry.CurrentUser.OpenSubKey(keyName, true))
             {
@@ -1202,8 +1217,9 @@ namespace OnlineOrderPrint
                     key.SetValue("margin_left", 0); //设置左页边距为0
                     key.SetValue("margin_right", 0); //设置右页边距为0
                     key.SetValue("margin_top", 0); //设置上页边距为0
+
+                    webBrowser1.Print();
                 }
-                webBrowser1.Print();
             }
         }
 
@@ -1231,5 +1247,31 @@ namespace OnlineOrderPrint
                 richTextBox1.ScrollToCaret();
             }
         }
-    }
+
+        #region 判断网络是否为连接状态
+        /// <summary>
+        /// 判断网络是否为连接状态
+        /// </summary>
+        /// <returns></returns>
+        private bool IsNetConnect()
+        {
+            bool isConnect = NetworkInterface.GetIsNetworkAvailable();
+            if (!isConnect)
+            {
+                //是否存在语音文件
+                if (File.Exists(Environment.CurrentDirectory + wavError))
+                {
+                    SoundPlayer player = new SoundPlayer(Environment.CurrentDirectory + wavError);
+                    player.Play();
+                }
+
+                //增加提示
+                richTextBox1.Text += Environment.NewLine + DateTime.Now.ToString("o") + @"######Network connection failed!######";
+                richTextBox1.ScrollToCaret();
+            }
+
+            return isConnect;
+        }
+    #endregion
+}
 }
