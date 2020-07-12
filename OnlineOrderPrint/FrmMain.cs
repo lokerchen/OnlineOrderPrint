@@ -29,7 +29,7 @@ namespace OnlineOrderPrint
 
         private string MAIL_USER_NAME = "";
         private string MAIL_USER_PWD = "";
-        private string MAIL_POP = "pop.1and1.co.uk";
+        private string MAIL_POP = "pop.1and1.co.uk";        
 
         //private static string MAIL_SENDER = @"noreply@milpoweb.co.uk";
         //private string MAIL_SENDER = @"noreply@internetakeaway.co.uk";
@@ -54,9 +54,18 @@ namespace OnlineOrderPrint
 
         private string orderType = "";
 
+        //打印内容存储，主要用于二次打印
+        private string orderHtmlBody = "";
+
         public static string wavNewMail = @"\NewMail.wav";
 
         public static string wavError = @"\ERROR.wav";
+
+        //记录上一次打印内容，用作对比，避免WebBrowser多次打印
+        public string strLastHtmlBody = "";
+        public bool isPrint = false;
+
+        private System.Threading.AutoResetEvent obj = new System.Threading.AutoResetEvent(false);
 
         public FrmMain()
         {
@@ -763,7 +772,8 @@ namespace OnlineOrderPrint
                                            + popMail.GetMessageUID(i) + "', '"
                                            + orderId + "', '"
                                            + orderType + "', '"
-                                           + orderDate + "')"))
+                                           + orderDate + "', '"
+                                           + HtmlBody + "')"))
                     {
                         MessageBox.Show(@"WRITE Data Error!", @"ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
@@ -912,19 +922,24 @@ namespace OnlineOrderPrint
                     {
                         continue;
                     }
-
-                    if (orderId != "#00159") return;
-
+                    
                     HtmlBody = HtmlBody.Replace("h1", "h4").Replace("<p>", "").Replace("</p>", "<br />").Replace("<p style=\"width:94%;\">", "").Replace("<strong>", "").Replace("</strong>", "");
                     //HtmlBody = HtmlBody.Replace("h1", "h5");
-                    Print(HtmlBody.Replace("<h4>", "").Replace("</h4>", "").Replace("<b>", "").Replace("</b>", "").Replace("border-top:hidden;", "").Replace("style=\"border-top:hidden;\"", ""));
+                    HtmlBody = HtmlBody.Replace("<h4>", "").Replace("</h4>", "").Replace("<b>", "").Replace("</b>", "")
+                                       .Replace("border-top:hidden;", "").Replace("style=\"border-top:hidden;\"", "");
 
+                    //Print(HtmlBody);
+                    webBrowser1.DocumentText = HtmlBody;
+
+                    webBrowser1.DocumentCompleted += wb_DocumentCompleted;
+                    
                     //打印完成后插入数据
-                    if (!SqlHelper.InsertId(@"INSERT INTO Mail_ID(mailID, orderID, orderType, orderTime) VALUES('"
+                    if (!SqlHelper.InsertId(@"INSERT INTO Mail_ID(mailID, orderID, orderType, orderTime, orderHtmlBody) VALUES('"
                                            + messagesCollection[i].UID + "', '"
                                            + orderId + "', '"
                                            + orderType + "', '"
-                                           + orderDate + "')"))
+                                           + orderDate + "', '"
+                                           + HtmlBody + "')"))
                     {
                         MessageBox.Show(@"WRITE Data Error!", @"ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
@@ -935,9 +950,19 @@ namespace OnlineOrderPrint
                         dgvOrder.Rows[0].Cells[0].Value = orderId;
                         dgvOrder.Rows[0].Cells[1].Value = orderDate;
                         dgvOrder.Rows[0].Cells[2].Value = orderType;
+                        dgvOrder.Rows[0].Cells[3].Value = HtmlBody;
 
                         dgvOrder.Refresh();
                     }
+
+                    Console.Out.WriteLine("Wait:" + DateTime.Now.ToString("o"));
+                    obj.Reset();
+                    while (obj.WaitOne(1000, false) == false)
+                    {
+                        Application.DoEvents();
+                        if (isPrint) obj.Set();
+                    }
+                    Console.Out.WriteLine("Finish:" + DateTime.Now.ToString("o"));
                 }
 
                 if (popMail != null)
@@ -1217,8 +1242,11 @@ namespace OnlineOrderPrint
                     key.SetValue("margin_left", 0); //设置左页边距为0
                     key.SetValue("margin_right", 0); //设置右页边距为0
                     key.SetValue("margin_top", 0); //设置上页边距为0
-
+                    
                     webBrowser1.Print();
+                    isPrint = true;
+
+                    webBrowser1.DocumentCompleted -= wb_DocumentCompleted;
                 }
             }
         }
@@ -1272,6 +1300,14 @@ namespace OnlineOrderPrint
 
             return isConnect;
         }
-    #endregion
-}
+        #endregion
+
+        private void dgvOrder_DoubleClick(object sender, EventArgs e)
+        {
+            if (dgvOrder.CurrentRow != null)
+            {
+                Print(dgvOrder.CurrentRow.Cells[3].Value.ToString());
+            }
+        }
+    }
 }
