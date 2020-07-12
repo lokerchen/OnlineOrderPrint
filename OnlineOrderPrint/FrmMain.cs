@@ -1306,7 +1306,19 @@ namespace OnlineOrderPrint
         {
             if (dgvOrder.CurrentRow != null)
             {
-                Print(dgvOrder.CurrentRow.Cells[3].Value.ToString());
+                //Print(dgvOrder.CurrentRow.Cells[3].Value.ToString());
+                webBrowser1.DocumentText = dgvOrder.CurrentRow.Cells[3].Value.ToString();
+
+                webBrowser1.DocumentCompleted += wb_DocumentCompleted;
+
+                Console.Out.WriteLine("Wait1:" + DateTime.Now.ToString("o"));
+                obj.Reset();
+                while (obj.WaitOne(1000, false) == false)
+                {
+                    Application.DoEvents();
+                    if (isPrint) obj.Set();
+                }
+                Console.Out.WriteLine("Finish1:" + DateTime.Now.ToString("o"));
             }
         }
     }
