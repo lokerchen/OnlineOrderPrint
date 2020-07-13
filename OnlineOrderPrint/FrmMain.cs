@@ -861,9 +861,12 @@ namespace OnlineOrderPrint
 
             POP3_ClientMessage message = null;
 
+            //存放需删除的邮件
+            List<POP3_ClientMessage> lstMessage = new List<POP3_ClientMessage>();
+
             if (0 < messagesCollection.Count)
             {
-                for (int i = messagesCollection.Count - 1; i < messagesCollection.Count; i--)
+                for (int i = messagesCollection.Count - 1; i >= 0; i--)
                 {
 
                     if (!SqlHelper.QueryId(@"SELECT mailID FROM Mail_ID WHERE mailID='" + messagesCollection[i].UID + "'"))
@@ -881,7 +884,8 @@ namespace OnlineOrderPrint
                     }
                     else
                     {
-                        return;
+                        //return;
+                        break;
                     }
 
                     Mail_Message mailMessage = null;
@@ -914,7 +918,7 @@ namespace OnlineOrderPrint
 
                     //发送日期时间
                     date = mailMessage.Date.ToString("d");
-                    if (Convert.ToDateTime(date) < Convert.ToDateTime(DateTime.Now.ToShortDateString()))
+                    if (Convert.ToDateTime(date) < Convert.ToDateTime(DateTime.Now.AddDays(-1).ToShortDateString()))
                     {
                         break;
                     }
@@ -972,6 +976,23 @@ namespace OnlineOrderPrint
                         }
                         Console.Out.WriteLine("Finish:" + DateTime.Now.ToString("o"));
                     }
+
+                    //完成后添加删除邮件
+                    lstMessage.Add(message);
+                }
+
+                for (int i = lstMessage.Count - 1; i >= 0; i--)
+                {
+                    try
+                    {
+                        lstMessage[i].MarkForDeletion();
+                        Console.WriteLine(@"DELETE MAIL DONE:" + DateTime.Now.ToString("o"));
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine(@"DELETE MAIL FAILURE:" + DateTime.Now.ToString("o"));
+                        //throw;
+                    }
                 }
 
                 if (popMail != null)
@@ -1001,7 +1022,7 @@ namespace OnlineOrderPrint
                     richTextBox1.Text += Environment.NewLine + @"Error ELSE";
                     richTextBox1.ScrollToCaret();
                 }
-            }
+            }  
         }
 
         private void PrtOrderWithTemplate(string htmlText)
