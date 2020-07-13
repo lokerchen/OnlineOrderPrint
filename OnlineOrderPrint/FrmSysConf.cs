@@ -34,6 +34,31 @@ namespace OnlineOrderPrint
                 txtMinsInt.Text = user.MinsInt;
                 txtMailServer.Text = user.MailServer;
                 txtReceiverMail.Text = user.MailSender;
+
+                if (user.PrtCount.Equals(HtmlTextPath.PRT_COUNT_ONE))
+                {
+                    rbOne.Checked = true;
+                    rbTwo.Checked = false;
+                    rbThree.Checked = false;
+                }
+                else if (user.PrtCount.Equals(HtmlTextPath.PRT_COUNT_TWO))
+                {
+                    rbOne.Checked = false;
+                    rbTwo.Checked = true;
+                    rbThree.Checked = false;
+                }
+                else if (user.PrtCount.Equals(HtmlTextPath.PRT_COUNT_THREE))
+                {
+                    rbOne.Checked = false;
+                    rbTwo.Checked = false;
+                    rbThree.Checked = true;
+                }
+                else
+                {
+                    rbOne.Checked = true;
+                    rbTwo.Checked = false;
+                    rbThree.Checked = false;
+                }
             }
         }
 
@@ -42,13 +67,22 @@ namespace OnlineOrderPrint
             try
             {
                 //if (!SqlHelper.QueryId("SELECT * FROM User WHERE UsrName='" + txtUsrName.Text + "'"))
+
+                string prtCount = "";
+
+                if (rbOne.Checked) prtCount = rbOne.Text;
+                else if (rbTwo.Checked) prtCount = rbTwo.Text;
+                else if (rbThree.Checked) prtCount = rbThree.Text;
+                else prtCount = rbOne.Text;
+
                 if (!SqlHelper.QueryId("SELECT * FROM User"))
                 {
                     SqlHelper.InsertId("INSERT INTO User VALUES('" + txtUsrName.Text + "','"
                                        + txtUsrPwd.Text + "','"
                                        + txtMinsInt.Text + "','"
                                        + txtMailServer.Text + "','"
-                                       + txtReceiverMail.Text + "')");
+                                       + txtReceiverMail.Text +"','"
+                                       + prtCount + "')");
                 }
                 else
                 {
@@ -56,14 +90,15 @@ namespace OnlineOrderPrint
                                                     + "', UsrPwd='" + txtUsrPwd.Text 
                                                     + "', MinsInt='" + txtMinsInt.Text 
                                                     + "', MailServer='" + txtMailServer.Text
-                                                    + "', MailSender='" + txtReceiverMail.Text + "'");
+                                                    + "', MailSender='" + txtReceiverMail.Text
+                                                    + "', PrtCount='" + prtCount + "'");
                 }
 
-                MessageBox.Show("Save success!", @"DONE", MessageBoxButtons.OK);
+                MessageBox.Show(@"Save success!", @"DONE", MessageBoxButtons.OK);
             }
             catch (Exception)
             {
-                MessageBox.Show("Save failure!", @"ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(@"Save failure!", @"ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 throw;
             }
         }
@@ -78,6 +113,27 @@ namespace OnlineOrderPrint
         {
             lblReceiverMail.Visible = false;
             txtReceiverMail.Visible = true;
+        }
+
+        private void rbOne_Click(object sender, EventArgs e)
+        {
+            rbOne.Checked = true;
+            rbTwo.Checked = false;
+            rbThree.Checked = false;
+        }
+
+        private void rbTwo_Click(object sender, EventArgs e)
+        {
+            rbOne.Checked = false;
+            rbTwo.Checked = true;
+            rbThree.Checked = false;
+        }
+
+        private void rbThree_Click(object sender, EventArgs e)
+        {
+            rbOne.Checked = false;
+            rbTwo.Checked = false;
+            rbThree.Checked = true;
         }
     }
 }

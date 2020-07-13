@@ -38,6 +38,8 @@ namespace OnlineOrderPrint
 
         private string MAIL_TEMPLATE = @"";
 
+        private string PRT_COUNT = @"";
+
         private static List<string> textList;       //打印内容行
 
         private int timer_Int = 60000; // 60 * 1000 = 1 Minute
@@ -349,7 +351,7 @@ namespace OnlineOrderPrint
                     try
                     {
                         if (string.IsNullOrEmpty(user.UsrName) || string.IsNullOrEmpty(user.UsrPwd) || string.IsNullOrEmpty(user.MailServer) || string.IsNullOrEmpty(user.MinsInt) ||
-                            string.IsNullOrEmpty(user.MailSender) || string.IsNullOrEmpty(user.MailTemplate))
+                            string.IsNullOrEmpty(user.MailSender) || string.IsNullOrEmpty(user.PrtCount))
                         {
                             timerOrder.Enabled = false;
                             MessageBox.Show(@"Mail Server ERROR!", @"ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -370,7 +372,11 @@ namespace OnlineOrderPrint
                         MAIL_USER_PWD = user.UsrPwd;
                         MAIL_POP = user.MailServer;
                         MAIL_SENDER = user.MailSender;
-                        MAIL_TEMPLATE = user.MailTemplate;
+                        PRT_COUNT = user.PrtCount;
+
+                        if (string.IsNullOrEmpty(PRT_COUNT)) PRT_COUNT = @"ONE";
+
+                        Console.WriteLine(PubCommon.GetRadioBtnValue(PRT_COUNT));
 
                         timer_Int = Convert.ToInt32(user.MinsInt) * 60 * 1000;
 
@@ -930,8 +936,6 @@ namespace OnlineOrderPrint
 
                     //Print(HtmlBody);
                     webBrowser1.DocumentText = HtmlBody;
-
-                    webBrowser1.DocumentCompleted += wb_DocumentCompleted;
                     
                     //打印完成后插入数据
                     if (!SqlHelper.InsertId(@"INSERT INTO Mail_ID(mailID, orderID, orderType, orderTime, orderHtmlBody) VALUES('"
@@ -955,14 +959,19 @@ namespace OnlineOrderPrint
                         dgvOrder.Refresh();
                     }
 
-                    Console.Out.WriteLine("Wait:" + DateTime.Now.ToString("o"));
-                    obj.Reset();
-                    while (obj.WaitOne(1000, false) == false)
+                    for (int j = 0; j < PubCommon.GetRadioBtnValue(PRT_COUNT); j++)
                     {
-                        Application.DoEvents();
-                        if (isPrint) obj.Set();
+                        webBrowser1.DocumentCompleted += wb_DocumentCompleted;
+
+                        Console.Out.WriteLine("Wait:" + DateTime.Now.ToString("o"));
+                        obj.Reset();
+                        while (obj.WaitOne(1000, false) == false)
+                        {
+                            Application.DoEvents();
+                            if (isPrint) obj.Set();
+                        }
+                        Console.Out.WriteLine("Finish:" + DateTime.Now.ToString("o"));
                     }
-                    Console.Out.WriteLine("Finish:" + DateTime.Now.ToString("o"));
                 }
 
                 if (popMail != null)
@@ -1309,16 +1318,19 @@ namespace OnlineOrderPrint
                 //Print(dgvOrder.CurrentRow.Cells[3].Value.ToString());
                 webBrowser1.DocumentText = dgvOrder.CurrentRow.Cells[3].Value.ToString();
 
-                webBrowser1.DocumentCompleted += wb_DocumentCompleted;
-
-                Console.Out.WriteLine("Wait1:" + DateTime.Now.ToString("o"));
-                obj.Reset();
-                while (obj.WaitOne(1000, false) == false)
+                for (int i = 0; i < PubCommon.GetRadioBtnValue(PRT_COUNT); i++)
                 {
-                    Application.DoEvents();
-                    if (isPrint) obj.Set();
+                    webBrowser1.DocumentCompleted += wb_DocumentCompleted;
+
+                    Console.Out.WriteLine("Wait1:" + DateTime.Now.ToString("o"));
+                    obj.Reset();
+                    while (obj.WaitOne(1000, false) == false)
+                    {
+                        Application.DoEvents();
+                        if (isPrint) obj.Set();
+                    }
+                    Console.Out.WriteLine("Finish1:" + DateTime.Now.ToString("o"));
                 }
-                Console.Out.WriteLine("Finish1:" + DateTime.Now.ToString("o"));
             }
         }
     }

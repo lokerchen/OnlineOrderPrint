@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.txtReceiverMail = new System.Windows.Forms.TextBox();
+            this.lblReceiverMail = new System.Windows.Forms.Label();
             this.txtMailServer = new System.Windows.Forms.TextBox();
             this.txtUsrPwd = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -42,11 +44,14 @@
             this.txtMinsInt = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.lblReceiverMail = new System.Windows.Forms.Label();
-            this.txtReceiverMail = new System.Windows.Forms.TextBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.rbOne = new System.Windows.Forms.RadioButton();
+            this.rbTwo = new System.Windows.Forms.RadioButton();
+            this.rbThree = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -62,14 +67,34 @@
             this.groupBox1.Font = new System.Drawing.Font("微软雅黑", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.groupBox1.Location = new System.Drawing.Point(8, 7);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(491, 266);
+            this.groupBox1.Size = new System.Drawing.Size(491, 235);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "MailBox Setting";
             // 
+            // txtReceiverMail
+            // 
+            this.txtReceiverMail.Location = new System.Drawing.Point(23, 187);
+            this.txtReceiverMail.Name = "txtReceiverMail";
+            this.txtReceiverMail.Size = new System.Drawing.Size(446, 38);
+            this.txtReceiverMail.TabIndex = 7;
+            this.txtReceiverMail.Text = "noreply@dolbynonline.co.uk";
+            this.txtReceiverMail.Visible = false;
+            // 
+            // lblReceiverMail
+            // 
+            this.lblReceiverMail.AutoSize = true;
+            this.lblReceiverMail.Font = new System.Drawing.Font("微软雅黑", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblReceiverMail.Location = new System.Drawing.Point(16, 187);
+            this.lblReceiverMail.Name = "lblReceiverMail";
+            this.lblReceiverMail.Size = new System.Drawing.Size(209, 39);
+            this.lblReceiverMail.TabIndex = 6;
+            this.lblReceiverMail.Text = "Receiver Mail";
+            this.lblReceiverMail.DoubleClick += new System.EventHandler(this.lblReceiverMail_DoubleClick);
+            // 
             // txtMailServer
             // 
-            this.txtMailServer.Location = new System.Drawing.Point(23, 149);
+            this.txtMailServer.Location = new System.Drawing.Point(23, 139);
             this.txtMailServer.Name = "txtMailServer";
             this.txtMailServer.Size = new System.Drawing.Size(446, 38);
             this.txtMailServer.TabIndex = 5;
@@ -104,7 +129,7 @@
             // 
             this.lblMailServer.AutoSize = true;
             this.lblMailServer.Font = new System.Drawing.Font("微软雅黑", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblMailServer.Location = new System.Drawing.Point(16, 145);
+            this.lblMailServer.Location = new System.Drawing.Point(16, 139);
             this.lblMailServer.Name = "lblMailServer";
             this.lblMailServer.Size = new System.Drawing.Size(199, 39);
             this.lblMailServer.TabIndex = 0;
@@ -122,19 +147,20 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.groupBox4);
             this.panel1.Controls.Add(this.btnExit);
             this.panel1.Controls.Add(this.btnSave);
             this.panel1.Controls.Add(this.groupBox2);
             this.panel1.Controls.Add(this.groupBox1);
             this.panel1.Location = new System.Drawing.Point(8, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(622, 450);
+            this.panel1.Size = new System.Drawing.Size(622, 493);
             this.panel1.TabIndex = 1;
             // 
             // btnExit
             // 
             this.btnExit.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnExit.Location = new System.Drawing.Point(391, 381);
+            this.btnExit.Location = new System.Drawing.Point(375, 420);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(124, 53);
             this.btnExit.TabIndex = 7;
@@ -145,7 +171,7 @@
             // btnSave
             // 
             this.btnSave.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnSave.Location = new System.Drawing.Point(90, 381);
+            this.btnSave.Location = new System.Drawing.Point(74, 420);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(124, 53);
             this.btnSave.TabIndex = 6;
@@ -159,7 +185,7 @@
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Font = new System.Drawing.Font("微软雅黑", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.groupBox2.Location = new System.Drawing.Point(8, 279);
+            this.groupBox2.Location = new System.Drawing.Point(8, 248);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(507, 67);
             this.groupBox2.TabIndex = 5;
@@ -194,31 +220,60 @@
             this.label6.TabIndex = 0;
             this.label6.Text = "Auto download freq:";
             // 
-            // lblReceiverMail
+            // groupBox4
             // 
-            this.lblReceiverMail.AutoSize = true;
-            this.lblReceiverMail.Font = new System.Drawing.Font("微软雅黑", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblReceiverMail.Location = new System.Drawing.Point(16, 203);
-            this.lblReceiverMail.Name = "lblReceiverMail";
-            this.lblReceiverMail.Size = new System.Drawing.Size(209, 39);
-            this.lblReceiverMail.TabIndex = 6;
-            this.lblReceiverMail.Text = "Receiver Mail";
-            this.lblReceiverMail.DoubleClick += new System.EventHandler(this.lblReceiverMail_DoubleClick);
+            this.groupBox4.Controls.Add(this.rbThree);
+            this.groupBox4.Controls.Add(this.rbTwo);
+            this.groupBox4.Controls.Add(this.rbOne);
+            this.groupBox4.Font = new System.Drawing.Font("微软雅黑", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.groupBox4.Location = new System.Drawing.Point(8, 321);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(505, 83);
+            this.groupBox4.TabIndex = 9;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Copy of printing";
             // 
-            // txtReceiverMail
+            // rbOne
             // 
-            this.txtReceiverMail.Location = new System.Drawing.Point(23, 204);
-            this.txtReceiverMail.Name = "txtReceiverMail";
-            this.txtReceiverMail.Size = new System.Drawing.Size(446, 38);
-            this.txtReceiverMail.TabIndex = 7;
-            this.txtReceiverMail.Text = "noreply@dolbynonline.co.uk";
-            this.txtReceiverMail.Visible = false;
+            this.rbOne.AutoSize = true;
+            this.rbOne.Location = new System.Drawing.Point(23, 39);
+            this.rbOne.Name = "rbOne";
+            this.rbOne.Size = new System.Drawing.Size(68, 27);
+            this.rbOne.TabIndex = 0;
+            this.rbOne.TabStop = true;
+            this.rbOne.Text = "ONE";
+            this.rbOne.UseVisualStyleBackColor = true;
+            this.rbOne.Click += new System.EventHandler(this.rbOne_Click);
+            // 
+            // rbTwo
+            // 
+            this.rbTwo.AutoSize = true;
+            this.rbTwo.Location = new System.Drawing.Point(182, 39);
+            this.rbTwo.Name = "rbTwo";
+            this.rbTwo.Size = new System.Drawing.Size(72, 27);
+            this.rbTwo.TabIndex = 1;
+            this.rbTwo.TabStop = true;
+            this.rbTwo.Text = "TWO";
+            this.rbTwo.UseVisualStyleBackColor = true;
+            this.rbTwo.Click += new System.EventHandler(this.rbTwo_Click);
+            // 
+            // rbThree
+            // 
+            this.rbThree.AutoSize = true;
+            this.rbThree.Location = new System.Drawing.Point(367, 39);
+            this.rbThree.Name = "rbThree";
+            this.rbThree.Size = new System.Drawing.Size(83, 27);
+            this.rbThree.TabIndex = 2;
+            this.rbThree.TabStop = true;
+            this.rbThree.Text = "THREE";
+            this.rbThree.UseVisualStyleBackColor = true;
+            this.rbThree.Click += new System.EventHandler(this.rbThree_Click);
             // 
             // FrmSysConf
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(633, 474);
+            this.ClientSize = new System.Drawing.Size(633, 509);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FrmSysConf";
@@ -230,6 +285,8 @@
             this.panel1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -252,5 +309,9 @@
         private System.Windows.Forms.TextBox txtMailServer;
         private System.Windows.Forms.Label lblReceiverMail;
         private System.Windows.Forms.TextBox txtReceiverMail;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.RadioButton rbThree;
+        private System.Windows.Forms.RadioButton rbTwo;
+        private System.Windows.Forms.RadioButton rbOne;
     }
 }

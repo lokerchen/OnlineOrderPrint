@@ -65,5 +65,9 @@
         //偏移量
         public static int PRT_OFFSET = 5;
 
+        //打印次数
+        public static string PRT_COUNT_ONE = @"ONE";
+        public static string PRT_COUNT_TWO = @"TWO";
+        public static string PRT_COUNT_THREE = @"THREE";
     }
 }
