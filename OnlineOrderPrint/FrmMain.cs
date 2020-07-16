@@ -926,7 +926,9 @@ namespace OnlineOrderPrint
                     //PrtOrder(HtmlBody.Replace("脳", "×").Replace("拢", "£"));
                     //PrtOrderWithTemplate(HtmlBody);
                     HtmlBody = HtmlBody.Replace("<body style=\"", "<body style=\"font-family:Arial; ");
-                    GetPrtInfo(HtmlBody);
+
+                    //读取Html失败时，跳出循环
+                    if (!GetPrtInfo(HtmlBody)) continue;
                     //存在订单时不打印
                     if (SqlHelper.QueryId(@"SELECT mailID FROM Mail_ID WHERE orderID='" + orderId + "'"))
                     {
@@ -1281,7 +1283,7 @@ namespace OnlineOrderPrint
             }
         }
 
-        private void GetPrtInfo(string htmlText)
+        private bool GetPrtInfo(string htmlText)
         {
             try
             {
@@ -1297,12 +1299,16 @@ namespace OnlineOrderPrint
 
                 node = doc.DocumentNode.SelectSingleNode(orderType.Trim().Equals(HtmlTextPath.ORDER_TYPE_COLLECTION) ? HtmlTextPath.BODY_COLLECTION_ORDER_TIME : HtmlTextPath.BODY_DELIVER_ORDER_TIME);
                 orderDate = node.InnerText.Replace("&nbsp;", "").Trim().Substring(node.InnerText.Replace("&nbsp;", "").Trim().IndexOf(":") + 1);
+
+                return true;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.InnerException);
-                richTextBox1.Text += Environment.NewLine + DateTime.Now.ToString("o") + @"######GET PRT ERROR######";
+                richTextBox1.Text += Environment.NewLine + DateTime.Now.ToString("o") + @"######Message discarded#####";
                 richTextBox1.ScrollToCaret();
+
+                return false;
             }
         }
 
