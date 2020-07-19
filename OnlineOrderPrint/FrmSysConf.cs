@@ -93,7 +93,7 @@ namespace OnlineOrderPrint
                                        + "', MailServer='" + txtMailServer.Text
                                        + "', MailSender='" + txtReceiverMail.Text
                                        + "', PrtCount='" + prtCount
-                                       + "','2'");
+                                       + "', Version='2'");
                 }
 
                 MessageBox.Show(@"Save success!", @"DONE", MessageBoxButtons.OK);

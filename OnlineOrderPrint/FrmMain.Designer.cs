@@ -35,6 +35,10 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.btnRetrieveOrder = new System.Windows.Forms.Button();
             this.dgvOrder = new System.Windows.Forms.DataGridView();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.HtmlBody = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnSysConf = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
@@ -43,12 +47,11 @@
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.HtmlBody = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.panelErrorMsg = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvOrder)).BeginInit();
             this.panel1.SuspendLayout();
+            this.panelErrorMsg.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnRetrieveOrder
@@ -91,6 +94,41 @@
             this.dgvOrder.Size = new System.Drawing.Size(819, 307);
             this.dgvOrder.TabIndex = 1;
             this.dgvOrder.DoubleClick += new System.EventHandler(this.dgvOrder_DoubleClick);
+            // 
+            // Column1
+            // 
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Column1.DefaultCellStyle = dataGridViewCellStyle2;
+            this.Column1.HeaderText = "Order";
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            this.Column1.Width = 97;
+            // 
+            // Column2
+            // 
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Column2.DefaultCellStyle = dataGridViewCellStyle3;
+            this.Column2.HeaderText = "OrderTime";
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            this.Column2.Width = 143;
+            // 
+            // Column3
+            // 
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Column3.DefaultCellStyle = dataGridViewCellStyle4;
+            this.Column3.HeaderText = "Type";
+            this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
+            this.Column3.Width = 87;
+            // 
+            // HtmlBody
+            // 
+            this.HtmlBody.HeaderText = "HtmlBody";
+            this.HtmlBody.Name = "HtmlBody";
+            this.HtmlBody.ReadOnly = true;
+            this.HtmlBody.Visible = false;
+            this.HtmlBody.Width = 137;
             // 
             // panel1
             // 
@@ -175,46 +213,33 @@
             this.webBrowser1.TabIndex = 5;
             this.webBrowser1.Visible = false;
             // 
-            // Column1
+            // panelErrorMsg
             // 
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.Column1.DefaultCellStyle = dataGridViewCellStyle2;
-            this.Column1.HeaderText = "Order";
-            this.Column1.Name = "Column1";
-            this.Column1.ReadOnly = true;
-            this.Column1.Width = 97;
+            this.panelErrorMsg.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.panelErrorMsg.Controls.Add(this.label2);
+            this.panelErrorMsg.Location = new System.Drawing.Point(86, 191);
+            this.panelErrorMsg.Name = "panelErrorMsg";
+            this.panelErrorMsg.Size = new System.Drawing.Size(683, 257);
+            this.panelErrorMsg.TabIndex = 6;
+            this.panelErrorMsg.Click += new System.EventHandler(this.panelErrorMsg_Click);
             // 
-            // Column2
+            // label2
             // 
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.Column2.DefaultCellStyle = dataGridViewCellStyle3;
-            this.Column2.HeaderText = "OrderTime";
-            this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = true;
-            this.Column2.Width = 143;
-            // 
-            // Column3
-            // 
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.Column3.DefaultCellStyle = dataGridViewCellStyle4;
-            this.Column3.HeaderText = "Type";
-            this.Column3.Name = "Column3";
-            this.Column3.ReadOnly = true;
-            this.Column3.Width = 87;
-            // 
-            // HtmlBody
-            // 
-            this.HtmlBody.HeaderText = "HtmlBody";
-            this.HtmlBody.Name = "HtmlBody";
-            this.HtmlBody.ReadOnly = true;
-            this.HtmlBody.Visible = false;
-            this.HtmlBody.Width = 137;
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("微软雅黑", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label2.ForeColor = System.Drawing.Color.Red;
+            this.label2.Location = new System.Drawing.Point(126, 84);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(461, 45);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "Incorrect login information";
             // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(843, 703);
+            this.Controls.Add(this.panelErrorMsg);
             this.Controls.Add(this.webBrowser1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.richTextBox1);
@@ -228,6 +253,8 @@
             this.SizeChanged += new System.EventHandler(this.FrmMain_SizeChanged);
             ((System.ComponentModel.ISupportInitialize)(this.dgvOrder)).EndInit();
             this.panel1.ResumeLayout(false);
+            this.panelErrorMsg.ResumeLayout(false);
+            this.panelErrorMsg.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -249,6 +276,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn HtmlBody;
+        private System.Windows.Forms.Panel panelErrorMsg;
+        private System.Windows.Forms.Label label2;
     }
 }
 

@@ -360,13 +360,15 @@ namespace OnlineOrderPrint
                             if (string.IsNullOrEmpty(user.Version)) VERSION = "2";
 
                             timerOrder.Enabled = false;
-                            MessageBox.Show(@"Mail Server ERROR!", @"ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            //MessageBox.Show(@"Mail Server ERROR!", @"ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                             if (File.Exists(Environment.CurrentDirectory + wavError))
                             {
                                 SoundPlayer player = new SoundPlayer(Environment.CurrentDirectory + wavError);
                                 player.Play();
                             }
+
+                            panelErrorMsg.Show();
 
                             //FrmSysConf frmSysConf = new FrmSysConf();
                             //frmSysConf.ShowDialog();
@@ -1387,6 +1389,11 @@ namespace OnlineOrderPrint
                     Console.Out.WriteLine("Finish1:" + DateTime.Now.ToString("o"));
                 }
             }
+        }
+
+        private void panelErrorMsg_Click(object sender, EventArgs e)
+        {
+            panelErrorMsg.Hide();
         }
     }
 }
