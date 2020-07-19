@@ -846,8 +846,21 @@ namespace OnlineOrderPrint
             try
             {
                 popMail.Timeout = HtmlTextPath.EMAIL_TIME_OUT;
-                popMail.Connect(MAIL_POP, HtmlTextPath.EMAIL_PORT, false);
 
+                try
+                {
+                    popMail.Connect(MAIL_POP, HtmlTextPath.EMAIL_PORT, false);
+                }
+                catch (Exception ex)
+                {
+                    Console.Out.WriteLine("ex:" + ex);
+                    richTextBox1.Text += Environment.NewLine + DateTime.Now.ToString("o") + @"######Internet connection failed######";
+                    richTextBox1.ScrollToCaret();
+                    return;
+                    //throw;
+                }
+
+                //登录邮箱地址
                 popMail.Login(MAIL_USER_NAME, MAIL_USER_PWD);
             }
             catch (Exception ex)
