@@ -81,17 +81,19 @@ namespace OnlineOrderPrint
                                        + txtUsrPwd.Text + "','"
                                        + txtMinsInt.Text + "','"
                                        + txtMailServer.Text + "','"
-                                       + txtReceiverMail.Text +"','"
-                                       + prtCount + "')");
+                                       + txtReceiverMail.Text + "','"
+                                       + prtCount + "','"
+                                       + @"2" + "')");
                 }
                 else
                 {
-                    SqlHelper.InsertId("UPDATE User SET UsrName='" + txtUsrName.Text 
-                                                    + "', UsrPwd='" + txtUsrPwd.Text 
-                                                    + "', MinsInt='" + txtMinsInt.Text 
-                                                    + "', MailServer='" + txtMailServer.Text
-                                                    + "', MailSender='" + txtReceiverMail.Text
-                                                    + "', PrtCount='" + prtCount + "'");
+                    SqlHelper.InsertId("UPDATE User SET UsrName='" + txtUsrName.Text
+                                       + "', UsrPwd='" + txtUsrPwd.Text
+                                       + "', MinsInt='" + txtMinsInt.Text
+                                       + "', MailServer='" + txtMailServer.Text
+                                       + "', MailSender='" + txtReceiverMail.Text
+                                       + "', PrtCount='" + prtCount
+                                       + "','2'");
                 }
 
                 MessageBox.Show(@"Save success!", @"DONE", MessageBoxButtons.OK);

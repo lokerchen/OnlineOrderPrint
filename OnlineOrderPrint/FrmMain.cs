@@ -38,7 +38,10 @@ namespace OnlineOrderPrint
 
         private string MAIL_TEMPLATE = @"";
 
+        //打印次数
         private string PRT_COUNT = @"";
+        //版本
+        private string VERSION = @"2";
 
         private static List<string> textList;       //打印内容行
 
@@ -353,6 +356,9 @@ namespace OnlineOrderPrint
                         if (string.IsNullOrEmpty(user.UsrName) || string.IsNullOrEmpty(user.UsrPwd) || string.IsNullOrEmpty(user.MailServer) || string.IsNullOrEmpty(user.MinsInt) ||
                             string.IsNullOrEmpty(user.MailSender) || string.IsNullOrEmpty(user.PrtCount))
                         {
+                            //默认版本为2
+                            if (string.IsNullOrEmpty(user.Version)) VERSION = "2";
+
                             timerOrder.Enabled = false;
                             MessageBox.Show(@"Mail Server ERROR!", @"ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
@@ -373,6 +379,7 @@ namespace OnlineOrderPrint
                         MAIL_POP = user.MailServer;
                         MAIL_SENDER = user.MailSender;
                         PRT_COUNT = user.PrtCount;
+                        VERSION = user.Version;
 
                         if (string.IsNullOrEmpty(PRT_COUNT)) PRT_COUNT = @"ONE";
 
@@ -1287,20 +1294,28 @@ namespace OnlineOrderPrint
         {
             try
             {
-                HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
-                doc.LoadHtml(htmlText);
+                if (!"2".Equals(VERSION))
+                {
+                    return true;
+                }
+                else
+                {
+                    HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
+                    doc.LoadHtml(htmlText);
 
-                HtmlNode node;
-                node = doc.DocumentNode.SelectSingleNode(HtmlTextPath.HEAD_ORDER_ID);
-                orderId = node.InnerText.Replace("&nbsp;", "").Trim().Substring(node.InnerText.Replace("&nbsp;", "").Trim().IndexOf("#"));
+                    HtmlNode node;
+                    node = doc.DocumentNode.SelectSingleNode(HtmlTextPath.HEAD_ORDER_ID);
+                    orderId = node.InnerText.Replace("&nbsp;", "").Trim().Substring(node.InnerText.Replace("&nbsp;", "").Trim().IndexOf("#"));
 
-                node = doc.DocumentNode.SelectSingleNode(HtmlTextPath.HEAD_ORDER_TYPE);
-                orderType = node.InnerText.Replace("&nbsp;", "").Trim().Substring(0, node.InnerText.Replace("&nbsp;", "").Trim().IndexOf("ORDER")).ToUpper();
+                    node = doc.DocumentNode.SelectSingleNode(HtmlTextPath.HEAD_ORDER_TYPE);
+                    orderType = node.InnerText.Replace("&nbsp;", "").Trim().Substring(0, node.InnerText.Replace("&nbsp;", "").Trim().IndexOf("ORDER")).ToUpper();
 
-                node = doc.DocumentNode.SelectSingleNode(orderType.Trim().Equals(HtmlTextPath.ORDER_TYPE_COLLECTION) ? HtmlTextPath.BODY_COLLECTION_ORDER_TIME : HtmlTextPath.BODY_DELIVER_ORDER_TIME);
-                orderDate = node.InnerText.Replace("&nbsp;", "").Trim().Substring(node.InnerText.Replace("&nbsp;", "").Trim().IndexOf(":") + 1);
+                    node = doc.DocumentNode.SelectSingleNode(orderType.Trim().Equals(HtmlTextPath.ORDER_TYPE_COLLECTION) ? HtmlTextPath.BODY_COLLECTION_ORDER_TIME : HtmlTextPath.BODY_DELIVER_ORDER_TIME);
+                    orderDate = node.InnerText.Replace("&nbsp;", "").Trim().Substring(node.InnerText.Replace("&nbsp;", "").Trim().IndexOf(":") + 1);
 
-                return true;
+                    return true;
+                } 
+
             }
             catch (Exception ex)
             {

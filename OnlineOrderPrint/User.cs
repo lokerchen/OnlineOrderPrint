@@ -14,5 +14,6 @@ namespace OnlineOrderPrint
         public string MailServer;
         public string MailSender;
         public string PrtCount;
+        public string Version;
     }
 }
