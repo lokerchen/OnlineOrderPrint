@@ -33,6 +33,7 @@ namespace OnlineOrderPrint
 
         //private static string MAIL_SENDER = @"noreply@milpoweb.co.uk";
         //private string MAIL_SENDER = @"noreply@internetakeaway.co.uk";
+        //private string MAIL_SENDER = @"noreply@dolbynonline.co.uk";
         private string MAIL_SENDER = @"noreply@dolbynonline.co.uk";
         private static string MAIL_RECIVER = @"";
 
@@ -919,12 +920,18 @@ namespace OnlineOrderPrint
                     
                     sendmail = mailMessage.From[0].Address;
                     HtmlBody = mailMessage.BodyHtmlText;
+                    //date = mailMessage.Date.ToString("d");
+                    //if (Convert.ToDateTime(date) < Convert.ToDateTime(DateTime.Now.ToShortDateString()))
+                    //{
+                    //    break;
+                    //}
+                    //发送日期时间
                     date = mailMessage.Date.ToString("d");
-                    if (Convert.ToDateTime(date) < Convert.ToDateTime(DateTime.Now.ToShortDateString()))
+                    if (Convert.ToDateTime(date) < Convert.ToDateTime(DateTime.Now.AddDays(-1).ToShortDateString()))
                     {
                         break;
                     }
-
+                    
                     if (!sendmail.Equals(MAIL_SENDER))
                     {
                         continue;
@@ -938,16 +945,16 @@ namespace OnlineOrderPrint
                         player.Play();
                     }
 
-                    //发送日期时间
-                    date = mailMessage.Date.ToString("d");
-                    if (Convert.ToDateTime(date) < Convert.ToDateTime(DateTime.Now.AddDays(-1).ToShortDateString()))
-                    {
-                        break;
-                    }
-
                     //PrtOrder(HtmlBody.Replace("脳", "×").Replace("拢", "£"));
                     //PrtOrderWithTemplate(HtmlBody);
-                    HtmlBody = HtmlBody.Replace("<body style=\"", "<body style=\"font-family:Arial; ");
+                    if (VERSION.Equals("2"))
+                    {
+                        HtmlBody = HtmlBody.Replace("<body style=\"", "<body style=\"font-family:Arial; ");
+                    }
+                    else if (VERSION.Equals("3"))
+                    {
+                        HtmlBody = HtmlBody.Replace("<body", "<body style=\"font-family:Arial; \"");
+                    }
 
                     //读取Html失败时，跳出循环
                     if (!GetPrtInfo(HtmlBody)) continue;
@@ -956,13 +963,23 @@ namespace OnlineOrderPrint
                     {
                         continue;
                     }
-                    
-                    HtmlBody = HtmlBody.Replace("h1", "h4").Replace("<p>", "").Replace("</p>", "<br />").Replace("<p style=\"width:94%;\">", "").Replace("<strong>", "").Replace("</strong>", "");
-                    //HtmlBody = HtmlBody.Replace("h1", "h5");
-                    HtmlBody = HtmlBody.Replace("<h4>", "").Replace("</h4>", "").Replace("<b>", "").Replace("</b>", "")
-                                       .Replace("border-top:hidden;", "").Replace("style=\"border-top:hidden;\"", "");
 
-                    //Print(HtmlBody);
+                    if (VERSION.Equals("2"))
+                    {
+                        HtmlBody = HtmlBody.Replace("h1", "h4").Replace("<p>", "").Replace("</p>", "<br />").Replace("<p style=\"width:94%;\">", "").Replace("<strong>", "").Replace("</strong>", "");
+                        //HtmlBody = HtmlBody.Replace("h1", "h5");
+                        HtmlBody = HtmlBody.Replace("<h4>", "").Replace("</h4>", "").Replace("<b>", "").Replace("</b>", "")
+                                           .Replace("border-top:hidden;", "").Replace("style=\"border-top:hidden;\"", "");
+                    }
+                    else if (VERSION.Equals("3"))
+                    {
+                        HtmlBody = HtmlBody.Replace("h1", "h4").Replace("<p>", "").Replace("</p>", "<br />").Replace("<p style=\"width:94%;\">", "").Replace("<strong>", "").Replace("</strong>", "");
+                        //HtmlBody = HtmlBody.Replace("h1", "h5");
+                        HtmlBody = HtmlBody.Replace("<h4>", "").Replace("</h4>", "").Replace("<b>", "").Replace("</b>", "")
+                                           .Replace("border-top:hidden;", "").Replace("style=\"border-top:hidden;\"", "");
+                    }
+
+                        //Print(HtmlBody);
                     webBrowser1.DocumentText = HtmlBody;
                     
                     //打印完成后插入数据
@@ -1309,15 +1326,25 @@ namespace OnlineOrderPrint
         {
             try
             {
+                HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
+                doc.LoadHtml(htmlText);
+
                 if (!"2".Equals(VERSION))
                 {
+                    HtmlNode node;
+                    node = doc.DocumentNode.SelectSingleNode(HtmlTextPath.HEAD_ORDER_ID);
+                    orderId = node.InnerText.Replace("&nbsp;", "").Trim().Substring(node.InnerText.Replace("&nbsp;", "").Trim().IndexOf("#"));
+
+                    node = doc.DocumentNode.SelectSingleNode(HtmlTextPath.HEAD_ORDER_TYPE);
+                    orderType = node.InnerText.Replace("&nbsp;", "").Trim().Substring(0, node.InnerText.Replace("&nbsp;", "").Trim().IndexOf("ORDER")).ToUpper();
+
+                    node = doc.DocumentNode.SelectSingleNode(orderType.Trim().Equals(HtmlTextPath.ORDER_TYPE_COLLECTION) ? HtmlTextPath.BODY_COLLECTION_ORDER_TIME : HtmlTextPath.BODY_DELIVER_ORDER_TIME);
+                    orderDate = node.InnerText.Replace("&nbsp;", "").Trim().Substring(node.InnerText.Replace("&nbsp;", "").Trim().IndexOf(":") + 1);
+
                     return true;
                 }
                 else
                 {
-                    HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
-                    doc.LoadHtml(htmlText);
-
                     HtmlNode node;
                     node = doc.DocumentNode.SelectSingleNode(HtmlTextPath.HEAD_ORDER_ID);
                     orderId = node.InnerText.Replace("&nbsp;", "").Trim().Substring(node.InnerText.Replace("&nbsp;", "").Trim().IndexOf("#"));

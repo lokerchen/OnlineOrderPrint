@@ -76,6 +76,7 @@ namespace GetServerEmail
                             user.MailServer = reader["MailServer"].ToString();
                             user.MailSender = reader["MailSender"].ToString();
                             user.PrtCount = reader["PrtCount"].ToString();
+                            user.Version = reader["Version"].ToString();
                         }
                     }
                 }
