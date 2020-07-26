@@ -678,26 +678,17 @@ namespace OnlineOrderPrint
                 //popMail = null;
                 //popMail.Disconnect();
                 Console.Out.WriteLine("ex:" + ex);
-                richTextBox1.Text += System.Environment.NewLine + "ex:" + ex;
+                SetRichTextValue("ex:" + ex);
                 //MessageBox.Show("Can not connect email server");
                 Console.Out.WriteLine("Can not connect email server" + DateTime.Now.ToString("o"));
-                richTextBox1.Text += System.Environment.NewLine + "Can not connect email server:" + DateTime.Now.ToString("o");
-                //if (File.Exists(Environment.CurrentDirectory + wavError))
-                //{
-                //    SoundPlayer player = new SoundPlayer(Environment.CurrentDirectory + wavError);
-                //    player.Play();
-                //}
-                //return "";
-
-                //popMail = null;
-
-                //popMail.Connect(MAIL_USER_NAME, MAIL_USER_PWD, MAIL_POP);
-
+                SetRichTextValue("Can not connect email server:" + DateTime.Now.ToString("o"));
+                
                 return;
             }
 
             Console.Out.WriteLine(DateTime.Now.ToString("o"));
-            richTextBox1.Text += System.Environment.NewLine + DateTime.Now.ToString("o");
+            SetRichTextValue(DateTime.Now.ToString("o"));
+            
             if (0 < popMail.Count)
             {
                 for (int i = popMail.Count; i <= popMail.Count; i--)
@@ -815,7 +806,7 @@ namespace OnlineOrderPrint
                     catch (Exception)
                     {
                         Console.Out.WriteLine("Error if (popMail != null)");
-                        richTextBox1.Text += System.Environment.NewLine + @"Error if (popMail != null)";
+                        SetRichTextValue(@"Error popMail is not null)");
                     }
                 }
                 //return HtmlBody.Replace("脳", "×").Replace("拢", "£");
@@ -830,7 +821,8 @@ namespace OnlineOrderPrint
                 catch (Exception)
                 {
                     Console.Out.WriteLine("Error else");
-                    richTextBox1.Text += System.Environment.NewLine + @"Error else";
+
+                    SetRichTextValue(@"Error else");    
                 }
 
                 //return "";
@@ -857,8 +849,7 @@ namespace OnlineOrderPrint
                 catch (Exception ex)
                 {
                     Console.Out.WriteLine("ex:" + ex);
-                    richTextBox1.Text += Environment.NewLine + DateTime.Now.ToString("o") + @"######Internet connection failed######";
-                    richTextBox1.ScrollToCaret();
+                    SetRichTextValue(DateTime.Now.ToString("o") + @"######Internet connection failed######");
                     return;
                     //throw;
                 }
@@ -872,14 +863,12 @@ namespace OnlineOrderPrint
                 //richTextBox1.Text += System.Environment.NewLine + "ex:" + ex;
                 //Console.Out.WriteLine("Can not connect email server" + DateTime.Now.ToString("o"));
                 //richTextBox1.Text += System.Environment.NewLine + "Can not connect email server:" + DateTime.Now.ToString("o");
-                richTextBox1.Text += Environment.NewLine + DateTime.Now.ToString("o") + @"######Can not connect email server######";
-                richTextBox1.ScrollToCaret();
+                SetRichTextValue(DateTime.Now.ToString("o") + @"######Can not connect email server######");
                 return;
             }
 
             Console.Out.WriteLine(DateTime.Now.ToString("o"));
-            richTextBox1.Text += Environment.NewLine + DateTime.Now.ToString("o");
-            richTextBox1.ScrollToCaret();
+            SetRichTextValue(DateTime.Now.ToString("o"));
             POP3_ClientMessageCollection messagesCollection = popMail.Messages;
 
             POP3_ClientMessage message = null;
@@ -936,15 +925,7 @@ namespace OnlineOrderPrint
                     {
                         continue;
                     }
-
-                    //播放语音提示
-
-                    if (File.Exists(Environment.CurrentDirectory + wavNewMail))
-                    {
-                        SoundPlayer player = new SoundPlayer(Environment.CurrentDirectory + wavNewMail);
-                        player.Play();
-                    }
-
+                    
                     //PrtOrder(HtmlBody.Replace("脳", "×").Replace("拢", "£"));
                     //PrtOrderWithTemplate(HtmlBody);
                     if (VERSION.Equals("2"))
@@ -1004,6 +985,13 @@ namespace OnlineOrderPrint
                         dgvOrder.Refresh();
                     }
 
+                    //播放语音提示
+                    if (File.Exists(Environment.CurrentDirectory + wavNewMail))
+                    {
+                        SoundPlayer player = new SoundPlayer(Environment.CurrentDirectory + wavNewMail);
+                        player.Play();
+                    }
+
                     for (int j = 0; j < PubCommon.GetRadioBtnValue(PRT_COUNT); j++)
                     {
                         webBrowser1.DocumentCompleted += wb_DocumentCompleted;
@@ -1046,8 +1034,7 @@ namespace OnlineOrderPrint
                     catch (Exception)
                     {
                         //Console.Out.WriteLine("Error if (popMail != null)");
-                        richTextBox1.Text += Environment.NewLine + @"Error POPMail != null";
-                        richTextBox1.ScrollToCaret();
+                        SetRichTextValue(@"Error POPMail != null");
                     }
                 }
             }
@@ -1060,8 +1047,7 @@ namespace OnlineOrderPrint
                 catch (Exception)
                 {
                     //Console.Out.WriteLine("Error else");
-                    richTextBox1.Text += Environment.NewLine + @"Error ELSE";
-                    richTextBox1.ScrollToCaret();
+                    SetRichTextValue(@"Error ELSE");
                 }
             }  
         }
@@ -1205,7 +1191,7 @@ namespace OnlineOrderPrint
             }
             catch (Exception ex)
             {
-                richTextBox1.Text += Environment.NewLine + "Template ERROR:" + ex.InnerException;
+                SetRichTextValue(@"Template ERROR:" + ex.InnerException);
             }
 
             return prtTemplate;
@@ -1261,7 +1247,7 @@ namespace OnlineOrderPrint
             }
             catch (Exception ex)
             {
-                richTextBox1.Text += Environment.NewLine + @"ReplaceTemplate ERROR:" + ex.InnerException;
+                SetRichTextValue(@"ReplaceTemplate ERROR:" + ex.InnerException);
                 return null;
             }
         }
@@ -1362,9 +1348,9 @@ namespace OnlineOrderPrint
             catch (Exception ex)
             {
                 Console.WriteLine(ex.InnerException);
-                richTextBox1.Text += Environment.NewLine + DateTime.Now.ToString("o") + @"######Message discarded#####";
-                richTextBox1.ScrollToCaret();
 
+                SetRichTextValue(DateTime.Now.ToString("o") + @"######Message discarded#####");
+                
                 return false;
             }
         }
@@ -1387,8 +1373,7 @@ namespace OnlineOrderPrint
                 }
 
                 //增加提示
-                richTextBox1.Text += Environment.NewLine + DateTime.Now.ToString("o") + @"######Network connection failed!######";
-                richTextBox1.ScrollToCaret();
+                SetRichTextValue(DateTime.Now.ToString("o") + @"######Network connection failed!######");
             }
 
             return isConnect;
@@ -1421,6 +1406,12 @@ namespace OnlineOrderPrint
         private void panelErrorMsg_Click(object sender, EventArgs e)
         {
             panelErrorMsg.Hide();
+        }
+
+        private void SetRichTextValue(string sValue)
+        {
+            richTextBox1.Text = sValue + Environment.NewLine + richTextBox1.Text;
+            richTextBox1.ScrollToCaret();
         }
     }
 }
