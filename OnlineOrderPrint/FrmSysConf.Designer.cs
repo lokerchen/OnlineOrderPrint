@@ -38,20 +38,21 @@
             this.lblMailServer = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.rbThree = new System.Windows.Forms.RadioButton();
+            this.rbTwo = new System.Windows.Forms.RadioButton();
+            this.rbOne = new System.Windows.Forms.RadioButton();
             this.btnExit = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.txtMinsInt = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.rbOne = new System.Windows.Forms.RadioButton();
-            this.rbTwo = new System.Windows.Forms.RadioButton();
-            this.rbThree = new System.Windows.Forms.RadioButton();
+            this.txtCompanyName = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -147,6 +148,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.txtCompanyName);
             this.panel1.Controls.Add(this.groupBox4);
             this.panel1.Controls.Add(this.btnExit);
             this.panel1.Controls.Add(this.btnSave);
@@ -154,13 +156,62 @@
             this.panel1.Controls.Add(this.groupBox1);
             this.panel1.Location = new System.Drawing.Point(8, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(622, 493);
+            this.panel1.Size = new System.Drawing.Size(542, 553);
             this.panel1.TabIndex = 1;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.rbThree);
+            this.groupBox4.Controls.Add(this.rbTwo);
+            this.groupBox4.Controls.Add(this.rbOne);
+            this.groupBox4.Font = new System.Drawing.Font("微软雅黑", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.groupBox4.Location = new System.Drawing.Point(8, 321);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(505, 83);
+            this.groupBox4.TabIndex = 9;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Copy of printing";
+            // 
+            // rbThree
+            // 
+            this.rbThree.AutoSize = true;
+            this.rbThree.Location = new System.Drawing.Point(367, 39);
+            this.rbThree.Name = "rbThree";
+            this.rbThree.Size = new System.Drawing.Size(83, 27);
+            this.rbThree.TabIndex = 2;
+            this.rbThree.TabStop = true;
+            this.rbThree.Text = "THREE";
+            this.rbThree.UseVisualStyleBackColor = true;
+            this.rbThree.Click += new System.EventHandler(this.rbThree_Click);
+            // 
+            // rbTwo
+            // 
+            this.rbTwo.AutoSize = true;
+            this.rbTwo.Location = new System.Drawing.Point(182, 39);
+            this.rbTwo.Name = "rbTwo";
+            this.rbTwo.Size = new System.Drawing.Size(72, 27);
+            this.rbTwo.TabIndex = 1;
+            this.rbTwo.TabStop = true;
+            this.rbTwo.Text = "TWO";
+            this.rbTwo.UseVisualStyleBackColor = true;
+            this.rbTwo.Click += new System.EventHandler(this.rbTwo_Click);
+            // 
+            // rbOne
+            // 
+            this.rbOne.AutoSize = true;
+            this.rbOne.Location = new System.Drawing.Point(23, 39);
+            this.rbOne.Name = "rbOne";
+            this.rbOne.Size = new System.Drawing.Size(68, 27);
+            this.rbOne.TabIndex = 0;
+            this.rbOne.TabStop = true;
+            this.rbOne.Text = "ONE";
+            this.rbOne.UseVisualStyleBackColor = true;
+            this.rbOne.Click += new System.EventHandler(this.rbOne_Click);
             // 
             // btnExit
             // 
             this.btnExit.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnExit.Location = new System.Drawing.Point(375, 420);
+            this.btnExit.Location = new System.Drawing.Point(334, 482);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(124, 53);
             this.btnExit.TabIndex = 7;
@@ -171,7 +222,7 @@
             // btnSave
             // 
             this.btnSave.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnSave.Location = new System.Drawing.Point(74, 420);
+            this.btnSave.Location = new System.Drawing.Point(69, 482);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(124, 53);
             this.btnSave.TabIndex = 6;
@@ -220,60 +271,19 @@
             this.label6.TabIndex = 0;
             this.label6.Text = "Auto download freq:";
             // 
-            // groupBox4
+            // txtCompanyName
             // 
-            this.groupBox4.Controls.Add(this.rbThree);
-            this.groupBox4.Controls.Add(this.rbTwo);
-            this.groupBox4.Controls.Add(this.rbOne);
-            this.groupBox4.Font = new System.Drawing.Font("微软雅黑", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.groupBox4.Location = new System.Drawing.Point(8, 321);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(505, 83);
-            this.groupBox4.TabIndex = 9;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Copy of printing";
-            // 
-            // rbOne
-            // 
-            this.rbOne.AutoSize = true;
-            this.rbOne.Location = new System.Drawing.Point(23, 39);
-            this.rbOne.Name = "rbOne";
-            this.rbOne.Size = new System.Drawing.Size(68, 27);
-            this.rbOne.TabIndex = 0;
-            this.rbOne.TabStop = true;
-            this.rbOne.Text = "ONE";
-            this.rbOne.UseVisualStyleBackColor = true;
-            this.rbOne.Click += new System.EventHandler(this.rbOne_Click);
-            // 
-            // rbTwo
-            // 
-            this.rbTwo.AutoSize = true;
-            this.rbTwo.Location = new System.Drawing.Point(182, 39);
-            this.rbTwo.Name = "rbTwo";
-            this.rbTwo.Size = new System.Drawing.Size(72, 27);
-            this.rbTwo.TabIndex = 1;
-            this.rbTwo.TabStop = true;
-            this.rbTwo.Text = "TWO";
-            this.rbTwo.UseVisualStyleBackColor = true;
-            this.rbTwo.Click += new System.EventHandler(this.rbTwo_Click);
-            // 
-            // rbThree
-            // 
-            this.rbThree.AutoSize = true;
-            this.rbThree.Location = new System.Drawing.Point(367, 39);
-            this.rbThree.Name = "rbThree";
-            this.rbThree.Size = new System.Drawing.Size(83, 27);
-            this.rbThree.TabIndex = 2;
-            this.rbThree.TabStop = true;
-            this.rbThree.Text = "THREE";
-            this.rbThree.UseVisualStyleBackColor = true;
-            this.rbThree.Click += new System.EventHandler(this.rbThree_Click);
+            this.txtCompanyName.Font = new System.Drawing.Font("微软雅黑", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.txtCompanyName.Location = new System.Drawing.Point(8, 419);
+            this.txtCompanyName.Name = "txtCompanyName";
+            this.txtCompanyName.Size = new System.Drawing.Size(505, 38);
+            this.txtCompanyName.TabIndex = 8;
             // 
             // FrmSysConf
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(633, 509);
+            this.ClientSize = new System.Drawing.Size(556, 577);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FrmSysConf";
@@ -283,10 +293,11 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.panel1.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
+            this.panel1.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -313,5 +324,6 @@
         private System.Windows.Forms.RadioButton rbThree;
         private System.Windows.Forms.RadioButton rbTwo;
         private System.Windows.Forms.RadioButton rbOne;
+        private System.Windows.Forms.TextBox txtCompanyName;
     }
 }

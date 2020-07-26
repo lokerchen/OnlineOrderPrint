@@ -15,5 +15,6 @@ namespace OnlineOrderPrint
         public string MailSender;
         public string PrtCount;
         public string Version;
+        public string CompanyName;
     }
 }

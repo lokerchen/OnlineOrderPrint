@@ -34,6 +34,7 @@ namespace OnlineOrderPrint
                 txtMinsInt.Text = user.MinsInt;
                 txtMailServer.Text = user.MailServer;
                 txtReceiverMail.Text = user.MailSender;
+                txtCompanyName.Text = user.CompanyName;
 
                 if (user.PrtCount.Equals(HtmlTextPath.PRT_COUNT_ONE))
                 {
@@ -83,7 +84,8 @@ namespace OnlineOrderPrint
                                        + txtMailServer.Text + "','"
                                        + txtReceiverMail.Text + "','"
                                        + prtCount + "','"
-                                       + @"2" + "')");
+                                       + @"2" + "','"
+                                       + txtCompanyName.Text + "')");
                 }
                 else
                 {
@@ -93,7 +95,8 @@ namespace OnlineOrderPrint
                                        + "', MailServer='" + txtMailServer.Text
                                        + "', MailSender='" + txtReceiverMail.Text
                                        + "', PrtCount='" + prtCount
-                                       + "', Version='2'");
+                                       + "', Version='2'"
+                                       + ", CompanyName='" + txtCompanyName.Text + "'");
                 }
 
                 MessageBox.Show(@"Save success!", @"DONE", MessageBoxButtons.OK);

@@ -44,6 +44,9 @@ namespace OnlineOrderPrint
         //版本
         private string VERSION = @"2";
 
+        //公司名称
+        private string COMPANY_NAME = @"";
+
         private static List<string> textList;       //打印内容行
 
         private int timer_Int = 60000; // 60 * 1000 = 1 Minute
@@ -383,6 +386,9 @@ namespace OnlineOrderPrint
                         MAIL_SENDER = user.MailSender;
                         PRT_COUNT = user.PrtCount;
                         VERSION = user.Version;
+                        COMPANY_NAME = user.CompanyName;
+
+                        lblCompanyName.Text = COMPANY_NAME;
 
                         if (string.IsNullOrEmpty(PRT_COUNT)) PRT_COUNT = @"ONE";
 
