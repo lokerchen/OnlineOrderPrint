@@ -55,6 +55,25 @@ namespace GetServerEmail
             }
         }
 
+        public static bool ClearData(string strSql)
+        {
+            try
+            {
+                using (SQLiteConnection conn = new SQLiteConnection(STR_CONN))
+                {
+                    conn.Open();
+                    SQLiteCommand comm = conn.CreateCommand();
+                    comm.CommandText = strSql;
+
+                    return comm.ExecuteNonQuery() >= 0;
+                }
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
         public static User Query(string strSql)
         {
             User user = new User();
