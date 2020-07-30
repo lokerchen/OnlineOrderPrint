@@ -966,6 +966,8 @@ namespace OnlineOrderPrint
                     }
                     else if (VERSION.Equals("3"))
                     {
+                        //中文字体更大一号字体
+                        HtmlBody = HtmlBody.Replace("<span style=\"font-size:18px;\">", "<span style=\"font-size:20px;\">");
                         HtmlBody = HtmlBody.Replace("h1", "h4").Replace("<p>", "").Replace("</p>", "<br />").Replace("<p style=\"width:94%;\">", "").Replace("<strong>", "").Replace("</strong>", "");
                         //HtmlBody = HtmlBody.Replace("h1", "h5");
                         HtmlBody = HtmlBody.Replace("<h4>", "").Replace("</h4>", "").Replace("<b>", "").Replace("</b>", "")
