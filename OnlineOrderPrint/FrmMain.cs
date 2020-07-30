@@ -929,6 +929,8 @@ namespace OnlineOrderPrint
                     
                     if (!sendmail.Equals(MAIL_SENDER))
                     {
+                        message.MarkForDeletion();
+                        SetRichTextValue(DateTime.Now.ToString("o") + @"######Message discarded#####");
                         continue;
                     }
                     
@@ -944,7 +946,11 @@ namespace OnlineOrderPrint
                     }
 
                     //读取Html失败时，跳出循环
-                    if (!GetPrtInfo(HtmlBody)) continue;
+                    if (!GetPrtInfo(HtmlBody))
+                    {
+                        message.MarkForDeletion();
+                        continue;
+                    }
                     //存在订单时不打印
                     if (SqlHelper.QueryId(@"SELECT mailID FROM Mail_ID WHERE orderID='" + orderId + "'"))
                     {
