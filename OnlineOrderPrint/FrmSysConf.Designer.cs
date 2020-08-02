@@ -38,6 +38,7 @@
             this.lblMailServer = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.txtCompanyName = new System.Windows.Forms.TextBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.rbThree = new System.Windows.Forms.RadioButton();
             this.rbTwo = new System.Windows.Forms.RadioButton();
@@ -48,7 +49,6 @@
             this.txtMinsInt = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.txtCompanyName = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -158,6 +158,15 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(542, 553);
             this.panel1.TabIndex = 1;
+            // 
+            // txtCompanyName
+            // 
+            this.txtCompanyName.Font = new System.Drawing.Font("微软雅黑", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.txtCompanyName.Location = new System.Drawing.Point(8, 419);
+            this.txtCompanyName.Name = "txtCompanyName";
+            this.txtCompanyName.Size = new System.Drawing.Size(505, 38);
+            this.txtCompanyName.TabIndex = 8;
+            this.txtCompanyName.Visible = false;
             // 
             // groupBox4
             // 
@@ -271,14 +280,6 @@
             this.label6.TabIndex = 0;
             this.label6.Text = "Auto download freq:";
             // 
-            // txtCompanyName
-            // 
-            this.txtCompanyName.Font = new System.Drawing.Font("微软雅黑", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.txtCompanyName.Location = new System.Drawing.Point(8, 419);
-            this.txtCompanyName.Name = "txtCompanyName";
-            this.txtCompanyName.Size = new System.Drawing.Size(505, 38);
-            this.txtCompanyName.TabIndex = 8;
-            // 
             // FrmSysConf
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -286,10 +287,12 @@
             this.ClientSize = new System.Drawing.Size(556, 577);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.KeyPreview = true;
             this.Name = "FrmSysConf";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "FrmSysConf";
             this.Load += new System.EventHandler(this.FrmSysConf_Load);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.FrmSysConf_KeyUp);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.panel1.ResumeLayout(false);

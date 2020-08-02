@@ -140,5 +140,19 @@ namespace OnlineOrderPrint
             rbTwo.Checked = false;
             rbThree.Checked = true;
         }
+
+        private void FrmSysConf_KeyPress(object sender, KeyPressEventArgs e)
+        {
+
+        }
+
+        private void FrmSysConf_KeyUp(object sender, KeyEventArgs e)
+        {
+            if ((ModifierKeys & Keys.Control) == Keys.Control
+                && e.KeyCode == Keys.F8)
+            {
+                txtCompanyName.Visible = txtCompanyName.Visible == false;
+            }
+        }
     }
 }
