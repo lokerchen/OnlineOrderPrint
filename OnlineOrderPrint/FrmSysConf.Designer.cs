@@ -49,6 +49,8 @@
             this.txtMinsInt = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.txtVersion = new System.Windows.Forms.TextBox();
+            this.lblVersion = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -148,6 +150,8 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.lblVersion);
+            this.panel1.Controls.Add(this.txtVersion);
             this.panel1.Controls.Add(this.txtCompanyName);
             this.panel1.Controls.Add(this.groupBox4);
             this.panel1.Controls.Add(this.btnExit);
@@ -156,7 +160,7 @@
             this.panel1.Controls.Add(this.groupBox1);
             this.panel1.Location = new System.Drawing.Point(8, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(542, 553);
+            this.panel1.Size = new System.Drawing.Size(542, 583);
             this.panel1.TabIndex = 1;
             // 
             // txtCompanyName
@@ -220,7 +224,7 @@
             // btnExit
             // 
             this.btnExit.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnExit.Location = new System.Drawing.Point(334, 482);
+            this.btnExit.Location = new System.Drawing.Point(334, 524);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(124, 53);
             this.btnExit.TabIndex = 7;
@@ -231,7 +235,7 @@
             // btnSave
             // 
             this.btnSave.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnSave.Location = new System.Drawing.Point(69, 482);
+            this.btnSave.Location = new System.Drawing.Point(69, 524);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(124, 53);
             this.btnSave.TabIndex = 6;
@@ -280,11 +284,31 @@
             this.label6.TabIndex = 0;
             this.label6.Text = "Auto download freq:";
             // 
+            // txtVersion
+            // 
+            this.txtVersion.Font = new System.Drawing.Font("微软雅黑", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.txtVersion.Location = new System.Drawing.Point(119, 463);
+            this.txtVersion.Name = "txtVersion";
+            this.txtVersion.Size = new System.Drawing.Size(91, 38);
+            this.txtVersion.TabIndex = 10;
+            this.txtVersion.Visible = false;
+            // 
+            // lblVersion
+            // 
+            this.lblVersion.AutoSize = true;
+            this.lblVersion.Font = new System.Drawing.Font("微软雅黑", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblVersion.Location = new System.Drawing.Point(13, 470);
+            this.lblVersion.Name = "lblVersion";
+            this.lblVersion.Size = new System.Drawing.Size(100, 31);
+            this.lblVersion.TabIndex = 11;
+            this.lblVersion.Text = "Version";
+            this.lblVersion.Visible = false;
+            // 
             // FrmSysConf
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(556, 577);
+            this.ClientSize = new System.Drawing.Size(556, 601);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.KeyPreview = true;
@@ -328,5 +352,7 @@
         private System.Windows.Forms.RadioButton rbTwo;
         private System.Windows.Forms.RadioButton rbOne;
         private System.Windows.Forms.TextBox txtCompanyName;
+        private System.Windows.Forms.Label lblVersion;
+        private System.Windows.Forms.TextBox txtVersion;
     }
 }

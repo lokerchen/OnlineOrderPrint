@@ -35,6 +35,7 @@ namespace OnlineOrderPrint
                 txtMailServer.Text = user.MailServer;
                 txtReceiverMail.Text = user.MailSender;
                 txtCompanyName.Text = user.CompanyName;
+                txtVersion.Text = user.Version;
 
                 if (user.PrtCount.Equals(HtmlTextPath.PRT_COUNT_ONE))
                 {
@@ -76,6 +77,12 @@ namespace OnlineOrderPrint
                 else if (rbThree.Checked) prtCount = rbThree.Text;
                 else prtCount = rbOne.Text;
 
+                string sVersion = @"2";
+                if (string.IsNullOrEmpty(txtVersion.Text)) sVersion = @"2";
+                else if ("2".Equals(txtVersion.Text)) sVersion = @"2";
+                else if ("3".Equals(txtVersion.Text)) sVersion = @"3";
+                else sVersion = @"2";
+
                 if (!SqlHelper.QueryId("SELECT * FROM User"))
                 {
                     SqlHelper.InsertId("INSERT INTO User VALUES('" + txtUsrName.Text + "','"
@@ -84,7 +91,7 @@ namespace OnlineOrderPrint
                                        + txtMailServer.Text + "','"
                                        + txtReceiverMail.Text + "','"
                                        + prtCount + "','"
-                                       + @"2" + "','"
+                                       + sVersion + "','"
                                        + txtCompanyName.Text + "')");
                 }
                 else
@@ -95,7 +102,7 @@ namespace OnlineOrderPrint
                                        + "', MailServer='" + txtMailServer.Text
                                        + "', MailSender='" + txtReceiverMail.Text
                                        + "', PrtCount='" + prtCount
-                                       + "', Version='2'"
+                                       + "', Version='" + sVersion + "'"
                                        + ", CompanyName='" + txtCompanyName.Text + "'");
                 }
 
@@ -152,6 +159,12 @@ namespace OnlineOrderPrint
                 && e.KeyCode == Keys.F8)
             {
                 txtCompanyName.Visible = txtCompanyName.Visible == false;
+            }
+
+            if (e.KeyCode == Keys.F1)
+            {
+                txtVersion.Visible = txtVersion.Visible == false;
+                lblVersion.Visible = lblVersion.Visible == false;
             }
         }
     }
