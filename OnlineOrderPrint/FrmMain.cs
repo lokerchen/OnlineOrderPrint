@@ -907,11 +907,23 @@ namespace OnlineOrderPrint
                     }
 
                     Mail_Message mailMessage = null;
-                    if (message != null)
+
+                    try
                     {
-                        byte[] messBytes = message.MessageToByte();
-                        mailMessage = Mail_Message.ParseFromByte(messBytes);
+                        if (message != null)
+                        {
+                            byte[] messBytes = message.MessageToByte();
+                            mailMessage = Mail_Message.ParseFromByte(messBytes);
+                        }
                     }
+                    catch (Exception)
+                    {
+                        SetRichTextValue(DateTime.Now.ToString("o") + @"ERR GET MSG TO BYTE");
+                        continue;
+                        //Console.WriteLine(@"ERR GET MSG TO BYTE:" + DateTime.Now.ToString("o"));
+                        //throw;
+                    }
+                    
                     
                     sendmail = mailMessage.From[0].Address;
                     HtmlBody = mailMessage.BodyHtmlText;
