@@ -1375,7 +1375,7 @@ namespace OnlineOrderPrint
             {
                 Console.WriteLine(ex.InnerException);
 
-                SetRichTextValue(DateTime.Now.ToString("o") + @"######Message discarded#####");
+                SetRichTextValue(DateTime.Now.ToString("o") + @"######ERR Message#####");
                 
                 return false;
             }
