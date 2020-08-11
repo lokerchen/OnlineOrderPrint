@@ -961,6 +961,7 @@ namespace OnlineOrderPrint
                     if (!GetPrtInfo(HtmlBody))
                     {
                         message.MarkForDeletion();
+                        SetRichTextValue(DateTime.Now.ToString("o") + @"######OLD Message discarded#####");
                         continue;
                     }
                     //存在订单时不打印
@@ -1353,7 +1354,14 @@ namespace OnlineOrderPrint
                     node = doc.DocumentNode.SelectSingleNode(orderType.Trim().Equals(HtmlTextPath.ORDER_TYPE_COLLECTION) ? HtmlTextPath.BODY_COLLECTION_ORDER_TIME : HtmlTextPath.BODY_DELIVER_ORDER_TIME);
                     orderDate = node.InnerText.Replace("&nbsp;", "").Trim().Substring(node.InnerText.Replace("&nbsp;", "").Trim().IndexOf(":") + 1);
 
-                    return true;
+                    try
+                    {
+                        return Convert.ToDateTime(orderDate) >= Convert.ToDateTime(DateTime.Now.AddDays(-2).ToShortDateString());
+                    }
+                    catch (Exception)
+                    {
+                        return false;
+                    } 
                 }
                 else
                 {
@@ -1367,7 +1375,14 @@ namespace OnlineOrderPrint
                     node = doc.DocumentNode.SelectSingleNode(orderType.Trim().Equals(HtmlTextPath.ORDER_TYPE_COLLECTION) ? HtmlTextPath.BODY_COLLECTION_ORDER_TIME : HtmlTextPath.BODY_DELIVER_ORDER_TIME);
                     orderDate = node.InnerText.Replace("&nbsp;", "").Trim().Substring(node.InnerText.Replace("&nbsp;", "").Trim().IndexOf(":") + 1);
 
-                    return true;
+                    try
+                    {
+                        return Convert.ToDateTime(orderDate) >= Convert.ToDateTime(DateTime.Now.AddDays(-2).ToShortDateString());
+                    }
+                    catch (Exception)
+                    {
+                        return false;
+                    }
                 } 
 
             }
