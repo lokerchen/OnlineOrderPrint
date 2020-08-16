@@ -14,6 +14,12 @@ namespace OnlineOrderPrint
 {
     public partial class FrmSysConf : Form
     {
+        public string CompanyName
+        {
+            get { return txtCompanyName.Text; }
+            set { this.txtCompanyName.Text = value; }
+        }
+
         public FrmSysConf()
         {
             InitializeComponent();
