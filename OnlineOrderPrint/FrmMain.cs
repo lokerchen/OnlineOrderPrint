@@ -1358,19 +1358,20 @@ namespace OnlineOrderPrint
 
                 if (!"2".Equals(VERSION))
                 {
-                    HtmlNode node;
-                    node = doc.DocumentNode.SelectSingleNode(HtmlTextPath.HEAD_ORDER_ID);
-                    orderId = node.InnerText.Replace("&nbsp;", "").Trim().Substring(node.InnerText.Replace("&nbsp;", "").Trim().IndexOf("#"));
-
-                    node = doc.DocumentNode.SelectSingleNode(HtmlTextPath.HEAD_ORDER_TYPE);
-                    orderType = node.InnerText.Replace("&nbsp;", "").Trim().Substring(0, node.InnerText.Replace("&nbsp;", "").Trim().IndexOf("ORDER")).ToUpper();
-
-                    node = doc.DocumentNode.SelectSingleNode(orderType.Trim().Equals(HtmlTextPath.ORDER_TYPE_COLLECTION) ? HtmlTextPath.BODY_COLLECTION_ORDER_TIME : HtmlTextPath.BODY_DELIVER_ORDER_TIME);
-                    orderDate = node.InnerText.Replace("&nbsp;", "").Trim().Substring(node.InnerText.Replace("&nbsp;", "").Trim().IndexOf(":") + 1);
-
                     try
                     {
-                        return Convert.ToDateTime(orderDate) >= Convert.ToDateTime(DateTime.Now.AddDays(-2).ToShortDateString());
+                        HtmlNode node;
+                        node = doc.DocumentNode.SelectSingleNode(HtmlTextPath.HEAD_ORDER_ID);
+                        orderId = node.InnerText.Replace("&nbsp;", "").Trim().Substring(node.InnerText.Replace("&nbsp;", "").Trim().IndexOf("#"));
+
+                        node = doc.DocumentNode.SelectSingleNode(HtmlTextPath.HEAD_ORDER_TYPE);
+                        orderType = node.InnerText.Replace("&nbsp;", "").Trim().Substring(0, node.InnerText.Replace("&nbsp;", "").Trim().IndexOf("ORDER")).ToUpper();
+
+                        node = doc.DocumentNode.SelectSingleNode(orderType.Trim().Equals(HtmlTextPath.ORDER_TYPE_COLLECTION) ? HtmlTextPath.BODY_COLLECTION_ORDER_TIME : HtmlTextPath.BODY_DELIVER_ORDER_TIME);
+                        orderDate = node.InnerText.Replace("&nbsp;", "").Trim().Substring(node.InnerText.Replace("&nbsp;", "").Trim().IndexOf(":") + 1);
+
+                        return true;
+                        //return Convert.ToDateTime(orderDate) >= Convert.ToDateTime(DateTime.Now.AddDays(-2).ToShortDateString());
                     }
                     catch (Exception)
                     {
@@ -1379,19 +1380,20 @@ namespace OnlineOrderPrint
                 }
                 else
                 {
-                    HtmlNode node;
-                    node = doc.DocumentNode.SelectSingleNode(HtmlTextPath.HEAD_ORDER_ID);
-                    orderId = node.InnerText.Replace("&nbsp;", "").Trim().Substring(node.InnerText.Replace("&nbsp;", "").Trim().IndexOf("#"));
-
-                    node = doc.DocumentNode.SelectSingleNode(HtmlTextPath.HEAD_ORDER_TYPE);
-                    orderType = node.InnerText.Replace("&nbsp;", "").Trim().Substring(0, node.InnerText.Replace("&nbsp;", "").Trim().IndexOf("ORDER")).ToUpper();
-
-                    node = doc.DocumentNode.SelectSingleNode(orderType.Trim().Equals(HtmlTextPath.ORDER_TYPE_COLLECTION) ? HtmlTextPath.BODY_COLLECTION_ORDER_TIME : HtmlTextPath.BODY_DELIVER_ORDER_TIME);
-                    orderDate = node.InnerText.Replace("&nbsp;", "").Trim().Substring(node.InnerText.Replace("&nbsp;", "").Trim().IndexOf(":") + 1);
-
                     try
                     {
-                        return Convert.ToDateTime(orderDate) >= Convert.ToDateTime(DateTime.Now.AddDays(-2).ToShortDateString());
+                        HtmlNode node;
+                        node = doc.DocumentNode.SelectSingleNode(HtmlTextPath.HEAD_ORDER_ID);
+                        orderId = node.InnerText.Replace("&nbsp;", "").Trim().Substring(node.InnerText.Replace("&nbsp;", "").Trim().IndexOf("#"));
+
+                        node = doc.DocumentNode.SelectSingleNode(HtmlTextPath.HEAD_ORDER_TYPE);
+                        orderType = node.InnerText.Replace("&nbsp;", "").Trim().Substring(0, node.InnerText.Replace("&nbsp;", "").Trim().IndexOf("ORDER")).ToUpper();
+
+                        node = doc.DocumentNode.SelectSingleNode(orderType.Trim().Equals(HtmlTextPath.ORDER_TYPE_COLLECTION) ? HtmlTextPath.BODY_COLLECTION_ORDER_TIME : HtmlTextPath.BODY_DELIVER_ORDER_TIME);
+                        orderDate = node.InnerText.Replace("&nbsp;", "").Trim().Substring(node.InnerText.Replace("&nbsp;", "").Trim().IndexOf(":") + 1);
+
+                        return true;
+                        //return Convert.ToDateTime(orderDate) >= Convert.ToDateTime(DateTime.Now.AddDays(-2).ToShortDateString());
                     }
                     catch (Exception)
                     {
