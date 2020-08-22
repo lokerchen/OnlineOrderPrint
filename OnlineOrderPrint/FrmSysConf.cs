@@ -121,17 +121,17 @@ namespace OnlineOrderPrint
             }
         }
 
-        private void lblMailServer_DoubleClick(object sender, EventArgs e)
-        {
-            lblMailServer.Visible = false;
-            txtMailServer.Visible = true;
-        }
+        //private void lblMailServer_DoubleClick(object sender, EventArgs e)
+        //{
+        //    //lblMailServer.Visible = false;
+        //    //txtMailServer.Visible = true;
+        //}
 
-        private void lblReceiverMail_DoubleClick(object sender, EventArgs e)
-        {
-            lblReceiverMail.Visible = false;
-            txtReceiverMail.Visible = true;
-        }
+        //private void lblReceiverMail_DoubleClick(object sender, EventArgs e)
+        //{
+        //    //lblReceiverMail.Visible = false;
+        //    //txtReceiverMail.Visible = true;
+        //}
 
         private void rbOne_Click(object sender, EventArgs e)
         {
@@ -171,6 +171,18 @@ namespace OnlineOrderPrint
             {
                 txtVersion.Visible = txtVersion.Visible == false;
                 lblVersion.Visible = lblVersion.Visible == false;
+            }
+
+            if (e.KeyCode == Keys.F2)
+            {
+                lblMailServer.Visible = lblMailServer.Visible == false;
+                txtMailServer.Visible = txtMailServer.Visible == false;
+            }
+
+            if (e.KeyCode == Keys.F3)
+            {
+                lblReceiverMail.Visible = lblReceiverMail.Visible == false;
+                txtReceiverMail.Visible = txtReceiverMail.Visible == false;
             }
         }
     }

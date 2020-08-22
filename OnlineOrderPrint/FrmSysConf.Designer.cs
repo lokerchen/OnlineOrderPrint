@@ -38,6 +38,8 @@
             this.lblMailServer = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lblVersion = new System.Windows.Forms.Label();
+            this.txtVersion = new System.Windows.Forms.TextBox();
             this.txtCompanyName = new System.Windows.Forms.TextBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.rbThree = new System.Windows.Forms.RadioButton();
@@ -49,8 +51,6 @@
             this.txtMinsInt = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.txtVersion = new System.Windows.Forms.TextBox();
-            this.lblVersion = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -93,7 +93,6 @@
             this.lblReceiverMail.Size = new System.Drawing.Size(209, 39);
             this.lblReceiverMail.TabIndex = 6;
             this.lblReceiverMail.Text = "Receiver Mail";
-            this.lblReceiverMail.DoubleClick += new System.EventHandler(this.lblReceiverMail_DoubleClick);
             // 
             // txtMailServer
             // 
@@ -137,7 +136,6 @@
             this.lblMailServer.Size = new System.Drawing.Size(199, 39);
             this.lblMailServer.TabIndex = 0;
             this.lblMailServer.Text = "Mail SERVER";
-            this.lblMailServer.DoubleClick += new System.EventHandler(this.lblMailServer_DoubleClick);
             // 
             // label2
             // 
@@ -162,6 +160,26 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(542, 583);
             this.panel1.TabIndex = 1;
+            // 
+            // lblVersion
+            // 
+            this.lblVersion.AutoSize = true;
+            this.lblVersion.Font = new System.Drawing.Font("微软雅黑", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblVersion.Location = new System.Drawing.Point(13, 470);
+            this.lblVersion.Name = "lblVersion";
+            this.lblVersion.Size = new System.Drawing.Size(100, 31);
+            this.lblVersion.TabIndex = 11;
+            this.lblVersion.Text = "Version";
+            this.lblVersion.Visible = false;
+            // 
+            // txtVersion
+            // 
+            this.txtVersion.Font = new System.Drawing.Font("微软雅黑", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.txtVersion.Location = new System.Drawing.Point(119, 463);
+            this.txtVersion.Name = "txtVersion";
+            this.txtVersion.Size = new System.Drawing.Size(91, 38);
+            this.txtVersion.TabIndex = 10;
+            this.txtVersion.Visible = false;
             // 
             // txtCompanyName
             // 
@@ -283,26 +301,6 @@
             this.label6.Size = new System.Drawing.Size(249, 31);
             this.label6.TabIndex = 0;
             this.label6.Text = "Auto download freq:";
-            // 
-            // txtVersion
-            // 
-            this.txtVersion.Font = new System.Drawing.Font("微软雅黑", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.txtVersion.Location = new System.Drawing.Point(119, 463);
-            this.txtVersion.Name = "txtVersion";
-            this.txtVersion.Size = new System.Drawing.Size(91, 38);
-            this.txtVersion.TabIndex = 10;
-            this.txtVersion.Visible = false;
-            // 
-            // lblVersion
-            // 
-            this.lblVersion.AutoSize = true;
-            this.lblVersion.Font = new System.Drawing.Font("微软雅黑", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblVersion.Location = new System.Drawing.Point(13, 470);
-            this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(100, 31);
-            this.lblVersion.TabIndex = 11;
-            this.lblVersion.Text = "Version";
-            this.lblVersion.Visible = false;
             // 
             // FrmSysConf
             // 
