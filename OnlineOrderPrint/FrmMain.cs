@@ -978,6 +978,24 @@ namespace OnlineOrderPrint
                         SetRichTextValue(DateTime.Now.ToString("o") + @"######OLD Message discarded#####");
                         continue;
                     }
+
+                    //DataGridView中的订单号不能重复
+                    for (int j = 0; j < dgvOrder.RowCount; j++)
+                    {
+                        if (dgvOrder.Rows[j].Cells[0].Value != null)
+                        {
+                            if (!string.IsNullOrEmpty(dgvOrder.Rows[j].Cells[0].Value.ToString()))
+                            {
+                                if (dgvOrder.Rows[j].Cells[0].Value.ToString().Equals(orderId))
+                                {
+                                    message.MarkForDeletion();
+                                    SetRichTextValue(DateTime.Now.ToString("o") + @"######Message discarded#####");
+                                    continue;
+                                }
+                            }
+                        }
+                    }
+
                     //存在订单时不打印
                     if (SqlHelper.QueryId(@"SELECT mailID FROM Mail_ID WHERE orderID='" + orderId + "'"))
                     {
