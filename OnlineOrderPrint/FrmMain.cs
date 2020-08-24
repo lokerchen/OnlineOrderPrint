@@ -989,7 +989,7 @@ namespace OnlineOrderPrint
                                 if (dgvOrder.Rows[j].Cells[0].Value.ToString().Equals(orderId))
                                 {
                                     message.MarkForDeletion();
-                                    SetRichTextValue(DateTime.Now.ToString("o") + @"######Message discarded#####");
+                                    SetRichTextValue(DateTime.Now.ToString("o") + @"######DGV Message discarded#####");
                                     continue;
                                 }
                             }
