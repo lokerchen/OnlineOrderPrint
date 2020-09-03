@@ -1027,8 +1027,7 @@ namespace OnlineOrderPrint
                                            + messagesCollection[i].UID + "', '"
                                            + orderId + "', '"
                                            + orderType + "', '"
-                                           + orderDate + "', '"
-                                           + HtmlBody + "')"))
+                                           + orderDate + "', '')"))
                     {
                         MessageBox.Show(@"WRITE Data Error!", @"ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
