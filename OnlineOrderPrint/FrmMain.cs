@@ -361,7 +361,7 @@ namespace OnlineOrderPrint
             #region Timer
             try
             {
-                SetDateTimeFormat();
+                //SetDateTimeFormat();
 
                 //网络连接判断
                 if (!IsNetConnect()) return;
