@@ -898,14 +898,15 @@ namespace OnlineOrderPrint
 
             if (0 < messagesCollection.Count)
             {
-                for (int i = messagesCollection.Count - 1; i >= 0; i--)
+                //for (int i = messagesCollection.Count - 1; i >= 0; i--)
+                foreach (POP3_ClientMessage mail in popMail.Messages)
                 {
 
-                    if (!SqlHelper.QueryId(@"SELECT mailID FROM Mail_ID WHERE mailID='" + messagesCollection[i].UID + "'"))
+                    if (!SqlHelper.QueryId(@"SELECT mailID FROM Mail_ID WHERE mailID='" + mail.UID + "'"))
                     {
                         try
                         {
-                            message = popMail.Messages[i];
+                            message = mail;
                         }
                         catch (Exception)
                         {
@@ -1024,7 +1025,7 @@ namespace OnlineOrderPrint
                     
                     //打印完成后插入数据
                     if (!SqlHelper.InsertId(@"INSERT INTO Mail_ID(mailID, orderID, orderType, orderTime, orderHtmlBody) VALUES('"
-                                           + messagesCollection[i].UID + "', '"
+                                           + mail.UID + "', '"
                                            + orderId + "', '"
                                            + orderType + "', '"
                                            + orderDate + "', '')"))
