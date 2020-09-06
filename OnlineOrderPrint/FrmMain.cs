@@ -755,7 +755,7 @@ namespace OnlineOrderPrint
                     date = mailMessage.Date.ToString("d");
                     if (Convert.ToDateTime(date) < Convert.ToDateTime(DateTime.Now.ToShortDateString()))
                     {
-                        break;
+                        continue;
                     }
                     //size = mailMessage.Size.ToString();
                     ////收件人地址
@@ -917,7 +917,7 @@ namespace OnlineOrderPrint
                     else
                     {
                         //return;
-                        break;
+                        continue;
                     }
 
                     Mail_Message mailMessage = null;
@@ -950,7 +950,7 @@ namespace OnlineOrderPrint
                     date = mailMessage.Date.ToString("d");
                     if (Convert.ToDateTime(date) < Convert.ToDateTime(DateTime.Now.AddDays(-1).ToShortDateString()))
                     {
-                        break;
+                        continue;
                     }
                     
                     if (!sendmail.Equals(MAIL_SENDER))
