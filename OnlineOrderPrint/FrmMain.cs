@@ -341,9 +341,12 @@ namespace OnlineOrderPrint
         private void btnSysConf_Click(object sender, EventArgs e)
         {
             FrmSysConf frmSysConf = new FrmSysConf();
-            frmSysConf.ShowDialog();
 
-            if (!string.IsNullOrEmpty(frmSysConf.CompanyName)) lblCompanyName.Text = frmSysConf.CompanyName;
+            if (frmSysConf.ShowDialog() == DialogResult.OK)
+            {
+                QueryUser();
+                if (!string.IsNullOrEmpty(frmSysConf.CompanyName)) lblCompanyName.Text = frmSysConf.CompanyName;
+            }
         }
 
         private void timerOrder_Tick(object sender, EventArgs e)
@@ -366,68 +369,7 @@ namespace OnlineOrderPrint
                 //网络连接判断
                 if (!IsNetConnect()) return;
 
-                User user = SqlHelper.Query("SELECT * FROM User");
-                if (user != null)
-                {
-                    try
-                    {
-                        if (string.IsNullOrEmpty(user.UsrName) || string.IsNullOrEmpty(user.UsrPwd) || string.IsNullOrEmpty(user.MailServer) || string.IsNullOrEmpty(user.MinsInt) ||
-                            string.IsNullOrEmpty(user.MailSender) || string.IsNullOrEmpty(user.PrtCount))
-                        {
-                            //默认版本为2
-                            if (string.IsNullOrEmpty(user.Version)) VERSION = "2";
-
-                            timerOrder.Enabled = false;
-                            //MessageBox.Show(@"Mail Server ERROR!", @"ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                            if (File.Exists(Environment.CurrentDirectory + wavError))
-                            {
-                                SoundPlayer player = new SoundPlayer(Environment.CurrentDirectory + wavError);
-                                player.Play();
-                            }
-
-                            panelErrorMsg.Show();
-
-                            //FrmSysConf frmSysConf = new FrmSysConf();
-                            //frmSysConf.ShowDialog();
-
-                            return;
-                        }
-
-                        MAIL_USER_NAME = user.UsrName;
-                        MAIL_USER_PWD = user.UsrPwd;
-                        MAIL_POP = user.MailServer;
-                        MAIL_SENDER = user.MailSender;
-                        PRT_COUNT = user.PrtCount;
-                        VERSION = user.Version;
-                        COMPANY_NAME = user.CompanyName;
-
-                        lblCompanyName.Text = COMPANY_NAME;
-
-                        if (string.IsNullOrEmpty(PRT_COUNT)) PRT_COUNT = @"ONE";
-
-                        Console.WriteLine(PubCommon.GetRadioBtnValue(PRT_COUNT));
-
-                        timer_Int = Convert.ToInt32(user.MinsInt) * 60 * 1000;
-
-                        timerOrder.Interval = timer_Int;
-                    }
-                    catch (Exception)
-                    {
-                        timerOrder.Enabled = false;
-                        MessageBox.Show("Mail Server ERROR!");
-
-                        if (File.Exists(Environment.CurrentDirectory + wavError))
-                        {
-                            SoundPlayer player = new SoundPlayer(Environment.CurrentDirectory + wavError);
-                            player.Play();
-                        }
-
-                        //FrmSysConf frmSysConf = new FrmSysConf();
-                        //frmSysConf.ShowDialog();
-                        return;
-                    }
-                }
+                QueryUser();
             }
             catch (Exception)
             {
@@ -1502,6 +1444,68 @@ namespace OnlineOrderPrint
             {
                 Console.WriteLine(ex);
                 SetRichTextValue("ERR SET DATETIME FORMAT:" + DateTime.Now.ToString("o"));
+            }
+        }
+
+        private void QueryUser()
+        {
+            User user = SqlHelper.Query("SELECT * FROM User");
+            if (user != null)
+            {
+                try
+                {
+                    if (string.IsNullOrEmpty(user.UsrName) || string.IsNullOrEmpty(user.UsrPwd) || string.IsNullOrEmpty(user.MailServer) || string.IsNullOrEmpty(user.MinsInt) ||
+                        string.IsNullOrEmpty(user.MailSender) || string.IsNullOrEmpty(user.PrtCount))
+                    {
+                        //默认版本为2
+                        if (string.IsNullOrEmpty(user.Version)) VERSION = "2";
+
+                        timerOrder.Enabled = false;
+                        //MessageBox.Show(@"Mail Server ERROR!", @"ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                        if (File.Exists(Environment.CurrentDirectory + wavError))
+                        {
+                            SoundPlayer player = new SoundPlayer(Environment.CurrentDirectory + wavError);
+                            player.Play();
+                        }
+
+                        panelErrorMsg.Show();
+
+                        //FrmSysConf frmSysConf = new FrmSysConf();
+                        //frmSysConf.ShowDialog();
+
+                        return;
+                    }
+
+                    MAIL_USER_NAME = user.UsrName;
+                    MAIL_USER_PWD = user.UsrPwd;
+                    MAIL_POP = user.MailServer;
+                    MAIL_SENDER = user.MailSender;
+                    PRT_COUNT = user.PrtCount;
+                    VERSION = user.Version;
+                    COMPANY_NAME = user.CompanyName;
+
+                    lblCompanyName.Text = COMPANY_NAME;
+
+                    if (string.IsNullOrEmpty(PRT_COUNT)) PRT_COUNT = @"ONE";
+
+                    Console.WriteLine(PubCommon.GetRadioBtnValue(PRT_COUNT));
+
+                    timer_Int = Convert.ToInt32(user.MinsInt) * 60 * 1000;
+
+                    timerOrder.Interval = timer_Int;
+                }
+                catch (Exception)
+                {
+                    timerOrder.Enabled = false;
+                    MessageBox.Show("Mail Server ERROR!");
+
+                    if (File.Exists(Environment.CurrentDirectory + wavError))
+                    {
+                        SoundPlayer player = new SoundPlayer(Environment.CurrentDirectory + wavError);
+                        player.Play();
+                    }
+                }
             }
         }
     }

@@ -113,6 +113,8 @@ namespace OnlineOrderPrint
                 }
 
                 MessageBox.Show(@"Save success!", @"DONE", MessageBoxButtons.OK);
+
+                this.DialogResult = DialogResult.OK;
             }
             catch (Exception)
             {
