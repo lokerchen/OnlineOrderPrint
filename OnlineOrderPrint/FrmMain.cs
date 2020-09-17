@@ -860,6 +860,7 @@ namespace OnlineOrderPrint
                     else
                     {
                         //return;
+                        SetRichTextValue(DateTime.Now.ToString("o") + @"######Duplicate message######");
                         continue;
                     }
 
@@ -890,11 +891,11 @@ namespace OnlineOrderPrint
                     //    break;
                     //}
                     //发送日期时间
-                    date = mailMessage.Date.ToString("d");
-                    if (Convert.ToDateTime(date) < Convert.ToDateTime(DateTime.Now.AddDays(-1).ToShortDateString()))
-                    {
-                        continue;
-                    }
+                    //date = mailMessage.Date.ToString("d");
+                    //if (Convert.ToDateTime(date) < Convert.ToDateTime(DateTime.Now.AddDays(-1).ToShortDateString()))
+                    //{
+                    //    continue;
+                    //}
                     
                     if (!sendmail.Equals(MAIL_SENDER))
                     {
@@ -942,6 +943,7 @@ namespace OnlineOrderPrint
                     //存在订单时不打印
                     if (SqlHelper.QueryId(@"SELECT mailID FROM Mail_ID WHERE orderID='" + orderId + "'"))
                     {
+                        SetRichTextValue(DateTime.Now.ToString("o") + @"######Duplicate order ID######");
                         continue;
                     }
 
@@ -1043,6 +1045,7 @@ namespace OnlineOrderPrint
             {
                 try
                 {
+                    SetRichTextValue(DateTime.Now.ToString("o") + @"Email Count < 0");
                     popMail.Disconnect();
                 }
                 catch (Exception)
