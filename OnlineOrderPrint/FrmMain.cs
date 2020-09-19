@@ -843,7 +843,7 @@ namespace OnlineOrderPrint
                 //for (int i = messagesCollection.Count - 1; i >= 0; i--)
                 foreach (POP3_ClientMessage mail in popMail.Messages)
                 {
-
+                    /*
                     if (!SqlHelper.QueryId(@"SELECT mailID FROM Mail_ID WHERE mailID='" + mail.UID + "'"))
                     {
                         try
@@ -863,6 +863,18 @@ namespace OnlineOrderPrint
                         SetRichTextValue(DateTime.Now.ToString("o") + @"######Duplicate message######");
                         continue;
                     }
+                    */
+
+                    try
+                    {
+                        message = mail;
+                    }
+                    catch (Exception)
+                    {
+                        popMail.Timeout = HtmlTextPath.EMAIL_TIME_OUT;
+                        popMail.Connect(MAIL_POP, HtmlTextPath.EMAIL_PORT, true);
+                        popMail.Login(MAIL_USER_NAME, MAIL_USER_PWD);
+                    }
 
                     Mail_Message mailMessage = null;
 
@@ -872,6 +884,10 @@ namespace OnlineOrderPrint
                         {
                             byte[] messBytes = message.MessageToByte();
                             mailMessage = Mail_Message.ParseFromByte(messBytes);
+                        }
+                        else
+                        {
+                            continue;
                         }
                     }
                     catch (Exception)
@@ -900,7 +916,7 @@ namespace OnlineOrderPrint
                     if (!sendmail.Equals(MAIL_SENDER))
                     {
                         message.MarkForDeletion();
-                        SetRichTextValue(DateTime.Now.ToString("o") + @"######Message discarded#####");
+                        SetRichTextValue(DateTime.Now.ToString("o") + @"######===" + sendmail + "===Message discarded#####");
                         continue;
                     }
                     
@@ -919,7 +935,7 @@ namespace OnlineOrderPrint
                     if (!GetPrtInfo(HtmlBody))
                     {
                         message.MarkForDeletion();
-                        SetRichTextValue(DateTime.Now.ToString("o") + @"######OLD Message discarded#####");
+                        SetRichTextValue(DateTime.Now.ToString("o") + @"######===" + orderId + "===OLD Message discarded#####");
                         continue;
                     }
 
@@ -933,7 +949,7 @@ namespace OnlineOrderPrint
                                 if (dgvOrder.Rows[j].Cells[0].Value.ToString().Equals(orderId))
                                 {
                                     message.MarkForDeletion();
-                                    SetRichTextValue(DateTime.Now.ToString("o") + @"######DGV Message discarded#####");
+                                    SetRichTextValue(DateTime.Now.ToString("o") + @"######===" + orderId + "===DGV Message discarded#####");
                                     continue;
                                 }
                             }
@@ -941,11 +957,11 @@ namespace OnlineOrderPrint
                     }
 
                     //存在订单时不打印
-                    if (SqlHelper.QueryId(@"SELECT mailID FROM Mail_ID WHERE orderID='" + orderId + "'"))
-                    {
-                        SetRichTextValue(DateTime.Now.ToString("o") + @"######Duplicate order ID######");
-                        continue;
-                    }
+                    //if (SqlHelper.QueryId(@"SELECT mailID FROM Mail_ID WHERE orderID='" + orderId + "'"))
+                    //{
+                    //    SetRichTextValue(DateTime.Now.ToString("o") + @"######Duplicate order ID######");
+                    //    continue;
+                    //}
 
                     if (VERSION.Equals("2"))
                     {
