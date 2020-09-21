@@ -1015,6 +1015,8 @@ namespace OnlineOrderPrint
                     {
                         webBrowser1.DocumentCompleted += wb_DocumentCompleted;
 
+                        SetRichTextValue(DateTime.Now.ToString("o") + "###Begin Print Count = " + PRT_COUNT + "###");
+
                         Console.Out.WriteLine("Wait:" + DateTime.Now.ToString("o"));
                         obj.Reset();
                         while (obj.WaitOne(1000, false) == false)
@@ -1324,6 +1326,8 @@ namespace OnlineOrderPrint
                     isPrint = true;
 
                     webBrowser1.DocumentCompleted -= wb_DocumentCompleted;
+
+                    SetRichTextValue(DateTime.Now.ToString("o") + "###Print Count = " + PRT_COUNT + "###");
                 }
             }
         }
