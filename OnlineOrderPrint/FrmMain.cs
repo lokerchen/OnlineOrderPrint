@@ -86,6 +86,8 @@ namespace OnlineOrderPrint
         public const int LOCALE_SSHORTDATE = 0x1F;
         public const int LOCALE_STIME = 0x1003;
 
+        private string strSource = "";
+
         public FrmMain()
         {
             InitializeComponent();
@@ -353,7 +355,15 @@ namespace OnlineOrderPrint
         {
             //Recive mail
             //string strHtml = ReciveMail();
+            timerOrder.Enabled = false;
+            btnRetrieveOrder.Enabled = false;
+            btnRetrieveOrder.BackColor = Color.DimGray;
+
             ReciveMail();
+
+            btnRetrieveOrder.BackColor = Color.Gold;
+            timerOrder.Enabled = true;
+            btnRetrieveOrder.Enabled = true;
 
             //重组打印
             //Hashtable hs = GetPrtStr(strHtml);
@@ -803,6 +813,12 @@ namespace OnlineOrderPrint
             try
             {
                 popMail.Timeout = HtmlTextPath.EMAIL_TIME_OUT;
+                
+                if (string.IsNullOrEmpty(MAIL_USER_NAME) || string.IsNullOrEmpty(MAIL_USER_PWD) || string.IsNullOrEmpty(MAIL_POP) || string.IsNullOrEmpty(MAIL_SENDER) ||
+                    string.IsNullOrEmpty(PRT_COUNT) || string.IsNullOrEmpty(COMPANY_NAME))
+                {
+                    QueryUser();
+                }
 
                 try
                 {
@@ -825,6 +841,7 @@ namespace OnlineOrderPrint
                 //richTextBox1.Text += System.Environment.NewLine + "ex:" + ex;
                 //Console.Out.WriteLine("Can not connect email server" + DateTime.Now.ToString("o"));
                 //richTextBox1.Text += System.Environment.NewLine + "Can not connect email server:" + DateTime.Now.ToString("o");
+                //SetRichTextValue("MAIL_USER_NAME:" + MAIL_USER_NAME + "MAIL_USER_PWD:" + MAIL_USER_PWD + "MAIL_POP:" + MAIL_POP + "MAIL_SENDER:" + MAIL_SENDER + "PRT_COUNT:" + PRT_COUNT + "COMPANY_NAME:" + COMPANY_NAME);
                 SetRichTextValue(DateTime.Now.ToString("o") + @"######Can not connect email server######");
                 return;
             }
@@ -837,6 +854,8 @@ namespace OnlineOrderPrint
 
             //存放需删除的邮件
             List<POP3_ClientMessage> lstMessage = new List<POP3_ClientMessage>();
+
+            string strMessage = "";
 
             if (0 < messagesCollection.Count)
             {
@@ -1011,21 +1030,27 @@ namespace OnlineOrderPrint
                         player.Play();
                     }
 
-                    for (int j = 0; j < PubCommon.GetRadioBtnValue(PRT_COUNT); j++)
-                    {
-                        webBrowser1.DocumentCompleted += wb_DocumentCompleted;
+                    //for (int j = 0; j < PubCommon.GetRadioBtnValue(PRT_COUNT); j++)
+                    //{
+                    //    webBrowser1.DocumentCompleted += wb_DocumentCompleted;
 
-                        SetRichTextValue(DateTime.Now.ToString("o") + "###Begin Print Count = " + PRT_COUNT + "###");
+                    //    SetRichTextValue(DateTime.Now.ToString("o") + "###Begin Print Count = " + PRT_COUNT + "###");
 
-                        Console.Out.WriteLine("Wait:" + DateTime.Now.ToString("o"));
-                        obj.Reset();
-                        while (obj.WaitOne(1000, false) == false)
-                        {
-                            Application.DoEvents();
-                            if (isPrint) obj.Set();
-                        }
-                        Console.Out.WriteLine("Finish:" + DateTime.Now.ToString("o"));
-                    }
+                    //    Console.Out.WriteLine("Wait:" + DateTime.Now.ToString("o"));
+                    //    obj.Reset();
+                    //    while (obj.WaitOne(1000, false) == false)
+                    //    {
+                    //        Application.DoEvents();
+                    //        if (isPrint) obj.Set();
+                    //    }
+                    //    Console.Out.WriteLine("Finish:" + DateTime.Now.ToString("o"));
+                    //}
+                    SetRichTextValue(@"Order ID="+ orderId);
+                    webBrowser1.DocumentCompleted += wb_DocumentCompleted;
+                    obj.Reset();
+                    Application.DoEvents();
+                    obj.Set();
+                    webBrowser1.DocumentCompleted -= wb_DocumentCompleted;
 
                     //完成后添加删除邮件
                     lstMessage.Add(message);
@@ -1321,13 +1346,17 @@ namespace OnlineOrderPrint
                     key.SetValue("margin_left", 0); //设置左页边距为0
                     key.SetValue("margin_right", 0); //设置右页边距为0
                     key.SetValue("margin_top", 0); //设置上页边距为0
-                    
-                    webBrowser1.Print();
+
+                    //SetRichTextValue(DateTime.Now.ToString("o") + "###Print Count = " + PRT_COUNT + "###");
+
+                    for (int j = 0; j < PubCommon.GetRadioBtnValue(PRT_COUNT); j++)
+                    {
+                        //SetRichTextValue(DateTime.Now.ToString("o") + "###Begin Print Count = " + j + "###");
+                        webBrowser1.Print();
+                    }
                     isPrint = true;
 
                     webBrowser1.DocumentCompleted -= wb_DocumentCompleted;
-
-                    SetRichTextValue(DateTime.Now.ToString("o") + "###Print Count = " + PRT_COUNT + "###");
                 }
             }
         }
@@ -1430,15 +1459,19 @@ namespace OnlineOrderPrint
                 for (int i = 0; i < PubCommon.GetRadioBtnValue(PRT_COUNT); i++)
                 {
                     webBrowser1.DocumentCompleted += wb_DocumentCompleted;
-
-                    Console.Out.WriteLine("Wait1:" + DateTime.Now.ToString("o"));
                     obj.Reset();
-                    while (obj.WaitOne(1000, false) == false)
-                    {
-                        Application.DoEvents();
-                        if (isPrint) obj.Set();
-                    }
-                    Console.Out.WriteLine("Finish1:" + DateTime.Now.ToString("o"));
+                    Application.DoEvents();
+                    obj.Set();
+                    webBrowser1.DocumentCompleted -= wb_DocumentCompleted;
+
+                    //Console.Out.WriteLine("Wait1:" + DateTime.Now.ToString("o"));
+                    //obj.Reset();
+                    //while (obj.WaitOne(1000, false) == false)
+                    //{
+                    //    Application.DoEvents();
+                    //    if (isPrint) obj.Set();
+                    //}
+                    //Console.Out.WriteLine("Finish1:" + DateTime.Now.ToString("o"));
                 }
             }
         }
