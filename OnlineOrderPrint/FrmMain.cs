@@ -1045,7 +1045,7 @@ namespace OnlineOrderPrint
                     //    }
                     //    Console.Out.WriteLine("Finish:" + DateTime.Now.ToString("o"));
                     //}
-                    SetRichTextValue(@"Order ID="+ orderId);
+                    SetRichTextValue(@"#Printing order number="+ orderId);
                     webBrowser1.DocumentCompleted += wb_DocumentCompleted;
                     obj.Reset();
                     Application.DoEvents();
@@ -1454,6 +1454,7 @@ namespace OnlineOrderPrint
             if (dgvOrder.CurrentRow != null)
             {
                 //Print(dgvOrder.CurrentRow.Cells[3].Value.ToString());
+                SetRichTextValue(@"#Printing order number=" + dgvOrder.CurrentRow.Cells[0].Value.ToString());
                 webBrowser1.DocumentText = dgvOrder.CurrentRow.Cells[3].Value.ToString();
 
                 for (int i = 0; i < PubCommon.GetRadioBtnValue(PRT_COUNT); i++)
