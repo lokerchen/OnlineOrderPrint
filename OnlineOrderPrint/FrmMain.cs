@@ -1045,12 +1045,15 @@ namespace OnlineOrderPrint
                     //    }
                     //    Console.Out.WriteLine("Finish:" + DateTime.Now.ToString("o"));
                     //}
-                    SetRichTextValue(@"#Printing order number="+ orderId);
-                    webBrowser1.DocumentCompleted += wb_DocumentCompleted;
-                    obj.Reset();
-                    Application.DoEvents();
-                    obj.Set();
-                    webBrowser1.DocumentCompleted -= wb_DocumentCompleted;
+                    SetRichTextValue(@"#Time Printing order number="+ orderId);
+                    for (int j = 0; j < PubCommon.GetRadioBtnValue(PRT_COUNT); j++)
+                    {
+                        webBrowser1.DocumentCompleted += wb_DocumentCompleted;
+                        obj.Reset();
+                        Application.DoEvents();
+                        obj.Set();
+                        webBrowser1.DocumentCompleted -= wb_DocumentCompleted;
+                    }
 
                     //完成后添加删除邮件
                     lstMessage.Add(message);
@@ -1349,11 +1352,14 @@ namespace OnlineOrderPrint
 
                     //SetRichTextValue(DateTime.Now.ToString("o") + "###Print Count = " + PRT_COUNT + "###");
 
-                    for (int j = 0; j < PubCommon.GetRadioBtnValue(PRT_COUNT); j++)
-                    {
-                        //SetRichTextValue(DateTime.Now.ToString("o") + "###Begin Print Count = " + j + "###");
-                        webBrowser1.Print();
-                    }
+                    //for (int j = 0; j < PubCommon.GetRadioBtnValue(PRT_COUNT); j++)
+                    //{
+                    //    //SetRichTextValue(DateTime.Now.ToString("o") + "###Begin Print Count = " + j + "###");
+                    //    webBrowser1.Print();
+                    //}
+                   
+                    webBrowser1.Print();
+
                     isPrint = true;
 
                     webBrowser1.DocumentCompleted -= wb_DocumentCompleted;
@@ -1454,7 +1460,7 @@ namespace OnlineOrderPrint
             if (dgvOrder.CurrentRow != null)
             {
                 //Print(dgvOrder.CurrentRow.Cells[3].Value.ToString());
-                SetRichTextValue(@"#Printing order number=" + dgvOrder.CurrentRow.Cells[0].Value.ToString());
+                SetRichTextValue(@"#Double Click Printing order number=" + dgvOrder.CurrentRow.Cells[0].Value.ToString());
                 webBrowser1.DocumentText = dgvOrder.CurrentRow.Cells[3].Value.ToString();
 
                 for (int i = 0; i < PubCommon.GetRadioBtnValue(PRT_COUNT); i++)
