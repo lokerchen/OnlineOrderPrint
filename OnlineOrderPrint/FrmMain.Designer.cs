@@ -41,6 +41,7 @@
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.HtmlBody = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnReprint = new System.Windows.Forms.Button();
             this.btnSysConf = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
             this.btnMini = new System.Windows.Forms.Button();
@@ -50,7 +51,6 @@
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.panelErrorMsg = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
-            this.btnReprint = new System.Windows.Forms.Button();
             this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvOrder)).BeginInit();
             this.panel1.SuspendLayout();
@@ -65,7 +65,7 @@
             this.btnRetrieveOrder.Font = new System.Drawing.Font("微软雅黑", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnRetrieveOrder.ForeColor = System.Drawing.Color.White;
             this.btnRetrieveOrder.Location = new System.Drawing.Point(4, 5);
-            this.btnRetrieveOrder.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnRetrieveOrder.Margin = new System.Windows.Forms.Padding(2);
             this.btnRetrieveOrder.Name = "btnRetrieveOrder";
             this.btnRetrieveOrder.Size = new System.Drawing.Size(145, 60);
             this.btnRetrieveOrder.TabIndex = 0;
@@ -93,7 +93,7 @@
             this.Column3,
             this.HtmlBody});
             this.dgvOrder.Location = new System.Drawing.Point(9, 126);
-            this.dgvOrder.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dgvOrder.Margin = new System.Windows.Forms.Padding(2);
             this.dgvOrder.Name = "dgvOrder";
             this.dgvOrder.ReadOnly = true;
             this.dgvOrder.RowTemplate.Height = 27;
@@ -143,10 +143,25 @@
             this.panel1.Controls.Add(this.btnMini);
             this.panel1.Controls.Add(this.btnRetrieveOrder);
             this.panel1.Location = new System.Drawing.Point(9, 376);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(614, 75);
             this.panel1.TabIndex = 2;
+            // 
+            // btnReprint
+            // 
+            this.btnReprint.BackColor = System.Drawing.Color.MidnightBlue;
+            this.btnReprint.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnReprint.Font = new System.Drawing.Font("微软雅黑", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnReprint.ForeColor = System.Drawing.Color.White;
+            this.btnReprint.Location = new System.Drawing.Point(290, 5);
+            this.btnReprint.Margin = new System.Windows.Forms.Padding(2);
+            this.btnReprint.Name = "btnReprint";
+            this.btnReprint.Size = new System.Drawing.Size(100, 60);
+            this.btnReprint.TabIndex = 4;
+            this.btnReprint.Text = "Reprint";
+            this.btnReprint.UseVisualStyleBackColor = false;
+            this.btnReprint.Click += new System.EventHandler(this.btnReprint_Click);
             // 
             // btnSysConf
             // 
@@ -155,7 +170,7 @@
             this.btnSysConf.Font = new System.Drawing.Font("微软雅黑", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnSysConf.ForeColor = System.Drawing.Color.White;
             this.btnSysConf.Location = new System.Drawing.Point(152, 5);
-            this.btnSysConf.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnSysConf.Margin = new System.Windows.Forms.Padding(2);
             this.btnSysConf.Name = "btnSysConf";
             this.btnSysConf.Size = new System.Drawing.Size(136, 60);
             this.btnSysConf.TabIndex = 3;
@@ -170,7 +185,7 @@
             this.btnExit.Font = new System.Drawing.Font("微软雅黑", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnExit.ForeColor = System.Drawing.Color.White;
             this.btnExit.Location = new System.Drawing.Point(503, 5);
-            this.btnExit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnExit.Margin = new System.Windows.Forms.Padding(2);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(102, 60);
             this.btnExit.TabIndex = 2;
@@ -185,7 +200,7 @@
             this.btnMini.Font = new System.Drawing.Font("微软雅黑", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnMini.ForeColor = System.Drawing.Color.White;
             this.btnMini.Location = new System.Drawing.Point(393, 5);
-            this.btnMini.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnMini.Margin = new System.Windows.Forms.Padding(2);
             this.btnMini.Name = "btnMini";
             this.btnMini.Size = new System.Drawing.Size(106, 60);
             this.btnMini.TabIndex = 1;
@@ -202,7 +217,7 @@
             // richTextBox1
             // 
             this.richTextBox1.Location = new System.Drawing.Point(9, 455);
-            this.richTextBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.richTextBox1.Margin = new System.Windows.Forms.Padding(2);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.Size = new System.Drawing.Size(614, 170);
             this.richTextBox1.TabIndex = 3;
@@ -222,7 +237,7 @@
             // webBrowser1
             // 
             this.webBrowser1.Location = new System.Drawing.Point(33, 220);
-            this.webBrowser1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.webBrowser1.Margin = new System.Windows.Forms.Padding(2);
             this.webBrowser1.MinimumSize = new System.Drawing.Size(15, 16);
             this.webBrowser1.Name = "webBrowser1";
             this.webBrowser1.Size = new System.Drawing.Size(517, 62);
@@ -234,7 +249,7 @@
             this.panelErrorMsg.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.panelErrorMsg.Controls.Add(this.label2);
             this.panelErrorMsg.Location = new System.Drawing.Point(64, 153);
-            this.panelErrorMsg.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panelErrorMsg.Margin = new System.Windows.Forms.Padding(2);
             this.panelErrorMsg.Name = "panelErrorMsg";
             this.panelErrorMsg.Size = new System.Drawing.Size(512, 206);
             this.panelErrorMsg.TabIndex = 6;
@@ -252,21 +267,6 @@
             this.label2.Size = new System.Drawing.Size(362, 35);
             this.label2.TabIndex = 0;
             this.label2.Text = "Incorrect login information";
-            // 
-            // btnReprint
-            // 
-            this.btnReprint.BackColor = System.Drawing.Color.MidnightBlue;
-            this.btnReprint.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnReprint.Font = new System.Drawing.Font("微软雅黑", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnReprint.ForeColor = System.Drawing.Color.White;
-            this.btnReprint.Location = new System.Drawing.Point(290, 5);
-            this.btnReprint.Margin = new System.Windows.Forms.Padding(2);
-            this.btnReprint.Name = "btnReprint";
-            this.btnReprint.Size = new System.Drawing.Size(100, 60);
-            this.btnReprint.TabIndex = 4;
-            this.btnReprint.Text = "Reprint";
-            this.btnReprint.UseVisualStyleBackColor = false;
-            this.btnReprint.Click += new System.EventHandler(this.btnReprint_Click);
             // 
             // pictureBoxLogo
             // 
@@ -291,10 +291,11 @@
             this.Controls.Add(this.dgvOrder);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "FrmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Auto Print";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmMain_FormClosing);
             this.Load += new System.EventHandler(this.FrmMain_Load);
             this.SizeChanged += new System.EventHandler(this.FrmMain_SizeChanged);
             ((System.ComponentModel.ISupportInitialize)(this.dgvOrder)).EndInit();

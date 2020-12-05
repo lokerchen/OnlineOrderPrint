@@ -1579,5 +1579,11 @@ namespace OnlineOrderPrint
                 webBrowser1.DocumentCompleted -= wb_DocumentCompleted;
             }
         }
+
+        private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            //删除数据表中的数据
+            SqlHelper.ClearData(@"DELETE FROM Mail_ID");
+        }
     }
 }
