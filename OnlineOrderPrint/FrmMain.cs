@@ -361,7 +361,7 @@ namespace OnlineOrderPrint
 
             ReciveMail();
 
-            btnRetrieveOrder.BackColor = Color.Gold;
+            btnRetrieveOrder.BackColor = Color.MidnightBlue;
             timerOrder.Enabled = true;
             btnRetrieveOrder.Enabled = true;
 
@@ -380,6 +380,10 @@ namespace OnlineOrderPrint
                 if (!IsNetConnect()) return;
 
                 QueryUser();
+
+                string strFileName = Environment.CurrentDirectory + @"\Login.jpg";
+                if (File.Exists(strFileName)) pictureBoxLogo.Load(strFileName);
+                else pictureBoxLogo.Visible = false;
             }
             catch (Exception)
             {
@@ -627,7 +631,7 @@ namespace OnlineOrderPrint
 
             ReciveMail();
 
-            btnRetrieveOrder.BackColor = Color.Gold;
+            btnRetrieveOrder.BackColor = Color.MidnightBlue;
             timerOrder.Enabled = true;
             btnRetrieveOrder.Enabled = true;
         }
@@ -1046,14 +1050,14 @@ namespace OnlineOrderPrint
                     //    Console.Out.WriteLine("Finish:" + DateTime.Now.ToString("o"));
                     //}
                     SetRichTextValue(@"#Time Printing order number="+ orderId);
-                    for (int j = 0; j < PubCommon.GetRadioBtnValue(PRT_COUNT); j++)
-                    {
-                        webBrowser1.DocumentCompleted += wb_DocumentCompleted;
-                        obj.Reset();
-                        Application.DoEvents();
-                        obj.Set();
-                        webBrowser1.DocumentCompleted -= wb_DocumentCompleted;
-                    }
+                    //for (int j = 0; j < PubCommon.GetRadioBtnValue(PRT_COUNT); j++)
+                    //{
+                    webBrowser1.DocumentCompleted += wb_DocumentCompleted;
+                    obj.Reset();
+                    Application.DoEvents();
+                    obj.Set();
+                    webBrowser1.DocumentCompleted -= wb_DocumentCompleted;
+                    //}
 
                     //完成后添加删除邮件
                     lstMessage.Add(message);
@@ -1091,7 +1095,7 @@ namespace OnlineOrderPrint
             {
                 try
                 {
-                    SetRichTextValue(DateTime.Now.ToString("o") + @"Email Count < 0");
+                    SetRichTextValue(DateTime.Now.ToString("o") + @"#No mail received#");
                     popMail.Disconnect();
                 }
                 catch (Exception)
@@ -1352,13 +1356,13 @@ namespace OnlineOrderPrint
 
                     //SetRichTextValue(DateTime.Now.ToString("o") + "###Print Count = " + PRT_COUNT + "###");
 
-                    //for (int j = 0; j < PubCommon.GetRadioBtnValue(PRT_COUNT); j++)
-                    //{
-                    //    //SetRichTextValue(DateTime.Now.ToString("o") + "###Begin Print Count = " + j + "###");
-                    //    webBrowser1.Print();
-                    //}
-                   
-                    webBrowser1.Print();
+                    for (int j = 0; j < PubCommon.GetRadioBtnValue(PRT_COUNT); j++)
+                    {
+                        SetRichTextValue(DateTime.Now.ToString("o") + "###Print Count = " + (j + 1).ToString() + "###");
+                        webBrowser1.Print();
+                    }
+
+                    //webBrowser1.Print();
 
                     isPrint = true;
 
@@ -1463,23 +1467,11 @@ namespace OnlineOrderPrint
                 SetRichTextValue(@"#Double Click Printing order number=" + dgvOrder.CurrentRow.Cells[0].Value.ToString());
                 webBrowser1.DocumentText = dgvOrder.CurrentRow.Cells[3].Value.ToString();
 
-                for (int i = 0; i < PubCommon.GetRadioBtnValue(PRT_COUNT); i++)
-                {
-                    webBrowser1.DocumentCompleted += wb_DocumentCompleted;
-                    obj.Reset();
-                    Application.DoEvents();
-                    obj.Set();
-                    webBrowser1.DocumentCompleted -= wb_DocumentCompleted;
-
-                    //Console.Out.WriteLine("Wait1:" + DateTime.Now.ToString("o"));
-                    //obj.Reset();
-                    //while (obj.WaitOne(1000, false) == false)
-                    //{
-                    //    Application.DoEvents();
-                    //    if (isPrint) obj.Set();
-                    //}
-                    //Console.Out.WriteLine("Finish1:" + DateTime.Now.ToString("o"));
-                }
+                webBrowser1.DocumentCompleted += wb_DocumentCompleted;
+                obj.Reset();
+                Application.DoEvents();
+                obj.Set();
+                webBrowser1.DocumentCompleted -= wb_DocumentCompleted;
             }
         }
 
@@ -1569,6 +1561,22 @@ namespace OnlineOrderPrint
                         player.Play();
                     }
                 }
+            }
+        }
+
+        private void btnReprint_Click(object sender, EventArgs e)
+        {
+            if (dgvOrder.CurrentRow != null)
+            {
+                //Print(dgvOrder.CurrentRow.Cells[3].Value.ToString());
+                SetRichTextValue(@"#Reprinting order number=" + dgvOrder.CurrentRow.Cells[0].Value.ToString());
+                webBrowser1.DocumentText = dgvOrder.CurrentRow.Cells[3].Value.ToString();
+
+                webBrowser1.DocumentCompleted += wb_DocumentCompleted;
+                obj.Reset();
+                Application.DoEvents();
+                obj.Set();
+                webBrowser1.DocumentCompleted -= wb_DocumentCompleted;
             }
         }
     }
