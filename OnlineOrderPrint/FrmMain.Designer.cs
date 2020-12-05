@@ -273,7 +273,7 @@
             this.pictureBoxLogo.Location = new System.Drawing.Point(9, 44);
             this.pictureBoxLogo.Name = "pictureBoxLogo";
             this.pictureBoxLogo.Size = new System.Drawing.Size(614, 77);
-            this.pictureBoxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBoxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBoxLogo.TabIndex = 7;
             this.pictureBoxLogo.TabStop = false;
             // 
