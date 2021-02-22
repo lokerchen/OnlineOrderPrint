@@ -1003,7 +1003,7 @@ namespace OnlineOrderPrint
                                            .Replace("border-top:hidden;", "").Replace("style=\"border-top:hidden;\"", "");
                     }
 
-                        //Print(HtmlBody);
+                    //Print(HtmlBody);
                     webBrowser1.DocumentText = HtmlBody;
                     
                     //打印完成后插入数据
@@ -1339,7 +1339,7 @@ namespace OnlineOrderPrint
 
         private void wb_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            //if (webBrowser1.ReadyState < WebBrowserReadyState.Complete && !isPrint) return;
+            if (webBrowser1.ReadyState < WebBrowserReadyState.Complete && !isPrint) return;
 
             string keyName = @"Software\Microsoft\Internet Explorer\PageSetup\";
             using (RegistryKey key = Registry.CurrentUser.OpenSubKey(keyName, true))
@@ -1356,17 +1356,17 @@ namespace OnlineOrderPrint
 
                     //SetRichTextValue(DateTime.Now.ToString("o") + "###Print Count = " + PRT_COUNT + "###");
 
-                    for (int j = 0; j < PubCommon.GetRadioBtnValue(PRT_COUNT); j++)
-                    {
-                        SetRichTextValue(DateTime.Now.ToString("o") + "###Print Count = " + (j + 1).ToString() + "###");
-                        webBrowser1.Print();
-                    }
+                    //for (int j = 0; j < PubCommon.GetRadioBtnValue(PRT_COUNT); j++)
+                    //{
+                    SetRichTextValue(DateTime.Now.ToString("o") + "###Print Count = 1###");
+                    webBrowser1.Print();
+                    //}
 
                     //webBrowser1.Print();
 
                     isPrint = true;
 
-                    webBrowser1.DocumentCompleted -= wb_DocumentCompleted;
+                    //webBrowser1.DocumentCompleted -= wb_DocumentCompleted;
                 }
             }
         }

@@ -89,6 +89,9 @@ namespace OnlineOrderPrint
                 else if ("3".Equals(txtVersion.Text)) sVersion = @"3";
                 else sVersion = @"2";
 
+                //固定Print Count = 1
+                prtCount = @"1";
+
                 if (!SqlHelper.QueryId("SELECT * FROM User"))
                 {
                     SqlHelper.InsertId("INSERT INTO User VALUES('" + txtUsrName.Text + "','"
