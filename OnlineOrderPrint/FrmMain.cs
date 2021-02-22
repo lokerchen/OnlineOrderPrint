@@ -1566,18 +1566,18 @@ namespace OnlineOrderPrint
 
         private void btnReprint_Click(object sender, EventArgs e)
         {
-            if (dgvOrder.CurrentRow != null)
-            {
-                //Print(dgvOrder.CurrentRow.Cells[3].Value.ToString());
-                SetRichTextValue(@"#Reprinting order number=" + dgvOrder.CurrentRow.Cells[0].Value.ToString());
-                webBrowser1.DocumentText = dgvOrder.CurrentRow.Cells[3].Value.ToString();
+            //if (dgvOrder.CurrentRow != null)
+            //{
+            //    //Print(dgvOrder.CurrentRow.Cells[3].Value.ToString());
+            //    SetRichTextValue(@"#Reprinting order number=" + dgvOrder.CurrentRow.Cells[0].Value.ToString());
+            //    webBrowser1.DocumentText = dgvOrder.CurrentRow.Cells[3].Value.ToString();
 
-                webBrowser1.DocumentCompleted += wb_DocumentCompleted;
-                obj.Reset();
-                Application.DoEvents();
-                obj.Set();
-                webBrowser1.DocumentCompleted -= wb_DocumentCompleted;
-            }
+            //    webBrowser1.DocumentCompleted += wb_DocumentCompleted;
+            //    obj.Reset();
+            //    Application.DoEvents();
+            //    obj.Set();
+            //    webBrowser1.DocumentCompleted -= wb_DocumentCompleted;
+            //}
         }
 
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)

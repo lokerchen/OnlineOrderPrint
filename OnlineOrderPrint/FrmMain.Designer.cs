@@ -159,7 +159,6 @@
             this.btnReprint.Name = "btnReprint";
             this.btnReprint.Size = new System.Drawing.Size(100, 60);
             this.btnReprint.TabIndex = 4;
-            this.btnReprint.Text = "Reprint";
             this.btnReprint.UseVisualStyleBackColor = false;
             this.btnReprint.Click += new System.EventHandler(this.btnReprint_Click);
             // 
