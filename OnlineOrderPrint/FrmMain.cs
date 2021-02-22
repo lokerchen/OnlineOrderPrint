@@ -1339,7 +1339,7 @@ namespace OnlineOrderPrint
 
         private void wb_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            if (webBrowser1.ReadyState < WebBrowserReadyState.Complete) return;
+            //if (webBrowser1.ReadyState < WebBrowserReadyState.Complete && !isPrint) return;
 
             string keyName = @"Software\Microsoft\Internet Explorer\PageSetup\";
             using (RegistryKey key = Registry.CurrentUser.OpenSubKey(keyName, true))
