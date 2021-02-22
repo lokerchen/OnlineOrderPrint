@@ -1366,7 +1366,7 @@ namespace OnlineOrderPrint
 
                     isPrint = true;
 
-                    //webBrowser1.DocumentCompleted -= wb_DocumentCompleted;
+                    webBrowser1.DocumentCompleted -= wb_DocumentCompleted;
                 }
             }
         }
