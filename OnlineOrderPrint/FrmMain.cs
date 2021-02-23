@@ -864,8 +864,9 @@ namespace OnlineOrderPrint
             if (0 < messagesCollection.Count)
             {
                 //for (int i = messagesCollection.Count - 1; i >= 0; i--)
-                foreach (POP3_ClientMessage mail in popMail.Messages)
+                for (var index = 0; index < popMail.Messages.Count; index++)
                 {
+                    POP3_ClientMessage mail = popMail.Messages[index];
                     /*
                     if (!SqlHelper.QueryId(@"SELECT mailID FROM Mail_ID WHERE mailID='" + mail.UID + "'"))
                     {
@@ -920,8 +921,8 @@ namespace OnlineOrderPrint
                         //Console.WriteLine(@"ERR GET MSG TO BYTE:" + DateTime.Now.ToString("o"));
                         //throw;
                     }
-                    
-                    
+
+
                     sendmail = mailMessage.From[0].Address;
                     HtmlBody = mailMessage.BodyHtmlText;
                     //date = mailMessage.Date.ToString("d");
@@ -935,14 +936,15 @@ namespace OnlineOrderPrint
                     //{
                     //    continue;
                     //}
-                    
+
                     if (!sendmail.Equals(MAIL_SENDER))
                     {
                         message.MarkForDeletion();
-                        SetRichTextValue(DateTime.Now.ToString("o") + @"######===" + sendmail + "===Message discarded#####");
+                        SetRichTextValue(DateTime.Now.ToString("o") + @"######===" + sendmail +
+                                         "===Message discarded#####");
                         continue;
                     }
-                    
+
                     //PrtOrder(HtmlBody.Replace("脳", "×").Replace("拢", "£"));
                     //PrtOrderWithTemplate(HtmlBody);
                     if (VERSION.Equals("2"))
@@ -958,7 +960,8 @@ namespace OnlineOrderPrint
                     if (!GetPrtInfo(HtmlBody))
                     {
                         message.MarkForDeletion();
-                        SetRichTextValue(DateTime.Now.ToString("o") + @"######===" + orderId + "===OLD Message discarded#####");
+                        SetRichTextValue(DateTime.Now.ToString("o") + @"######===" + orderId +
+                                         "===OLD Message discarded#####");
                         continue;
                     }
 
@@ -988,30 +991,36 @@ namespace OnlineOrderPrint
 
                     if (VERSION.Equals("2"))
                     {
-                        HtmlBody = HtmlBody.Replace("h1", "h4").Replace("<p>", "").Replace("</p>", "<br />").Replace("<p style=\"width:94%;\">", "").Replace("<strong>", "").Replace("</strong>", "");
+                        HtmlBody = HtmlBody.Replace("h1", "h4").Replace("<p>", "").Replace("</p>", "<br />")
+                            .Replace("<p style=\"width:94%;\">", "").Replace("<strong>", "").Replace("</strong>", "");
                         //HtmlBody = HtmlBody.Replace("h1", "h5");
-                        HtmlBody = HtmlBody.Replace("<h4>", "").Replace("</h4>", "").Replace("<b>", "").Replace("</b>", "")
-                                           .Replace("border-top:hidden;", "").Replace("style=\"border-top:hidden;\"", "");
+                        HtmlBody = HtmlBody.Replace("<h4>", "").Replace("</h4>", "").Replace("<b>", "")
+                            .Replace("</b>", "")
+                            .Replace("border-top:hidden;", "").Replace("style=\"border-top:hidden;\"", "");
                     }
                     else if (VERSION.Equals("3"))
                     {
                         //中文字体更大一号字体
-                        HtmlBody = HtmlBody.Replace("<span style=\"font-size:18px;\">", "<span style=\"font-size:24px;\">");
-                        HtmlBody = HtmlBody.Replace("h1", "h4").Replace("<p>", "").Replace("</p>", "<br />").Replace("<p style=\"width:94%;\">", "").Replace("<strong>", "").Replace("</strong>", "");
+                        HtmlBody = HtmlBody.Replace("<span style=\"font-size:18px;\">",
+                            "<span style=\"font-size:24px;\">");
+                        HtmlBody = HtmlBody.Replace("h1", "h4").Replace("<p>", "").Replace("</p>", "<br />")
+                            .Replace("<p style=\"width:94%;\">", "").Replace("<strong>", "").Replace("</strong>", "");
                         //HtmlBody = HtmlBody.Replace("h1", "h5");
-                        HtmlBody = HtmlBody.Replace("<h4>", "").Replace("</h4>", "").Replace("<b>", "").Replace("</b>", "")
-                                           .Replace("border-top:hidden;", "").Replace("style=\"border-top:hidden;\"", "");
+                        HtmlBody = HtmlBody.Replace("<h4>", "").Replace("</h4>", "").Replace("<b>", "")
+                            .Replace("</b>", "")
+                            .Replace("border-top:hidden;", "").Replace("style=\"border-top:hidden;\"", "");
                     }
 
                     //Print(HtmlBody);
                     webBrowser1.DocumentText = HtmlBody;
-                    
+
                     //打印完成后插入数据
-                    if (!SqlHelper.InsertId(@"INSERT INTO Mail_ID(mailID, orderID, orderType, orderTime, orderHtmlBody) VALUES('"
-                                           + mail.UID + "', '"
-                                           + orderId + "', '"
-                                           + orderType + "', '"
-                                           + orderDate + "', '')"))
+                    if (!SqlHelper.InsertId(
+                        @"INSERT INTO Mail_ID(mailID, orderID, orderType, orderTime, orderHtmlBody) VALUES('"
+                        + mail.UID + "', '"
+                        + orderId + "', '"
+                        + orderType + "', '"
+                        + orderDate + "', '')"))
                     {
                         MessageBox.Show(@"WRITE Data Error!", @"ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
@@ -1049,7 +1058,7 @@ namespace OnlineOrderPrint
                     //    }
                     //    Console.Out.WriteLine("Finish:" + DateTime.Now.ToString("o"));
                     //}
-                    SetRichTextValue(@"#Time Printing order number="+ orderId);
+                    SetRichTextValue(@"#Time Printing order number=" + orderId);
                     //for (int j = 0; j < PubCommon.GetRadioBtnValue(PRT_COUNT); j++)
                     //{
                     webBrowser1.DocumentCompleted += wb_DocumentCompleted;
