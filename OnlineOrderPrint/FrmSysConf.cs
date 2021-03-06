@@ -43,30 +43,30 @@ namespace OnlineOrderPrint
                 txtCompanyName.Text = user.CompanyName;
                 txtVersion.Text = user.Version;
 
-                if (user.PrtCount.Equals(HtmlTextPath.PRT_COUNT_ONE))
-                {
-                    rbOne.Checked = true;
-                    rbTwo.Checked = false;
-                    rbThree.Checked = false;
-                }
-                else if (user.PrtCount.Equals(HtmlTextPath.PRT_COUNT_TWO))
-                {
-                    rbOne.Checked = false;
-                    rbTwo.Checked = true;
-                    rbThree.Checked = false;
-                }
-                else if (user.PrtCount.Equals(HtmlTextPath.PRT_COUNT_THREE))
-                {
-                    rbOne.Checked = false;
-                    rbTwo.Checked = false;
-                    rbThree.Checked = true;
-                }
-                else
-                {
-                    rbOne.Checked = true;
-                    rbTwo.Checked = false;
-                    rbThree.Checked = false;
-                }
+                //if (user.PrtCount.Equals(HtmlTextPath.PRT_COUNT_ONE))
+                //{
+                //    rbOne.Checked = true;
+                //    rbTwo.Checked = false;
+                //    rbThree.Checked = false;
+                //}
+                //else if (user.PrtCount.Equals(HtmlTextPath.PRT_COUNT_TWO))
+                //{
+                //    rbOne.Checked = false;
+                //    rbTwo.Checked = true;
+                //    rbThree.Checked = false;
+                //}
+                //else if (user.PrtCount.Equals(HtmlTextPath.PRT_COUNT_THREE))
+                //{
+                //    rbOne.Checked = false;
+                //    rbTwo.Checked = false;
+                //    rbThree.Checked = true;
+                //}
+                //else
+                //{
+                rbOne.Checked = true;
+                rbTwo.Checked = false;
+                rbThree.Checked = false;
+                //}
             }
         }
 

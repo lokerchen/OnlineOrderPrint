@@ -940,8 +940,7 @@ namespace OnlineOrderPrint
                     if (!sendmail.Equals(MAIL_SENDER))
                     {
                         message.MarkForDeletion();
-                        SetRichTextValue(DateTime.Now.ToString("o") + @"######===" + sendmail +
-                                         "===Message discarded#####");
+                        SetRichTextValue(DateTime.Now.ToString("o") + @"######===" + sendmail + "===Message discarded#####");
                         continue;
                     }
 
@@ -960,8 +959,7 @@ namespace OnlineOrderPrint
                     if (!GetPrtInfo(HtmlBody))
                     {
                         message.MarkForDeletion();
-                        SetRichTextValue(DateTime.Now.ToString("o") + @"######===" + orderId +
-                                         "===OLD Message discarded#####");
+                        SetRichTextValue(DateTime.Now.ToString("o") + @"######===" + orderId + "===OLD Message discarded#####");
                         continue;
                     }
 
@@ -1061,12 +1059,13 @@ namespace OnlineOrderPrint
                     SetRichTextValue(@"#Time Printing order number=" + orderId);
                     //for (int j = 0; j < PubCommon.GetRadioBtnValue(PRT_COUNT); j++)
                     //{
+                    isPrint = false;
                     webBrowser1.DocumentCompleted += wb_DocumentCompleted;
                     obj.Reset();
                     Application.DoEvents();
                     obj.Set();
                     webBrowser1.DocumentCompleted -= wb_DocumentCompleted;
-                    //}
+                        //}
 
                     //完成后添加删除邮件
                     lstMessage.Add(message);
@@ -1348,7 +1347,7 @@ namespace OnlineOrderPrint
 
         private void wb_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            if (webBrowser1.ReadyState < WebBrowserReadyState.Complete && !isPrint) return;
+            //if (webBrowser1.ReadyState < WebBrowserReadyState.Complete) return;
 
             string keyName = @"Software\Microsoft\Internet Explorer\PageSetup\";
             using (RegistryKey key = Registry.CurrentUser.OpenSubKey(keyName, true))
@@ -1368,13 +1367,21 @@ namespace OnlineOrderPrint
                     //for (int j = 0; j < PubCommon.GetRadioBtnValue(PRT_COUNT); j++)
                     //{
                     SetRichTextValue(DateTime.Now.ToString("o") + "###Print Count = 1###");
-                    webBrowser1.Print();
+
+                    Random rd = new Random();
+
+                    int x = 1;
+                    while (!isPrint)
+                    {
+                        webBrowser1.Print();
+                        x++;
+                        isPrint = true;
+                    }
                     //}
 
+                    if (x > 2) SetRichTextValue(DateTime.Now.ToString("o") + "###Reprint Count:" + x.ToString() + "###");
+
                     //webBrowser1.Print();
-
-                    isPrint = true;
-
                     webBrowser1.DocumentCompleted -= wb_DocumentCompleted;
                 }
             }
@@ -1476,6 +1483,7 @@ namespace OnlineOrderPrint
                 SetRichTextValue(@"#Double Click Printing order number=" + dgvOrder.CurrentRow.Cells[0].Value.ToString());
                 webBrowser1.DocumentText = dgvOrder.CurrentRow.Cells[3].Value.ToString();
 
+                isPrint = false;
                 webBrowser1.DocumentCompleted += wb_DocumentCompleted;
                 obj.Reset();
                 Application.DoEvents();
